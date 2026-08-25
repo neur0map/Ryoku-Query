@@ -1,0 +1,1046 @@
+[
+  {
+    "text": "how do i fix ryoku",
+    "title": "Run Ryoku Doctor",
+    "response": "Run `ryoku doctor`. It checks Ryoku's stateful configuration and tries to reconcile supported drift automatically. If you want to see what it would do without changing anything, run `ryoku doctor --check` first.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "ryoku is broken what should i run",
+    "title": "Run Ryoku Doctor",
+    "response": "Run `ryoku doctor`. It checks Ryoku's stateful configuration and tries to reconcile supported drift automatically. If you want to see what it would do without changing anything, run `ryoku doctor --check` first.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "what should i run when ryoku breaks",
+    "title": "Run Ryoku Doctor",
+    "response": "Run `ryoku doctor`. It checks Ryoku's stateful configuration and tries to reconcile supported drift automatically. If you want to see what it would do without changing anything, run `ryoku doctor --check` first.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i self heal ryoku",
+    "title": "Run Ryoku Doctor",
+    "response": "Run `ryoku doctor`. It checks Ryoku's stateful configuration and tries to reconcile supported drift automatically. If you want to see what it would do without changing anything, run `ryoku doctor --check` first.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i repair ryoku",
+    "title": "Run Ryoku Doctor",
+    "response": "Run `ryoku doctor`. It checks Ryoku's stateful configuration and tries to reconcile supported drift automatically. If you want to see what it would do without changing anything, run `ryoku doctor --check` first.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "what is ryoku doctor",
+    "title": "Run Ryoku Doctor",
+    "response": "Run `ryoku doctor`. It checks Ryoku's stateful configuration and tries to reconcile supported drift automatically. If you want to see what it would do without changing anything, run `ryoku doctor --check` first.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i use ryoku doctor",
+    "title": "Run Ryoku Doctor",
+    "response": "Run `ryoku doctor`. It checks Ryoku's stateful configuration and tries to reconcile supported drift automatically. If you want to see what it would do without changing anything, run `ryoku doctor --check` first.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "should i run ryoku doctor",
+    "title": "Run Ryoku Doctor",
+    "response": "Run `ryoku doctor`. It checks Ryoku's stateful configuration and tries to reconcile supported drift automatically. If you want to see what it would do without changing anything, run `ryoku doctor --check` first.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "ryoku doctor command",
+    "title": "Run Ryoku Doctor",
+    "response": "Run `ryoku doctor`. It checks Ryoku's stateful configuration and tries to reconcile supported drift automatically. If you want to see what it would do without changing anything, run `ryoku doctor --check` first.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i run ryoku doctor without changing anything",
+    "title": "Check What Ryoku Doctor Would Change",
+    "response": "Run `ryoku doctor --check` (or `ryoku doctor -n`). It shows the full list of doctor checks and proposed fixes without changing the system.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "is there a dry run for ryoku doctor",
+    "title": "Check What Ryoku Doctor Would Change",
+    "response": "Run `ryoku doctor --check` (or `ryoku doctor -n`). It shows the full list of doctor checks and proposed fixes without changing the system.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i preview ryoku doctor changes",
+    "title": "Check What Ryoku Doctor Would Change",
+    "response": "Run `ryoku doctor --check` (or `ryoku doctor -n`). It shows the full list of doctor checks and proposed fixes without changing the system.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "what does ryoku doctor check do",
+    "title": "Check What Ryoku Doctor Would Change",
+    "response": "Run `ryoku doctor --check` (or `ryoku doctor -n`). It shows the full list of doctor checks and proposed fixes without changing the system.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "ryoku doctor dry run",
+    "title": "Check What Ryoku Doctor Would Change",
+    "response": "Run `ryoku doctor --check` (or `ryoku doctor -n`). It shows the full list of doctor checks and proposed fixes without changing the system.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "ryoku doctor -n",
+    "title": "Check What Ryoku Doctor Would Change",
+    "response": "Run `ryoku doctor --check` (or `ryoku doctor -n`). It shows the full list of doctor checks and proposed fixes without changing the system.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "can doctor check without fixing anything",
+    "title": "Check What Ryoku Doctor Would Change",
+    "response": "Run `ryoku doctor --check` (or `ryoku doctor -n`). It shows the full list of doctor checks and proposed fixes without changing the system.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i generate a ryoku doctor report",
+    "title": "Create a Ryoku Doctor Report",
+    "response": "Run `ryoku doctor --report`. The report is written to `~/.local/state/ryoku/doctor-report.txt` and bundles doctor findings with relevant system state for troubleshooting.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i make a ryoku diagnostic report",
+    "title": "Create a Ryoku Doctor Report",
+    "response": "Run `ryoku doctor --report`. The report is written to `~/.local/state/ryoku/doctor-report.txt` and bundles doctor findings with relevant system state for troubleshooting.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "ryoku doctor report command",
+    "title": "Create a Ryoku Doctor Report",
+    "response": "Run `ryoku doctor --report`. The report is written to `~/.local/state/ryoku/doctor-report.txt` and bundles doctor findings with relevant system state for troubleshooting.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "where is the ryoku doctor report",
+    "title": "Create a Ryoku Doctor Report",
+    "response": "Run `ryoku doctor --report`. The report is written to `~/.local/state/ryoku/doctor-report.txt` and bundles doctor findings with relevant system state for troubleshooting.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "where does doctor report save",
+    "title": "Create a Ryoku Doctor Report",
+    "response": "Run `ryoku doctor --report`. The report is written to `~/.local/state/ryoku/doctor-report.txt` and bundles doctor findings with relevant system state for troubleshooting.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "doctor-report.txt location",
+    "title": "Create a Ryoku Doctor Report",
+    "response": "Run `ryoku doctor --report`. The report is written to `~/.local/state/ryoku/doctor-report.txt` and bundles doctor findings with relevant system state for troubleshooting.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i get logs for a maintainer",
+    "title": "Create a Ryoku Doctor Report",
+    "response": "Run `ryoku doctor --report`. The report is written to `~/.local/state/ryoku/doctor-report.txt` and bundles doctor findings with relevant system state for troubleshooting.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "does ryoku doctor report contain passwords",
+    "title": "Ryoku Doctor Report Privacy",
+    "response": "`ryoku doctor --report` writes `~/.local/state/ryoku/doctor-report.txt`. According to the Ryoku troubleshooting docs, the report contains no passwords or keys.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "does ryoku doctor report contain keys",
+    "title": "Ryoku Doctor Report Privacy",
+    "response": "`ryoku doctor --report` writes `~/.local/state/ryoku/doctor-report.txt`. According to the Ryoku troubleshooting docs, the report contains no passwords or keys.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "is ryoku doctor report safe to share",
+    "title": "Ryoku Doctor Report Privacy",
+    "response": "`ryoku doctor --report` writes `~/.local/state/ryoku/doctor-report.txt`. According to the Ryoku troubleshooting docs, the report contains no passwords or keys.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "does doctor report leak secrets",
+    "title": "Ryoku Doctor Report Privacy",
+    "response": "`ryoku doctor --report` writes `~/.local/state/ryoku/doctor-report.txt`. According to the Ryoku troubleshooting docs, the report contains no passwords or keys.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "can i send doctor-report.txt to someone",
+    "title": "Ryoku Doctor Report Privacy",
+    "response": "`ryoku doctor --report` writes `~/.local/state/ryoku/doctor-report.txt`. According to the Ryoku troubleshooting docs, the report contains no passwords or keys.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i check gpg keys",
+    "title": "Check GPG Keys",
+    "response": "Run `gpg --list-keys` to list your public GPG keys. Run `gpg --list-secret-keys` to list your private/secret keys.",
+    "docs_url": "https://docs.ryoku.dev/"
+  },
+  {
+    "text": "how do i list my gpg keys",
+    "title": "Check GPG Keys",
+    "response": "Run `gpg --list-keys` to list your public GPG keys. Run `gpg --list-secret-keys` to list your private/secret keys.",
+    "docs_url": "https://docs.ryoku.dev/"
+  },
+  {
+    "text": "show my gpg keys",
+    "title": "Check GPG Keys",
+    "response": "Run `gpg --list-keys` to list your public GPG keys. Run `gpg --list-secret-keys` to list your private/secret keys.",
+    "docs_url": "https://docs.ryoku.dev/"
+  },
+  {
+    "text": "what does ryoku doctor explain do",
+    "title": "Explain Ryoku Problems",
+    "response": "Run `ryoku doctor --explain` if you want the doctor report analyzed for likely root causes and suggested fixes. This is opt-in, advisory, read-only, and uses the configured cloud model/provider with your own key.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i get ryoku to explain an error",
+    "title": "Explain Ryoku Problems",
+    "response": "Run `ryoku doctor --explain` if you want the doctor report analyzed for likely root causes and suggested fixes. This is opt-in, advisory, read-only, and uses the configured cloud model/provider with your own key.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "can ryoku doctor use ai to explain problems",
+    "title": "Explain Ryoku Problems",
+    "response": "Run `ryoku doctor --explain` if you want the doctor report analyzed for likely root causes and suggested fixes. This is opt-in, advisory, read-only, and uses the configured cloud model/provider with your own key.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "ryoku doctor --explain",
+    "title": "Explain Ryoku Problems",
+    "response": "Run `ryoku doctor --explain` if you want the doctor report analyzed for likely root causes and suggested fixes. This is opt-in, advisory, read-only, and uses the configured cloud model/provider with your own key.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "does ryoku doctor explain run commands",
+    "title": "Explain Ryoku Problems",
+    "response": "Run `ryoku doctor --explain` if you want the doctor report analyzed for likely root causes and suggested fixes. This is opt-in, advisory, read-only, and uses the configured cloud model/provider with your own key.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "is ryoku doctor explain read only",
+    "title": "Explain Ryoku Problems",
+    "response": "Run `ryoku doctor --explain` if you want the doctor report analyzed for likely root causes and suggested fixes. This is opt-in, advisory, read-only, and uses the configured cloud model/provider with your own key.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "does doctor explain change my system",
+    "title": "Explain Ryoku Problems",
+    "response": "Run `ryoku doctor --explain` if you want the doctor report analyzed for likely root causes and suggested fixes. This is opt-in, advisory, read-only, and uses the configured cloud model/provider with your own key.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
+  },
+  {
+    "text": "how do i check if ryoku is healthy",
+    "title": "Check Ryoku System Status",
+    "response": "Run `ryoku status` for a read-only health check. It reports the active config base, installed `ryoku-desktop` version, repository version, pending updates, and snapshot count without changing anything.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#a-read-only-state-check"
+  },
+  {
+    "text": "how do i check ryoku status",
+    "title": "Check Ryoku System Status",
+    "response": "Run `ryoku status` for a read-only health check. It reports the active config base, installed `ryoku-desktop` version, repository version, pending updates, and snapshot count without changing anything.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#a-read-only-state-check"
+  },
+  {
+    "text": "is my ryoku install current",
+    "title": "Check Ryoku System Status",
+    "response": "Run `ryoku status` for a read-only health check. It reports the active config base, installed `ryoku-desktop` version, repository version, pending updates, and snapshot count without changing anything.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#a-read-only-state-check"
+  },
+  {
+    "text": "how do i check pending ryoku updates",
+    "title": "Check Ryoku System Status",
+    "response": "Run `ryoku status` for a read-only health check. It reports the active config base, installed `ryoku-desktop` version, repository version, pending updates, and snapshot count without changing anything.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#a-read-only-state-check"
+  },
+  {
+    "text": "how do i see ryoku snapshot count",
+    "title": "Check Ryoku System Status",
+    "response": "Run `ryoku status` for a read-only health check. It reports the active config base, installed `ryoku-desktop` version, repository version, pending updates, and snapshot count without changing anything.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#a-read-only-state-check"
+  },
+  {
+    "text": "read only ryoku health check",
+    "title": "Check Ryoku System Status",
+    "response": "Run `ryoku status` for a read-only health check. It reports the active config base, installed `ryoku-desktop` version, repository version, pending updates, and snapshot count without changing anything.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#a-read-only-state-check"
+  },
+  {
+    "text": "what does ryoku status show",
+    "title": "Check Ryoku System Status",
+    "response": "Run `ryoku status` for a read-only health check. It reports the active config base, installed `ryoku-desktop` version, repository version, pending updates, and snapshot count without changing anything.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#a-read-only-state-check"
+  },
+  {
+    "text": "where are ryoku logs",
+    "title": "Find Ryoku Logs",
+    "response": "Common troubleshooting locations include `~/.local/state/ryoku-shell.log` for the Ryoku shell, `sudo journalctl -u sddm` for SDDM, `dmesg` / `journalctl -k` for kernel and hardware, `$XDG_RUNTIME_DIR/ryoku-update.json` for update progress, and `~/.local/state/ryoku/doctor-report.txt` for the latest doctor report.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "where is ryoku shell log",
+    "title": "Find Ryoku Logs",
+    "response": "Common troubleshooting locations include `~/.local/state/ryoku-shell.log` for the Ryoku shell, `sudo journalctl -u sddm` for SDDM, `dmesg` / `journalctl -k` for kernel and hardware, `$XDG_RUNTIME_DIR/ryoku-update.json` for update progress, and `~/.local/state/ryoku/doctor-report.txt` for the latest doctor report.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "where are ryoku error logs",
+    "title": "Find Ryoku Logs",
+    "response": "Common troubleshooting locations include `~/.local/state/ryoku-shell.log` for the Ryoku shell, `sudo journalctl -u sddm` for SDDM, `dmesg` / `journalctl -k` for kernel and hardware, `$XDG_RUNTIME_DIR/ryoku-update.json` for update progress, and `~/.local/state/ryoku/doctor-report.txt` for the latest doctor report.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "how do i find ryoku logs",
+    "title": "Find Ryoku Logs",
+    "response": "Common troubleshooting locations include `~/.local/state/ryoku-shell.log` for the Ryoku shell, `sudo journalctl -u sddm` for SDDM, `dmesg` / `journalctl -k` for kernel and hardware, `$XDG_RUNTIME_DIR/ryoku-update.json` for update progress, and `~/.local/state/ryoku/doctor-report.txt` for the latest doctor report.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "where is the update log",
+    "title": "Find Ryoku Logs",
+    "response": "Common troubleshooting locations include `~/.local/state/ryoku-shell.log` for the Ryoku shell, `sudo journalctl -u sddm` for SDDM, `dmesg` / `journalctl -k` for kernel and hardware, `$XDG_RUNTIME_DIR/ryoku-update.json` for update progress, and `~/.local/state/ryoku/doctor-report.txt` for the latest doctor report.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "where is ryoku update progress stored",
+    "title": "Find Ryoku Logs",
+    "response": "Common troubleshooting locations include `~/.local/state/ryoku-shell.log` for the Ryoku shell, `sudo journalctl -u sddm` for SDDM, `dmesg` / `journalctl -k` for kernel and hardware, `$XDG_RUNTIME_DIR/ryoku-update.json` for update progress, and `~/.local/state/ryoku/doctor-report.txt` for the latest doctor report.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "where are kernel logs",
+    "title": "Find Ryoku Logs",
+    "response": "Common troubleshooting locations include `~/.local/state/ryoku-shell.log` for the Ryoku shell, `sudo journalctl -u sddm` for SDDM, `dmesg` / `journalctl -k` for kernel and hardware, `$XDG_RUNTIME_DIR/ryoku-update.json` for update progress, and `~/.local/state/ryoku/doctor-report.txt` for the latest doctor report.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "where are sddm logs",
+    "title": "Find Ryoku Logs",
+    "response": "Common troubleshooting locations include `~/.local/state/ryoku-shell.log` for the Ryoku shell, `sudo journalctl -u sddm` for SDDM, `dmesg` / `journalctl -k` for kernel and hardware, `$XDG_RUNTIME_DIR/ryoku-update.json` for update progress, and `~/.local/state/ryoku/doctor-report.txt` for the latest doctor report.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "how do i refresh ryoku shell logs",
+    "title": "Refresh the Ryoku Shell Log",
+    "response": "For shell issues, run `ryoku reload`, then inspect the recent log with `tail -n 50 ~/.local/state/ryoku-shell.log`. You can also run `hyprctl binds` when troubleshooting bindings.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "how do i view recent ryoku shell errors",
+    "title": "Refresh the Ryoku Shell Log",
+    "response": "For shell issues, run `ryoku reload`, then inspect the recent log with `tail -n 50 ~/.local/state/ryoku-shell.log`. You can also run `hyprctl binds` when troubleshooting bindings.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "ryoku shell log tail command",
+    "title": "Refresh the Ryoku Shell Log",
+    "response": "For shell issues, run `ryoku reload`, then inspect the recent log with `tail -n 50 ~/.local/state/ryoku-shell.log`. You can also run `hyprctl binds` when troubleshooting bindings.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "how do i debug ryoku keybinds",
+    "title": "Refresh the Ryoku Shell Log",
+    "response": "For shell issues, run `ryoku reload`, then inspect the recent log with `tail -n 50 ~/.local/state/ryoku-shell.log`. You can also run `hyprctl binds` when troubleshooting bindings.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "how do i see hyprland binds",
+    "title": "Refresh the Ryoku Shell Log",
+    "response": "For shell issues, run `ryoku reload`, then inspect the recent log with `tail -n 50 ~/.local/state/ryoku-shell.log`. You can also run `hyprctl binds` when troubleshooting bindings.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live"
+  },
+  {
+    "text": "how do i rollback ryoku",
+    "title": "Roll Back a Bad Ryoku Update",
+    "response": "Run `ryoku snapshots` to see available snapshots, then use `ryoku rollback <id>` to roll back to the snapshot you want. Running `ryoku rollback` without an ID also lists snapshots.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "how do i undo a ryoku update",
+    "title": "Roll Back a Bad Ryoku Update",
+    "response": "Run `ryoku snapshots` to see available snapshots, then use `ryoku rollback <id>` to roll back to the snapshot you want. Running `ryoku rollback` without an ID also lists snapshots.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "ryoku update broke my system",
+    "title": "Roll Back a Bad Ryoku Update",
+    "response": "Run `ryoku snapshots` to see available snapshots, then use `ryoku rollback <id>` to roll back to the snapshot you want. Running `ryoku rollback` without an ID also lists snapshots.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "how do i restore a snapshot",
+    "title": "Roll Back a Bad Ryoku Update",
+    "response": "Run `ryoku snapshots` to see available snapshots, then use `ryoku rollback <id>` to roll back to the snapshot you want. Running `ryoku rollback` without an ID also lists snapshots.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "how do i list ryoku snapshots",
+    "title": "Roll Back a Bad Ryoku Update",
+    "response": "Run `ryoku snapshots` to see available snapshots, then use `ryoku rollback <id>` to roll back to the snapshot you want. Running `ryoku rollback` without an ID also lists snapshots.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "what is ryoku rollback",
+    "title": "Roll Back a Bad Ryoku Update",
+    "response": "Run `ryoku snapshots` to see available snapshots, then use `ryoku rollback <id>` to roll back to the snapshot you want. Running `ryoku rollback` without an ID also lists snapshots.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "ryoku rollback command",
+    "title": "Roll Back a Bad Ryoku Update",
+    "response": "Run `ryoku snapshots` to see available snapshots, then use `ryoku rollback <id>` to roll back to the snapshot you want. Running `ryoku rollback` without an ID also lists snapshots.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "how do i choose a rollback snapshot",
+    "title": "Roll Back a Bad Ryoku Update",
+    "response": "Run `ryoku snapshots` to see available snapshots, then use `ryoku rollback <id>` to roll back to the snapshot you want. Running `ryoku rollback` without an ID also lists snapshots.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "how do i rollback ryoku when desktop wont start",
+    "title": "Roll Back Ryoku From a TTY",
+    "response": "If you cannot reach the desktop, switch to a TTY with `Ctrl+Alt+F2`, log in, and run `ryoku rollback`. Ryoku snapshots can also be selected from the Limine boot menu.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "can i rollback ryoku from tty",
+    "title": "Roll Back Ryoku From a TTY",
+    "response": "If you cannot reach the desktop, switch to a TTY with `Ctrl+Alt+F2`, log in, and run `ryoku rollback`. Ryoku snapshots can also be selected from the Limine boot menu.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "desktop is broken after update how do i rollback",
+    "title": "Roll Back Ryoku From a TTY",
+    "response": "If you cannot reach the desktop, switch to a TTY with `Ctrl+Alt+F2`, log in, and run `ryoku rollback`. Ryoku snapshots can also be selected from the Limine boot menu.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "how do i rollback from limine",
+    "title": "Roll Back Ryoku From a TTY",
+    "response": "If you cannot reach the desktop, switch to a TTY with `Ctrl+Alt+F2`, log in, and run `ryoku rollback`. Ryoku snapshots can also be selected from the Limine boot menu.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "can i restore ryoku snapshot from boot menu",
+    "title": "Roll Back Ryoku From a TTY",
+    "response": "If you cannot reach the desktop, switch to a TTY with `Ctrl+Alt+F2`, log in, and run `ryoku rollback`. Ryoku snapshots can also be selected from the Limine boot menu.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback"
+  },
+  {
+    "text": "ryoku snapshots says config root does not exist",
+    "title": "Fix Missing Snapper Root Config",
+    "response": "First run `findmnt -no FSTYPE /`. If it prints `btrfs`, run `ryoku doctor`, then `ryoku snapshots` and `ryoku status`. Doctor can recreate the missing Snapper `root` configuration and related snapshot setup.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "snapper root config does not exist",
+    "title": "Fix Missing Snapper Root Config",
+    "response": "First run `findmnt -no FSTYPE /`. If it prints `btrfs`, run `ryoku doctor`, then `ryoku snapshots` and `ryoku status`. Doctor can recreate the missing Snapper `root` configuration and related snapshot setup.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "why do i have no ryoku snapshots",
+    "title": "Fix Missing Snapper Root Config",
+    "response": "First run `findmnt -no FSTYPE /`. If it prints `btrfs`, run `ryoku doctor`, then `ryoku snapshots` and `ryoku status`. Doctor can recreate the missing Snapper `root` configuration and related snapshot setup.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "ryoku status says zero snapshots",
+    "title": "Fix Missing Snapper Root Config",
+    "response": "First run `findmnt -no FSTYPE /`. If it prints `btrfs`, run `ryoku doctor`, then `ryoku snapshots` and `ryoku status`. Doctor can recreate the missing Snapper `root` configuration and related snapshot setup.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "limine snapshot menu is empty",
+    "title": "Fix Missing Snapper Root Config",
+    "response": "First run `findmnt -no FSTYPE /`. If it prints `btrfs`, run `ryoku doctor`, then `ryoku snapshots` and `ryoku status`. Doctor can recreate the missing Snapper `root` configuration and related snapshot setup.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "how do i fix missing snapper config",
+    "title": "Fix Missing Snapper Root Config",
+    "response": "First run `findmnt -no FSTYPE /`. If it prints `btrfs`, run `ryoku doctor`, then `ryoku snapshots` and `ryoku status`. Doctor can recreate the missing Snapper `root` configuration and related snapshot setup.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "how do i restore snapper root config",
+    "title": "Fix Missing Snapper Root Config",
+    "response": "First run `findmnt -no FSTYPE /`. If it prints `btrfs`, run `ryoku doctor`, then `ryoku snapshots` and `ryoku status`. Doctor can recreate the missing Snapper `root` configuration and related snapshot setup.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "snapshots are not working in ryoku",
+    "title": "Fix Missing Snapper Root Config",
+    "response": "First run `findmnt -no FSTYPE /`. If it prints `btrfs`, run `ryoku doctor`, then `ryoku snapshots` and `ryoku status`. Doctor can recreate the missing Snapper `root` configuration and related snapshot setup.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "how do i check if root is btrfs",
+    "title": "Check Whether Root Uses Btrfs",
+    "response": "Run `findmnt -no FSTYPE /`. If the result is `btrfs`, Ryoku's Snapper-based snapshot setup can be used. If it is not `btrfs`, Ryoku's built-in snapshot rollback is unavailable on that root filesystem.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "how do i check filesystem type for ryoku snapshots",
+    "title": "Check Whether Root Uses Btrfs",
+    "response": "Run `findmnt -no FSTYPE /`. If the result is `btrfs`, Ryoku's Snapper-based snapshot setup can be used. If it is not `btrfs`, Ryoku's built-in snapshot rollback is unavailable on that root filesystem.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "does ryoku snapshot require btrfs",
+    "title": "Check Whether Root Uses Btrfs",
+    "response": "Run `findmnt -no FSTYPE /`. If the result is `btrfs`, Ryoku's Snapper-based snapshot setup can be used. If it is not `btrfs`, Ryoku's built-in snapshot rollback is unavailable on that root filesystem.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "why cant i use ryoku rollback on ext4",
+    "title": "Check Whether Root Uses Btrfs",
+    "response": "Run `findmnt -no FSTYPE /`. If the result is `btrfs`, Ryoku's Snapper-based snapshot setup can be used. If it is not `btrfs`, Ryoku's built-in snapshot rollback is unavailable on that root filesystem.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "can ryoku snapshots work without btrfs",
+    "title": "Check Whether Root Uses Btrfs",
+    "response": "Run `findmnt -no FSTYPE /`. If the result is `btrfs`, Ryoku's Snapper-based snapshot setup can be used. If it is not `btrfs`, Ryoku's built-in snapshot rollback is unavailable on that root filesystem.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist"
+  },
+  {
+    "text": "how do i recover a completely broken ryoku install",
+    "title": "Recover a Severely Broken Ryoku Install",
+    "response": "Use `ryoku recovery` as the last-resort recovery path when the desktop or local configuration is too broken to update normally. It resets to `main` and redeploys, overwriting configs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-last-resort-recovery"
+  },
+  {
+    "text": "what is ryoku recovery",
+    "title": "Recover a Severely Broken Ryoku Install",
+    "response": "Use `ryoku recovery` as the last-resort recovery path when the desktop or local configuration is too broken to update normally. It resets to `main` and redeploys, overwriting configs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-last-resort-recovery"
+  },
+  {
+    "text": "ryoku recovery command",
+    "title": "Recover a Severely Broken Ryoku Install",
+    "response": "Use `ryoku recovery` as the last-resort recovery path when the desktop or local configuration is too broken to update normally. It resets to `main` and redeploys, overwriting configs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-last-resort-recovery"
+  },
+  {
+    "text": "ryoku config is corrupted",
+    "title": "Recover a Severely Broken Ryoku Install",
+    "response": "Use `ryoku recovery` as the last-resort recovery path when the desktop or local configuration is too broken to update normally. It resets to `main` and redeploys, overwriting configs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-last-resort-recovery"
+  },
+  {
+    "text": "local ryoku build is broken",
+    "title": "Recover a Severely Broken Ryoku Install",
+    "response": "Use `ryoku recovery` as the last-resort recovery path when the desktop or local configuration is too broken to update normally. It resets to `main` and redeploys, overwriting configs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-last-resort-recovery"
+  },
+  {
+    "text": "last resort ryoku recovery",
+    "title": "Recover a Severely Broken Ryoku Install",
+    "response": "Use `ryoku recovery` as the last-resort recovery path when the desktop or local configuration is too broken to update normally. It resets to `main` and redeploys, overwriting configs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-last-resort-recovery"
+  },
+  {
+    "text": "how do i reset ryoku to main",
+    "title": "Recover a Severely Broken Ryoku Install",
+    "response": "Use `ryoku recovery` as the last-resort recovery path when the desktop or local configuration is too broken to update normally. It resets to `main` and redeploys, overwriting configs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-last-resort-recovery"
+  },
+  {
+    "text": "ryoku bar is missing",
+    "title": "Fix a Missing Ryoku Bar or Shell",
+    "response": "Run `ryoku reload`, then inspect the shell log with `tail -n 100 ~/.local/state/ryoku-shell.log`. If a recent update caused the problem, try `ryoku update` again; if that fails, roll back to the pre-update snapshot.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "ryoku sidebar is missing",
+    "title": "Fix a Missing Ryoku Bar or Shell",
+    "response": "Run `ryoku reload`, then inspect the shell log with `tail -n 100 ~/.local/state/ryoku-shell.log`. If a recent update caused the problem, try `ryoku update` again; if that fails, roll back to the pre-update snapshot.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "ryoku shell is not drawing",
+    "title": "Fix a Missing Ryoku Bar or Shell",
+    "response": "Run `ryoku reload`, then inspect the shell log with `tail -n 100 ~/.local/state/ryoku-shell.log`. If a recent update caused the problem, try `ryoku update` again; if that fails, roll back to the pre-update snapshot.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "ryoku panel disappeared",
+    "title": "Fix a Missing Ryoku Bar or Shell",
+    "response": "Run `ryoku reload`, then inspect the shell log with `tail -n 100 ~/.local/state/ryoku-shell.log`. If a recent update caused the problem, try `ryoku update` again; if that fails, roll back to the pre-update snapshot.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "how do i restart the ryoku shell",
+    "title": "Fix a Missing Ryoku Bar or Shell",
+    "response": "Run `ryoku reload`, then inspect the shell log with `tail -n 100 ~/.local/state/ryoku-shell.log`. If a recent update caused the problem, try `ryoku update` again; if that fails, roll back to the pre-update snapshot.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "how do i fix missing ryoku bar",
+    "title": "Fix a Missing Ryoku Bar or Shell",
+    "response": "Run `ryoku reload`, then inspect the shell log with `tail -n 100 ~/.local/state/ryoku-shell.log`. If a recent update caused the problem, try `ryoku update` again; if that fails, roll back to the pre-update snapshot.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "desktop bar disappeared after update",
+    "title": "Fix a Missing Ryoku Bar or Shell",
+    "response": "Run `ryoku reload`, then inspect the shell log with `tail -n 100 ~/.local/state/ryoku-shell.log`. If a recent update caused the problem, try `ryoku update` again; if that fails, roll back to the pre-update snapshot.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "user.lua broke ryoku",
+    "title": "Fix a Hyprland User Config Error",
+    "response": "If you edited `~/.config/hypr/user.lua` or `~/.config/hypr/monitors_user.lua`, check `~/.local/state/ryoku-shell.log` and `hyprctl monitors` for Lua/config errors. Comment out the failing line, then run `ryoku reload`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "monitors_user.lua error",
+    "title": "Fix a Hyprland User Config Error",
+    "response": "If you edited `~/.config/hypr/user.lua` or `~/.config/hypr/monitors_user.lua`, check `~/.local/state/ryoku-shell.log` and `hyprctl monitors` for Lua/config errors. Comment out the failing line, then run `ryoku reload`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "my hyprland config broke the shell",
+    "title": "Fix a Hyprland User Config Error",
+    "response": "If you edited `~/.config/hypr/user.lua` or `~/.config/hypr/monitors_user.lua`, check `~/.local/state/ryoku-shell.log` and `hyprctl monitors` for Lua/config errors. Comment out the failing line, then run `ryoku reload`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "how do i fix a lua error in ryoku config",
+    "title": "Fix a Hyprland User Config Error",
+    "response": "If you edited `~/.config/hypr/user.lua` or `~/.config/hypr/monitors_user.lua`, check `~/.local/state/ryoku-shell.log` and `hyprctl monitors` for Lua/config errors. Comment out the failing line, then run `ryoku reload`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "ryoku shell broke after editing user.lua",
+    "title": "Fix a Hyprland User Config Error",
+    "response": "If you edited `~/.config/hypr/user.lua` or `~/.config/hypr/monitors_user.lua`, check `~/.local/state/ryoku-shell.log` and `hyprctl monitors` for Lua/config errors. Comment out the failing line, then run `ryoku reload`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "monitors.lua is corrupted",
+    "title": "Repair Generated Monitor or GPU Config",
+    "response": "If generated `monitors.lua` or `gpu.lua` state became corrupted after a hotplug or GPU reset, run `ryoku doctor`. If needed, switch to a TTY, run it there, then log back in.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "gpu.lua is corrupted",
+    "title": "Repair Generated Monitor or GPU Config",
+    "response": "If generated `monitors.lua` or `gpu.lua` state became corrupted after a hotplug or GPU reset, run `ryoku doctor`. If needed, switch to a TTY, run it there, then log back in.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "display broke after hotplug",
+    "title": "Repair Generated Monitor or GPU Config",
+    "response": "If generated `monitors.lua` or `gpu.lua` state became corrupted after a hotplug or GPU reset, run `ryoku doctor`. If needed, switch to a TTY, run it there, then log back in.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "gpu reset broke ryoku display",
+    "title": "Repair Generated Monitor or GPU Config",
+    "response": "If generated `monitors.lua` or `gpu.lua` state became corrupted after a hotplug or GPU reset, run `ryoku doctor`. If needed, switch to a TTY, run it there, then log back in.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "can ryoku doctor fix monitors.lua",
+    "title": "Repair Generated Monitor or GPU Config",
+    "response": "If generated `monitors.lua` or `gpu.lua` state became corrupted after a hotplug or GPU reset, run `ryoku doctor`. If needed, switch to a TTY, run it there, then log back in.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "can ryoku doctor fix gpu.lua",
+    "title": "Repair Generated Monitor or GPU Config",
+    "response": "If generated `monitors.lua` or `gpu.lua` state became corrupted after a hotplug or GPU reset, run `ryoku doctor`. If needed, switch to a TTY, run it there, then log back in.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing"
+  },
+  {
+    "text": "ryoku login screen is broken",
+    "title": "Fix a Broken Login Screen",
+    "response": "Switch to a TTY with `Ctrl+Alt+F2`, log in, and run `Hyprland`. If Hyprland starts normally, troubleshoot SDDM with `sudo journalctl -u sddm -n 200`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "sddm wont start",
+    "title": "Fix a Broken Login Screen",
+    "response": "Switch to a TTY with `Ctrl+Alt+F2`, log in, and run `Hyprland`. If Hyprland starts normally, troubleshoot SDDM with `sudo journalctl -u sddm -n 200`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "sddm refuses my login",
+    "title": "Fix a Broken Login Screen",
+    "response": "Switch to a TTY with `Ctrl+Alt+F2`, log in, and run `Hyprland`. If Hyprland starts normally, troubleshoot SDDM with `sudo journalctl -u sddm -n 200`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "how do i debug the ryoku login screen",
+    "title": "Fix a Broken Login Screen",
+    "response": "Switch to a TTY with `Ctrl+Alt+F2`, log in, and run `Hyprland`. If Hyprland starts normally, troubleshoot SDDM with `sudo journalctl -u sddm -n 200`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "how do i start hyprland from tty",
+    "title": "Fix a Broken Login Screen",
+    "response": "Switch to a TTY with `Ctrl+Alt+F2`, log in, and run `Hyprland`. If Hyprland starts normally, troubleshoot SDDM with `sudo journalctl -u sddm -n 200`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "login screen broken but desktop may work",
+    "title": "Fix a Broken Login Screen",
+    "response": "Switch to a TTY with `Ctrl+Alt+F2`, log in, and run `Hyprland`. If Hyprland starts normally, troubleshoot SDDM with `sudo journalctl -u sddm -n 200`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "how do i check sddm logs",
+    "title": "Check SDDM Logs",
+    "response": "Run `sudo journalctl -u sddm -n 200` to inspect recent SDDM login-screen logs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "how do i view login screen logs",
+    "title": "Check SDDM Logs",
+    "response": "Run `sudo journalctl -u sddm -n 200` to inspect recent SDDM login-screen logs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "sddm journalctl command",
+    "title": "Check SDDM Logs",
+    "response": "Run `sudo journalctl -u sddm -n 200` to inspect recent SDDM login-screen logs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "where can i see why sddm failed",
+    "title": "Check SDDM Logs",
+    "response": "Run `sudo journalctl -u sddm -n 200` to inspect recent SDDM login-screen logs.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "how do i change the ryoku login theme",
+    "title": "Change the SDDM Theme",
+    "response": "If you can reach the desktop, change it in `Ryoku Settings > Lockscreen and Login`. Otherwise, the SDDM configuration can be edited under `/etc/sddm.conf.d/`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "how do i change sddm theme in ryoku",
+    "title": "Change the SDDM Theme",
+    "response": "If you can reach the desktop, change it in `Ryoku Settings > Lockscreen and Login`. Otherwise, the SDDM configuration can be edited under `/etc/sddm.conf.d/`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "where is sddm config",
+    "title": "Change the SDDM Theme",
+    "response": "If you can reach the desktop, change it in `Ryoku Settings > Lockscreen and Login`. Otherwise, the SDDM configuration can be edited under `/etc/sddm.conf.d/`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "how do i fix a broken sddm theme",
+    "title": "Change the SDDM Theme",
+    "response": "If you can reach the desktop, change it in `Ryoku Settings > Lockscreen and Login`. Otherwise, the SDDM configuration can be edited under `/etc/sddm.conf.d/`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken"
+  },
+  {
+    "text": "ryoku is using the wrong gpu",
+    "title": "Choose the GPU Ryoku Uses",
+    "response": "Open `Ryoku Settings > Displays > GPU` and choose the GPU you want as the primary render device. Log out and back in to apply the change.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "how do i change gpu in ryoku",
+    "title": "Choose the GPU Ryoku Uses",
+    "response": "Open `Ryoku Settings > Displays > GPU` and choose the GPU you want as the primary render device. Log out and back in to apply the change.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "how do i make ryoku use my dedicated gpu",
+    "title": "Choose the GPU Ryoku Uses",
+    "response": "Open `Ryoku Settings > Displays > GPU` and choose the GPU you want as the primary render device. Log out and back in to apply the change.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "how do i make ryoku use my external gpu",
+    "title": "Choose the GPU Ryoku Uses",
+    "response": "Open `Ryoku Settings > Displays > GPU` and choose the GPU you want as the primary render device. Log out and back in to apply the change.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "why is ryoku using integrated graphics",
+    "title": "Choose the GPU Ryoku Uses",
+    "response": "Open `Ryoku Settings > Displays > GPU` and choose the GPU you want as the primary render device. Log out and back in to apply the change.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "how do i select primary gpu",
+    "title": "Choose the GPU Ryoku Uses",
+    "response": "Open `Ryoku Settings > Displays > GPU` and choose the GPU you want as the primary render device. Log out and back in to apply the change.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "how do i detect gpus in ryoku",
+    "title": "Detect GPUs in Ryoku",
+    "response": "Run `ryoku-gpu detect` to see detected GPUs and Ryoku's recommended device.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "ryoku gpu detect command",
+    "title": "Detect GPUs in Ryoku",
+    "response": "Run `ryoku-gpu detect` to see detected GPUs and Ryoku's recommended device.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "how do i see what gpu ryoku detected",
+    "title": "Detect GPUs in Ryoku",
+    "response": "Run `ryoku-gpu detect` to see detected GPUs and Ryoku's recommended device.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "what gpu does ryoku recommend",
+    "title": "Detect GPUs in Ryoku",
+    "response": "Run `ryoku-gpu detect` to see detected GPUs and Ryoku's recommended device.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "how do i check which gpu ryoku sees",
+    "title": "Detect GPUs in Ryoku",
+    "response": "Run `ryoku-gpu detect` to see detected GPUs and Ryoku's recommended device.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used"
+  },
+  {
+    "text": "ryoku only shows one resolution",
+    "title": "Only One Display Resolution Is Available",
+    "response": "Laptop eDP panels may expose only their native resolution. Use the scale options instead; Ryoku labels them with the logical resolution they produce.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply"
+  },
+  {
+    "text": "why does my laptop only have one resolution",
+    "title": "Only One Display Resolution Is Available",
+    "response": "Laptop eDP panels may expose only their native resolution. Use the scale options instead; Ryoku labels them with the logical resolution they produce.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply"
+  },
+  {
+    "text": "how do i lower display resolution in ryoku",
+    "title": "Only One Display Resolution Is Available",
+    "response": "Laptop eDP panels may expose only their native resolution. Use the scale options instead; Ryoku labels them with the logical resolution they produce.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply"
+  },
+  {
+    "text": "how do i use display scaling in ryoku",
+    "title": "Only One Display Resolution Is Available",
+    "response": "Laptop eDP panels may expose only their native resolution. Use the scale options instead; Ryoku labels them with the logical resolution they produce.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply"
+  },
+  {
+    "text": "edp only has native resolution",
+    "title": "Only One Display Resolution Is Available",
+    "response": "Laptop eDP panels may expose only their native resolution. Use the scale options instead; Ryoku labels them with the logical resolution they produce.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply"
+  },
+  {
+    "text": "ryoku display apply rejected",
+    "title": "Display Change Was Rejected",
+    "response": "If Apply reports that the display change was rejected, the compositor refused that mode or scale. Choose one of the offered clean-divisor scale options.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply"
+  },
+  {
+    "text": "resolution change will not apply",
+    "title": "Display Change Was Rejected",
+    "response": "If Apply reports that the display change was rejected, the compositor refused that mode or scale. Choose one of the offered clean-divisor scale options.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply"
+  },
+  {
+    "text": "scale change rejected in ryoku",
+    "title": "Display Change Was Rejected",
+    "response": "If Apply reports that the display change was rejected, the compositor refused that mode or scale. Choose one of the offered clean-divisor scale options.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply"
+  },
+  {
+    "text": "hyprland refused display mode",
+    "title": "Display Change Was Rejected",
+    "response": "If Apply reports that the display change was rejected, the compositor refused that mode or scale. Choose one of the offered clean-divisor scale options.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply"
+  },
+  {
+    "text": "why wont ryoku apply my display settings",
+    "title": "Display Change Was Rejected",
+    "response": "If Apply reports that the display change was rejected, the compositor refused that mode or scale. Choose one of the offered clean-divisor scale options.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply"
+  },
+  {
+    "text": "ryoku feels slow",
+    "title": "Improve Ryoku Performance",
+    "response": "For better performance, try disabling animations in `Ryoku Settings > Appearance > Animations`, turn off animated/video wallpapers, and reduce blur and shadows under `Appearance > Decoration`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#performance-feels-off"
+  },
+  {
+    "text": "ryoku performance is bad",
+    "title": "Improve Ryoku Performance",
+    "response": "For better performance, try disabling animations in `Ryoku Settings > Appearance > Animations`, turn off animated/video wallpapers, and reduce blur and shadows under `Appearance > Decoration`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#performance-feels-off"
+  },
+  {
+    "text": "how do i improve ryoku performance",
+    "title": "Improve Ryoku Performance",
+    "response": "For better performance, try disabling animations in `Ryoku Settings > Appearance > Animations`, turn off animated/video wallpapers, and reduce blur and shadows under `Appearance > Decoration`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#performance-feels-off"
+  },
+  {
+    "text": "how do i reduce gpu usage in ryoku",
+    "title": "Improve Ryoku Performance",
+    "response": "For better performance, try disabling animations in `Ryoku Settings > Appearance > Animations`, turn off animated/video wallpapers, and reduce blur and shadows under `Appearance > Decoration`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#performance-feels-off"
+  },
+  {
+    "text": "how do i disable animations in ryoku",
+    "title": "Improve Ryoku Performance",
+    "response": "For better performance, try disabling animations in `Ryoku Settings > Appearance > Animations`, turn off animated/video wallpapers, and reduce blur and shadows under `Appearance > Decoration`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#performance-feels-off"
+  },
+  {
+    "text": "animated wallpaper is using too much gpu",
+    "title": "Improve Ryoku Performance",
+    "response": "For better performance, try disabling animations in `Ryoku Settings > Appearance > Animations`, turn off animated/video wallpapers, and reduce blur and shadows under `Appearance > Decoration`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#performance-feels-off"
+  },
+  {
+    "text": "how do i disable blur in ryoku",
+    "title": "Improve Ryoku Performance",
+    "response": "For better performance, try disabling animations in `Ryoku Settings > Appearance > Animations`, turn off animated/video wallpapers, and reduce blur and shadows under `Appearance > Decoration`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#performance-feels-off"
+  },
+  {
+    "text": "how do i disable shadows in ryoku",
+    "title": "Improve Ryoku Performance",
+    "response": "For better performance, try disabling animations in `Ryoku Settings > Appearance > Animations`, turn off animated/video wallpapers, and reduce blur and shadows under `Appearance > Decoration`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#performance-feels-off"
+  },
+  {
+    "text": "ryoku is laggy on integrated graphics",
+    "title": "Improve Ryoku Performance",
+    "response": "For better performance, try disabling animations in `Ryoku Settings > Appearance > Animations`, turn off animated/video wallpapers, and reduce blur and shadows under `Appearance > Decoration`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#performance-feels-off"
+  },
+  {
+    "text": "ryoku installer stuck on disk layout",
+    "title": "Installer Stuck at Disk Layout",
+    "response": "If the installer will not advance past Disk layout, read the red warning shown on that screen. For Windows dual-boot, the usual causes are no unallocated free space or no EFI partition to reuse. Ryoku does not resize Windows for you.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "installer wont continue after disk layout",
+    "title": "Installer Stuck at Disk Layout",
+    "response": "If the installer will not advance past Disk layout, read the red warning shown on that screen. For Windows dual-boot, the usual causes are no unallocated free space or no EFI partition to reuse. Ryoku does not resize Windows for you.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "pressing tab on disk layout does nothing",
+    "title": "Installer Stuck at Disk Layout",
+    "response": "If the installer will not advance past Disk layout, read the red warning shown on that screen. For Windows dual-boot, the usual causes are no unallocated free space or no EFI partition to reuse. Ryoku does not resize Windows for you.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "why cant i install ryoku alongside windows",
+    "title": "Installer Stuck at Disk Layout",
+    "response": "If the installer will not advance past Disk layout, read the red warning shown on that screen. For Windows dual-boot, the usual causes are no unallocated free space or no EFI partition to reuse. Ryoku does not resize Windows for you.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "ryoku dual boot installer blocked",
+    "title": "Installer Stuck at Disk Layout",
+    "response": "If the installer will not advance past Disk layout, read the red warning shown on that screen. For Windows dual-boot, the usual causes are no unallocated free space or no EFI partition to reuse. Ryoku does not resize Windows for you.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "disk layout has a red warning",
+    "title": "Installer Stuck at Disk Layout",
+    "response": "If the installer will not advance past Disk layout, read the red warning shown on that screen. For Windows dual-boot, the usual causes are no unallocated free space or no EFI partition to reuse. Ryoku does not resize Windows for you.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "how do i make space for ryoku dual boot",
+    "title": "Make Space for Windows Dual Boot",
+    "response": "For a Windows dual-boot install, shrink the Windows partition first so there is unallocated space, then reboot into the Ryoku installer. Ryoku does not resize the Windows partition automatically.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "does ryoku resize windows",
+    "title": "Make Space for Windows Dual Boot",
+    "response": "For a Windows dual-boot install, shrink the Windows partition first so there is unallocated space, then reboot into the Ryoku installer. Ryoku does not resize the Windows partition automatically.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "do i need unallocated space for ryoku",
+    "title": "Make Space for Windows Dual Boot",
+    "response": "For a Windows dual-boot install, shrink the Windows partition first so there is unallocated space, then reboot into the Ryoku installer. Ryoku does not resize the Windows partition automatically.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "how do i install ryoku next to windows",
+    "title": "Make Space for Windows Dual Boot",
+    "response": "For a Windows dual-boot install, shrink the Windows partition first so there is unallocated space, then reboot into the Ryoku installer. Ryoku does not resize the Windows partition automatically.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "windows uses whole disk how do i install ryoku",
+    "title": "Make Space for Windows Dual Boot",
+    "response": "For a Windows dual-boot install, shrink the Windows partition first so there is unallocated space, then reboot into the Ryoku installer. Ryoku does not resize the Windows partition automatically.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "how do i install ryoku on a dedicated drive",
+    "title": "Install Ryoku on a Dedicated Drive",
+    "response": "If you are installing to a dedicated drive rather than alongside Windows, press `Esc` from the blocked layout flow and choose `Erase whole disk`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "how do i erase whole disk in ryoku installer",
+    "title": "Install Ryoku on a Dedicated Drive",
+    "response": "If you are installing to a dedicated drive rather than alongside Windows, press `Esc` from the blocked layout flow and choose `Erase whole disk`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "i dont want dual boot how do i install ryoku",
+    "title": "Install Ryoku on a Dedicated Drive",
+    "response": "If you are installing to a dedicated drive rather than alongside Windows, press `Esc` from the blocked layout flow and choose `Erase whole disk`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "how do i leave alongside windows install mode",
+    "title": "Install Ryoku on a Dedicated Drive",
+    "response": "If you are installing to a dedicated drive rather than alongside Windows, press `Esc` from the blocked layout flow and choose `Erase whole disk`.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout"
+  },
+  {
+    "text": "how do i report a ryoku bug",
+    "title": "File a Useful Ryoku Bug Report",
+    "response": "Include what you did, what happened, what you expected, the output of `ryoku status`, a fresh `ryoku doctor --report`, the generated `~/.local/state/ryoku/doctor-report.txt`, and the relevant log slice. For shell problems, the last 50 lines of `~/.local/state/ryoku-shell.log` after `ryoku reload` are usually useful.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#filing-a-useful-bug"
+  },
+  {
+    "text": "what should i include in a ryoku bug report",
+    "title": "File a Useful Ryoku Bug Report",
+    "response": "Include what you did, what happened, what you expected, the output of `ryoku status`, a fresh `ryoku doctor --report`, the generated `~/.local/state/ryoku/doctor-report.txt`, and the relevant log slice. For shell problems, the last 50 lines of `~/.local/state/ryoku-shell.log` after `ryoku reload` are usually useful.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#filing-a-useful-bug"
+  },
+  {
+    "text": "what logs should i attach to a ryoku issue",
+    "title": "File a Useful Ryoku Bug Report",
+    "response": "Include what you did, what happened, what you expected, the output of `ryoku status`, a fresh `ryoku doctor --report`, the generated `~/.local/state/ryoku/doctor-report.txt`, and the relevant log slice. For shell problems, the last 50 lines of `~/.local/state/ryoku-shell.log` after `ryoku reload` are usually useful.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#filing-a-useful-bug"
+  },
+  {
+    "text": "how do i make a useful ryoku issue",
+    "title": "File a Useful Ryoku Bug Report",
+    "response": "Include what you did, what happened, what you expected, the output of `ryoku status`, a fresh `ryoku doctor --report`, the generated `~/.local/state/ryoku/doctor-report.txt`, and the relevant log slice. For shell problems, the last 50 lines of `~/.local/state/ryoku-shell.log` after `ryoku reload` are usually useful.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#filing-a-useful-bug"
+  },
+  {
+    "text": "what diagnostics do ryoku maintainers need",
+    "title": "File a Useful Ryoku Bug Report",
+    "response": "Include what you did, what happened, what you expected, the output of `ryoku status`, a fresh `ryoku doctor --report`, the generated `~/.local/state/ryoku/doctor-report.txt`, and the relevant log slice. For shell problems, the last 50 lines of `~/.local/state/ryoku-shell.log` after `ryoku reload` are usually useful.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#filing-a-useful-bug"
+  },
+  {
+    "text": "how do i collect info before filing a bug",
+    "title": "File a Useful Ryoku Bug Report",
+    "response": "Include what you did, what happened, what you expected, the output of `ryoku status`, a fresh `ryoku doctor --report`, the generated `~/.local/state/ryoku/doctor-report.txt`, and the relevant log slice. For shell problems, the last 50 lines of `~/.local/state/ryoku-shell.log` after `ryoku reload` are usually useful.",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#filing-a-useful-bug"
+  }
+]
