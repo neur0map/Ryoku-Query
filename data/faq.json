@@ -198,7 +198,7 @@
     "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"
   },
   {
-    "text": "can ryoku doctor use ai to explain problems",
+    "text": "can ryoku doctor explain problems",
     "title": "Explain Ryoku Problems",
     "response": "Run `ryoku doctor --explain` if you want the doctor report analyzed for likely root causes and suggested fixes. This is opt-in, advisory, read-only, and uses the configured cloud model/provider with your own key.",
     "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor"

@@ -1,42 +1,48 @@
-# Ryoku Dev : Discord similarity bot
+# Ryoku Discord Support
 
-A minimal Discord bot that:
-
-1. Reads live message content using Discord's **Message Content Intent**.
-2. Embeds each incoming message with `minishlab/potion-code-16M-v2`.
-3. Compares it against the examples in `faq.json` using cosine similarity.
-4. Sends a Discord embed when the best score is greater than or equal to `THRESHOLD`.
+Private Discord support bot for Ryoku.
 
 ## Setup
 
-### 1. Create a virtual environment
-
 ```bash
-python -m venv .venv
-```
-
-### 2. Activate the virtual environment
-
-```bash
-.venv\Scripts\activate # Windows
-source .venv/bin/activate # macOS/Linux
-```
-
-### 3. Install dependencies
-
-```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+cp .env.example env
 ```
 
-### 4. Configure environment variables
+Set the token and stable Ryoku checkout in `env`.
 
-Copy `.env.example` to `.env` and update the values.
-
-### 5. Ensure the Message Content Intent is enabled:
-Application → Bot → Privileged Gateway Intents → Message Content Intent → ON
-
-### 6. Run the bot
+Initialize the Ryoku checkout once:
 
 ```bash
-python bot.py
+cd /path/to/ryoku
+prowl-agent init --no-input --integrations none
+```
+
+## Run
+
+```bash
+uv run --python 3.12 \
+  --with-requirements requirements.txt \
+  --env-file env \
+  python -B bot.py
+```
+
+## Test
+
+```bash
+uv run --python 3.12 \
+  --with-requirements requirements.txt \
+  python -B -m unittest discover -s tests -v
+```
+
+## Benchmark
+
+```bash
+uv run --python 3.12 \
+  --with-requirements requirements.txt \
+  python -B benchmark.py --mode hybrid \
+  --ryoku-repo /path/to/ryoku \
+  --replays 3 --check
 ```

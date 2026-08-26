@@ -1,0 +1,1832 @@
+[
+  {
+    "id": "settings.sddm-theme",
+    "title": "Change the SDDM Theme",
+    "examples": [
+      "how do i change the ryoku login theme",
+      "how do i change sddm theme in ryoku",
+      "where is sddm config",
+      "how do i fix a broken sddm theme",
+      "How can I give the sign-in greeter a different look?",
+      "where do i swap the login screen look? desktop still works fine",
+      "Can I pick a different greeter theme from the Ryoku settings app?",
+      "My SDDM screen is ugly after an update - what config controls its theme?",
+      "Is there a way to customize the sign-in screen when I can't get into the desktop?"
+    ],
+    "keywords": [
+      "change",
+      "sddm",
+      "theme",
+      "login",
+      "where",
+      "config",
+      "broken"
+    ],
+    "exact_terms": [
+      "Ryoku Settings > Lockscreen and Login",
+      "/etc/sddm.conf.d/"
+    ],
+    "answer": "If you can reach the desktop, change it in `Ryoku Settings > Lockscreen and Login`. Otherwise, the SDDM configuration can be edited under `/etc/sddm.conf.d/`.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken",
+    "source_hints": [
+      "docs/ui-ux.md",
+      "ryoku/hub/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "packages.gpg-keys",
+    "title": "Check GPG Keys",
+    "examples": [
+      "how do i check gpg keys",
+      "how do i list my gpg keys",
+      "show my gpg keys",
+      "How can I see which public keys are in my GPG keyring?",
+      "Need to verify whether my signing key is actually installed",
+      "what command shows both my public and secret gpg keys?",
+      "I'm debugging package signing; where can I list the keys GnuPG knows about?",
+      "How can I verify the package-signing keys Ryoku trusts?",
+      "Need to verify the package signing keys.",
+      "How can I verify the package signing keys?",
+      "Where can I verify the package-signing key fingerprints Ryoku trusts?"
+    ],
+    "keywords": [
+      "gpg",
+      "keys",
+      "list",
+      "show"
+    ],
+    "exact_terms": [
+      "gpg --list-keys",
+      "gpg --list-secret-keys"
+    ],
+    "answer": "Run `gpg --list-keys` to list your public GPG keys. Run `gpg --list-secret-keys` to list your private/secret keys.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/",
+    "source_hints": [
+      "docs/preinstalled.md",
+      "release/packages/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "health.status",
+    "title": "Check Ryoku System Status",
+    "examples": [
+      "how do i check if ryoku is healthy",
+      "how do i check ryoku status",
+      "is my ryoku install current",
+      "how do i check pending ryoku updates",
+      "how do i see ryoku snapshot count",
+      "read only ryoku health check",
+      "what does ryoku status show",
+      "Is there a quick read-only overview of my Ryoku install health?",
+      "How do I check my desktop version, pending updates, and snapshots at once?",
+      "Before changing anything, can I see which config base this machine is using?",
+      "what's the command for a safe Ryoku health summary?",
+      "How can I see the current Ryoku status?",
+      "What command shows whether all Ryoku services are healthy right now?",
+      "Is my Ryoku system healthy right now?",
+      "Is Ryoku having an outage right now?",
+      "Is there a command that summarizes whether my Ryoku installation is healthy?"
+    ],
+    "keywords": [
+      "system",
+      "status",
+      "healthy",
+      "install",
+      "current",
+      "pending",
+      "updates",
+      "see",
+      "snapshot",
+      "count",
+      "read",
+      "health"
+    ],
+    "exact_terms": [
+      "ryoku status",
+      "ryoku-desktop"
+    ],
+    "answer": "Run `ryoku status` for a read-only health check. It reports the active config base, installed `ryoku-desktop` version, repository version, pending updates, and snapshot count without changing anything.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#a-read-only-state-check",
+    "source_hints": [
+      "docs/cli.md",
+      "ryoku/cli/internal/doctor/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "logs.sddm",
+    "title": "Check SDDM Logs",
+    "examples": [
+      "how do i check sddm logs",
+      "how do i view login screen logs",
+      "sddm journalctl command",
+      "where can i see why sddm failed",
+      "Login screen keeps looping - where can I view recent SDDM errors?",
+      "Which journal command shows the last couple hundred greeter messages?",
+      "sddm failed on boot, how do I grab its logs for Discord?",
+      "Can I inspect only the systemd logs for the display manager?",
+      "Where can I read errors from the SDDM display manager?",
+      "Show me the SDDM error logs.",
+      "Where can I inspect messages from the display manager?",
+      "Which command shows recent SDDM journal entries?",
+      "Login returns me to the greeter immediately. Which SDDM records would reveal why the session exited?"
+    ],
+    "keywords": [
+      "sddm",
+      "logs",
+      "view",
+      "login",
+      "screen",
+      "journalctl",
+      "command",
+      "where",
+      "can",
+      "see",
+      "why",
+      "failed"
+    ],
+    "exact_terms": [
+      "journalctl -u sddm",
+      "sudo journalctl -u sddm -n 200"
+    ],
+    "answer": "Run `sudo journalctl -u sddm -n 200` to inspect recent SDDM login-screen logs.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken",
+    "source_hints": [
+      "docs/cli.md",
+      "ryoku/cli/"
+    ],
+    "clarifies_with": [
+      "logs.locations",
+      "recovery.login-screen",
+      "shell.missing"
+    ]
+  },
+  {
+    "id": "health.doctor-preview",
+    "title": "Check What Ryoku Doctor Would Change",
+    "examples": [
+      "how do i run ryoku doctor without changing anything",
+      "is there a dry run for ryoku doctor",
+      "how do i preview ryoku doctor changes",
+      "what does ryoku doctor check do",
+      "ryoku doctor dry run",
+      "ryoku doctor -n",
+      "can doctor check without fixing anything",
+      "Can I preview Ryoku's repair checks without letting it modify anything?",
+      "I want to know exactly what doctor proposes before I run fixes",
+      "Does doctor have a dry-run flag? kinda nervous about config changes",
+      "How do I list all doctor findings and planned repairs read-only?",
+      "Is there a dry-run command for Ryoku Doctor?",
+      "Can I see the doctor's proposed fixes without letting it apply anything?",
+      "Can I preview doctor's proposed fixes without applying them?",
+      "Can I see Doctor's proposed fixes without applying anything?",
+      "I want to inspect the doctor's proposed fixes without letting it touch anything."
+    ],
+    "keywords": [
+      "doctor",
+      "would",
+      "change",
+      "run",
+      "without",
+      "changing",
+      "anything",
+      "there",
+      "dry",
+      "for",
+      "preview",
+      "changes"
+    ],
+    "exact_terms": [
+      "ryoku doctor --check",
+      "ryoku doctor -n"
+    ],
+    "answer": "Run `ryoku doctor --check` (or `ryoku doctor -n`). It shows the full list of doctor checks and proposed fixes without changing the system.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor",
+    "source_hints": [
+      "docs/cli.md",
+      "ryoku/cli/internal/doctor/"
+    ],
+    "clarifies_with": [
+      "health.doctor"
+    ]
+  },
+  {
+    "id": "snapshots.root-filesystem",
+    "title": "Check Whether Root Uses Btrfs",
+    "examples": [
+      "how do i check if root is btrfs",
+      "how do i check filesystem type for ryoku snapshots",
+      "does ryoku snapshot require btrfs",
+      "why cant i use ryoku rollback on ext4",
+      "can ryoku snapshots work without btrfs",
+      "How can I confirm whether / is actually formatted as Btrfs?",
+      "Snapshots aren't showing up; could my root filesystem type be unsupported?",
+      "What's a read-only command to identify the filesystem mounted at root?",
+      "Does Ryoku rollback work if my install is on ext4 instead of btrfs?",
+      "How do I confirm that my / partition is actually on Btrfs?",
+      "Need to confirm / is actually on btrfs.",
+      "How do I confirm that / is actually on Btrfs?",
+      "Can I confirm whether / is actually formatted as Btrfs?"
+    ],
+    "keywords": [
+      "whether",
+      "root",
+      "uses",
+      "btrfs",
+      "filesystem",
+      "type",
+      "for",
+      "snapshots",
+      "snapshot",
+      "require",
+      "why",
+      "cant"
+    ],
+    "exact_terms": [
+      "findmnt -no FSTYPE /",
+      "btrfs"
+    ],
+    "answer": "Run `findmnt -no FSTYPE /`. If the result is `btrfs`, Ryoku's Snapper-based snapshot setup can be used. If it is not `btrfs`, Ryoku's built-in snapshot rollback is unavailable on that root filesystem.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist",
+    "source_hints": [
+      "docs/updates.md",
+      "ryoku/cli/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "hardware.gpu-choice",
+    "title": "Choose the GPU Ryoku Uses",
+    "examples": [
+      "ryoku is using the wrong gpu",
+      "how do i change gpu in ryoku",
+      "how do i make ryoku use my dedicated gpu",
+      "how do i make ryoku use my external gpu",
+      "why is ryoku using integrated graphics",
+      "how do i select primary gpu",
+      "My laptop has Intel and NVIDIA; where do I choose which one renders the desktop?",
+      "How can I make the discrete GPU primary in Ryoku?",
+      "I changed graphics hardware and need the desktop to use the other card",
+      "Is GPU selection available in Settings, and when does the switch take effect?",
+      "I have integrated and discrete graphics; how do I tell Ryoku which one to run on?"
+    ],
+    "keywords": [
+      "choose",
+      "gpu",
+      "uses",
+      "using",
+      "wrong",
+      "change",
+      "dedicated",
+      "external",
+      "why",
+      "integrated",
+      "graphics",
+      "select"
+    ],
+    "exact_terms": [
+      "Ryoku Settings > Displays > GPU"
+    ],
+    "answer": "Open `Ryoku Settings > Displays > GPU` and choose the GPU you want as the primary render device. Log out and back in to apply the change.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used",
+    "source_hints": [
+      "docs/installation-hardware.md",
+      "ryoku/hub/backend/"
+    ],
+    "clarifies_with": [
+      "hardware.gpu-detect"
+    ]
+  },
+  {
+    "id": "health.doctor-report",
+    "title": "Create a Ryoku Doctor Report",
+    "examples": [
+      "how do i generate a ryoku doctor report",
+      "how do i make a ryoku diagnostic report",
+      "ryoku doctor report command",
+      "where is the ryoku doctor report",
+      "where does doctor report save",
+      "doctor-report.txt location",
+      "how do i get logs for a maintainer",
+      "What's the command to generate a Doctor report?",
+      "What command makes a troubleshooting report I can attach here?",
+      "Where does Ryoku save the doctor diagnostics file?",
+      "I need a fresh system report for a bug thread - how do I generate one?",
+      "Can doctor bundle its findings and relevant machine state into a text file?",
+      "I need diagnostics I can attach to a support thread. How do I generate the doctor bundle?",
+      "I need a diagnostic bundle to send support.",
+      "What's the command to generate diagnostics I can attach in support?",
+      "What's the safest way to package diagnostic findings for someone helping me?"
+    ],
+    "keywords": [
+      "create",
+      "doctor",
+      "report",
+      "generate",
+      "diagnostic",
+      "command",
+      "where",
+      "save",
+      "doctor-report",
+      "txt",
+      "location",
+      "get"
+    ],
+    "exact_terms": [
+      "ryoku doctor --report",
+      "~/.local/state/ryoku/doctor-report.txt"
+    ],
+    "answer": "Run `ryoku doctor --report`. The report is written to `~/.local/state/ryoku/doctor-report.txt` and bundles doctor findings with relevant system state for troubleshooting.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor",
+    "source_hints": [
+      "docs/cli.md",
+      "ryoku/cli/internal/doctor/"
+    ],
+    "clarifies_with": [
+      "health.doctor-report-privacy"
+    ]
+  },
+  {
+    "id": "hardware.gpu-detect",
+    "title": "Detect GPUs in Ryoku",
+    "examples": [
+      "how do i detect gpus in ryoku",
+      "ryoku gpu detect command",
+      "how do i see what gpu ryoku detected",
+      "what gpu does ryoku recommend",
+      "how do i check which gpu ryoku sees",
+      "Ryoku picked the wrong graphics card; how can I see what it detects?",
+      "Is there a CLI that lists my GPUs and the recommended one?",
+      "Need to confirm both the iGPU and dGPU are visible to Ryoku",
+      "what's the non-changing gpu detection command?",
+      "How do I list the GPUs Ryoku detects?",
+      "Is there a way to list the graphics cards Ryoku detected?",
+      "Which GPUs does Ryoku detect?",
+      "Which graphics cards does Ryoku detect on this machine?",
+      "What GPUs does Ryoku currently detect on this machine?"
+    ],
+    "keywords": [
+      "detect",
+      "gpus",
+      "gpu",
+      "command",
+      "see",
+      "detected",
+      "recommend",
+      "which",
+      "sees"
+    ],
+    "exact_terms": [
+      "ryoku-gpu detect"
+    ],
+    "answer": "Run `ryoku-gpu detect` to see detected GPUs and Ryoku's recommended device.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-wrong-gpu-is-being-used",
+    "source_hints": [
+      "docs/installation-hardware.md",
+      "ryoku/hub/backend/"
+    ],
+    "clarifies_with": [
+      "hardware.gpu-choice"
+    ]
+  },
+  {
+    "id": "display.rejected-change",
+    "title": "Display Change Was Rejected",
+    "examples": [
+      "ryoku display apply rejected",
+      "resolution change will not apply",
+      "scale change rejected in ryoku",
+      "hyprland refused display mode",
+      "why wont ryoku apply my display settings",
+      "Settings says my monitor change was rejected whenever I hit Apply",
+      "A fractional scale I picked won't stick; the compositor refuses it",
+      "Why does changing this display mode fail even though it's listed?",
+      "My new scaling value gets declined - are only certain scale steps supported?"
+    ],
+    "keywords": [
+      "display",
+      "change",
+      "was",
+      "rejected",
+      "apply",
+      "resolution",
+      "will",
+      "not",
+      "scale",
+      "hyprland",
+      "refused",
+      "mode"
+    ],
+    "exact_terms": [],
+    "answer": "If Apply reports that the display change was rejected, the compositor refused that mode or scale. Choose one of the offered clean-divisor scale options.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply",
+    "source_hints": [
+      "docs/installation-hardware.md",
+      "ryoku/hub/backend/"
+    ],
+    "clarifies_with": [
+      "display.single-resolution",
+      "display.generated-config"
+    ]
+  },
+  {
+    "id": "health.doctor-explain",
+    "title": "Explain Ryoku Problems",
+    "examples": [
+      "what does ryoku doctor explain do",
+      "how do i get ryoku to explain an error",
+      "can ryoku doctor explain problems",
+      "ryoku doctor --explain",
+      "does ryoku doctor explain run commands",
+      "is ryoku doctor explain read only",
+      "does doctor explain change my system",
+      "Can Ryoku tell me in plain language why its health checks are complaining?",
+      "Can Ryoku analyze my doctor output and suggest likely causes?",
+      "I want an explanation of the diagnostics, not automatic repairs",
+      "Does the explanation upload anything, and do I need my own provider key?",
+      "Which doctor option gives advisory troubleshooting without changing files?",
+      "The health check names several failures, but I don't understand them. How can I get a plain-language breakdown?",
+      "Doctor found issues, but what do its warnings actually mean?",
+      "Can Doctor translate its findings into plain English?",
+      "Ryoku flagged several issues; where can I get a plain-language reason for each one?"
+    ],
+    "keywords": [
+      "explain",
+      "problems",
+      "doctor",
+      "get",
+      "error",
+      "can",
+      "run",
+      "commands",
+      "read",
+      "change",
+      "system"
+    ],
+    "exact_terms": [
+      "ryoku doctor --explain"
+    ],
+    "answer": "Run `ryoku doctor --explain` if you want the doctor report analyzed for likely root causes and suggested fixes. This is opt-in, advisory, read-only, and uses the configured cloud model/provider with your own key.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor",
+    "source_hints": [
+      "docs/cli.md",
+      "ryoku/cli/internal/doctor/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "support.bug-report",
+    "title": "File a Useful Ryoku Bug Report",
+    "examples": [
+      "how do i report a ryoku bug",
+      "what should i include in a ryoku bug report",
+      "what logs should i attach to a ryoku issue",
+      "how do i make a useful ryoku issue",
+      "what diagnostics do ryoku maintainers need",
+      "how do i collect info before filing a bug",
+      "What info should I include so my Ryoku bug post is actually useful?",
+      "I'm reporting a shell crash - what logs and diagnostics do maintainers need?",
+      "Can someone list the files/output to attach for a reproducible issue?",
+      "Before opening an issue, how do I collect version, health, and recent shell details?",
+      "What details should I include when reporting a reproducible Ryoku issue to the developers?",
+      "I'm opening an issue for a reproducible crash. What details and diagnostics should I include so maintainers can act on it?",
+      "What's useful to include when reporting a Ryoku bug?",
+      "What details make a Ryoku issue report actionable?",
+      "What details make an issue submission useful instead of just saying \"it broke\"?"
+    ],
+    "keywords": [
+      "file",
+      "useful",
+      "bug",
+      "report",
+      "should",
+      "include",
+      "logs",
+      "attach",
+      "issue",
+      "diagnostics",
+      "maintainers",
+      "need"
+    ],
+    "exact_terms": [
+      "ryoku status",
+      "ryoku doctor --report",
+      "~/.local/state/ryoku/doctor-report.txt"
+    ],
+    "answer": "Include what you did, what happened, what you expected, the output of `ryoku status`, a fresh `ryoku doctor --report`, the generated `~/.local/state/ryoku/doctor-report.txt`, and the relevant log slice. For shell problems, the last 50 lines of `~/.local/state/ryoku-shell.log` after `ryoku reload` are usually useful.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#filing-a-useful-bug",
+    "source_hints": [
+      "CONTRIBUTING.md",
+      "docs/development.md"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "logs.locations",
+    "title": "Find Ryoku Logs",
+    "examples": [
+      "where are ryoku logs",
+      "where is ryoku shell log",
+      "where are ryoku error logs",
+      "how do i find ryoku logs",
+      "where is the update log",
+      "where is ryoku update progress stored",
+      "where are kernel logs",
+      "where are sddm logs",
+      "Where does Ryoku keep its shell and update logs?",
+      "Trying to debug hardware plus SDDM; which log locations should I check?",
+      "Is there a list of the common journal/file paths used for troubleshooting?",
+      "Where can I find the latest doctor output and updater progress JSON?",
+      "Which directories contain Ryoku's log files?",
+      "Where are Ryoku's log files kept?",
+      "Which files should I inspect first when troubleshooting Ryoku?",
+      "Where does Ryoku store its log files?",
+      "I'm hunting down a failure - where does Ryoku keep its diagnostic output?"
+    ],
+    "keywords": [
+      "find",
+      "logs",
+      "where",
+      "are",
+      "shell",
+      "log",
+      "error",
+      "update",
+      "progress",
+      "stored",
+      "kernel",
+      "sddm"
+    ],
+    "exact_terms": [
+      "~/.local/state/ryoku-shell.log",
+      "sudo journalctl -u sddm",
+      "dmesg"
+    ],
+    "answer": "Common troubleshooting locations include `~/.local/state/ryoku-shell.log` for the Ryoku shell, `sudo journalctl -u sddm` for SDDM, `dmesg` / `journalctl -k` for kernel and hardware, `$XDG_RUNTIME_DIR/ryoku-update.json` for update progress, and `~/.local/state/ryoku/doctor-report.txt` for the latest doctor report.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live",
+    "source_hints": [
+      "docs/cli.md",
+      "ryoku/cli/"
+    ],
+    "clarifies_with": [
+      "logs.shell-refresh",
+      "logs.sddm"
+    ]
+  },
+  {
+    "id": "snapshots.missing-config",
+    "title": "Fix Missing Snapper Root Config",
+    "examples": [
+      "ryoku snapshots says config root does not exist",
+      "snapper root config does not exist",
+      "why do i have no ryoku snapshots",
+      "ryoku status says zero snapshots",
+      "limine snapshot menu is empty",
+      "how do i fix missing snapper config",
+      "how do i restore snapper root config",
+      "snapshots are not working in ryoku",
+      "Snapper says the root config doesn't exist, but I thought Ryoku set it up",
+      "My snapshots command fails with missing configuration - how can I diagnose it safely?",
+      "Fresh Btrfs install has no Snapper root profile; can doctor restore the setup?",
+      "How do I verify the filesystem before repairing absent snapshot config?",
+      "Snapper says there is no config named root, so snapshots won't list. What should I inspect to restore that setup?",
+      "snapper says config 'root' does not exist; what should I check?",
+      "Snapper says the root config doesn't exist, although Ryoku is installed on Btrfs. What do I check?",
+      "Snapper says the root configuration doesn't exist, but I only want to diagnose why."
+    ],
+    "keywords": [
+      "missing",
+      "snapper",
+      "root",
+      "config",
+      "snapshots",
+      "says",
+      "not",
+      "exist",
+      "why",
+      "have",
+      "status",
+      "zero"
+    ],
+    "exact_terms": [
+      "findmnt -no FSTYPE /",
+      "btrfs",
+      "ryoku doctor"
+    ],
+    "answer": "First run `findmnt -no FSTYPE /`. If it prints `btrfs`, run `ryoku doctor`, then `ryoku snapshots` and `ryoku status`. Doctor can recreate the missing Snapper `root` configuration and related snapshot setup.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#no-snapshots-or-ryoku-snapshots-says-the-config-root-does-not-exist",
+    "source_hints": [
+      "docs/updates.md",
+      "ryoku/cli/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "recovery.login-screen",
+    "title": "Fix a Broken Login Screen",
+    "examples": [
+      "ryoku login screen is broken",
+      "sddm wont start",
+      "sddm refuses my login",
+      "how do i debug the ryoku login screen",
+      "how do i start hyprland from tty",
+      "login screen broken but desktop may work",
+      "I'm stuck at a black greeter, but I can reach a TTY - how do I isolate SDDM?",
+      "Login screen is broken after reboot; can I test Hyprland directly from console?",
+      "SDDM loops back to login while the desktop may still be fine",
+      "What should I check from tty2 when the greeter won't start my session?",
+      "After reboot I only get a black greeter and can't sign in graphically. What recovery checks should I try?",
+      "After reboot I only get a black greeter and can't sign in. Need recovery steps.",
+      "After reboot, SDDM accepts my password and immediately returns to the greeter. How can I troubleshoot it?",
+      "After reboot I get a black greeter and can't reach the desktop; what recovery checks should I run?"
+    ],
+    "keywords": [
+      "broken",
+      "login",
+      "screen",
+      "sddm",
+      "wont",
+      "start",
+      "refuses",
+      "debug",
+      "hyprland",
+      "tty",
+      "but",
+      "desktop",
+      "blank greeter",
+      "cannot sign in",
+      "login failure"
+    ],
+    "exact_terms": [
+      "Ctrl+Alt+F2",
+      "sudo journalctl -u sddm -n 200"
+    ],
+    "answer": "Switch to a TTY with `Ctrl+Alt+F2`, log in, and run `Hyprland`. If Hyprland starts normally, troubleshoot SDDM with `sudo journalctl -u sddm -n 200`.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken",
+    "source_hints": [
+      "docs/updates.md",
+      "ryoku/cli/"
+    ],
+    "clarifies_with": [
+      "shell.missing",
+      "recovery.last-resort",
+      "logs.sddm"
+    ]
+  },
+  {
+    "id": "shell.hyprland-user-config",
+    "title": "Fix a Hyprland User Config Error",
+    "examples": [
+      "user.lua broke ryoku",
+      "monitors_user.lua error",
+      "my hyprland config broke the shell",
+      "how do i fix a lua error in ryoku config",
+      "ryoku shell broke after editing user.lua",
+      "Hyprland broke right after I edited user.lua; where is the parse error logged?",
+      "My custom monitor Lua has a bad line and now the session won't load",
+      "How can I identify which personal Hyprland override is failing?",
+      "I tweaked monitors_user.lua and got config errors - what's the safe recovery flow?",
+      "I edited my Hyprland files last night, and now the session exits with a config error. How can I undo or correct my user config?"
+    ],
+    "keywords": [
+      "hyprland",
+      "user",
+      "config",
+      "error",
+      "lua",
+      "broke",
+      "monitors",
+      "shell",
+      "after",
+      "editing"
+    ],
+    "exact_terms": [
+      "~/.config/hypr/user.lua",
+      "~/.config/hypr/monitors_user.lua",
+      "~/.local/state/ryoku-shell.log"
+    ],
+    "answer": "If you edited `~/.config/hypr/user.lua` or `~/.config/hypr/monitors_user.lua`, check `~/.local/state/ryoku-shell.log` and `hyprctl monitors` for Lua/config errors. Comment out the failing line, then run `ryoku reload`.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing",
+    "source_hints": [
+      "docs/ryoku.md",
+      "ryoku/shell/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "shell.missing",
+    "title": "Fix a Missing Ryoku Bar or Shell",
+    "examples": [
+      "ryoku bar is missing",
+      "ryoku sidebar is missing",
+      "ryoku shell is not drawing",
+      "ryoku panel disappeared",
+      "how do i restart the ryoku shell",
+      "how do i fix missing ryoku bar",
+      "desktop bar disappeared after update",
+      "My top bar vanished but Hyprland is still running - how do I restart the Ryoku shell?",
+      "After updating I only have the wallpaper and cursor, no shell UI",
+      "ryoku bar is missing; which log should I paste after trying a reload?",
+      "The desktop partly works but panels never appear. Need help narrowing down the failure"
+    ],
+    "keywords": [
+      "missing",
+      "bar",
+      "shell",
+      "sidebar",
+      "not",
+      "drawing",
+      "panel",
+      "disappeared",
+      "restart",
+      "desktop",
+      "after",
+      "update"
+    ],
+    "exact_terms": [
+      "ryoku reload",
+      "tail -n 100 ~/.local/state/ryoku-shell.log"
+    ],
+    "answer": "Run `ryoku reload`, then inspect the shell log with `tail -n 100 ~/.local/state/ryoku-shell.log`. If the log points to an update failure, say whether the desktop or a TTY still works so the next recovery step can be chosen safely.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing",
+    "source_hints": [
+      "docs/ryoku.md",
+      "ryoku/shell/"
+    ],
+    "clarifies_with": [
+      "recovery.login-screen",
+      "logs.sddm"
+    ]
+  },
+  {
+    "id": "performance.desktop",
+    "title": "Improve Ryoku Performance",
+    "examples": [
+      "ryoku feels slow",
+      "ryoku performance is bad",
+      "how do i improve ryoku performance",
+      "how do i reduce gpu usage in ryoku",
+      "how do i disable animations in ryoku",
+      "animated wallpaper is using too much gpu",
+      "how do i disable blur in ryoku",
+      "how do i disable shadows in ryoku",
+      "ryoku is laggy on integrated graphics",
+      "Ryoku feels choppy on my older laptop; which visual effects cost the most?",
+      "Any settings to lower GPU usage without changing my whole setup?",
+      "Animations and blur are laggy on integrated graphics - what can I tone down?",
+      "Video wallpaper makes the desktop stutter. How do I make things lighter?",
+      "What can I tune to make the desktop feel less laggy and use fewer resources?",
+      "Animations stutter and the desktop feels sluggish even with few apps open. Which Ryoku performance checks should I work through?",
+      "Desktop feels choppy lately - any safe performance checks?",
+      "Animations stutter and the desktop feels sluggish even with few apps open. What can I tune or diagnose?",
+      "The desktop feels sluggish despite low CPU use; what checks are recommended?"
+    ],
+    "keywords": [
+      "improve",
+      "performance",
+      "feels",
+      "slow",
+      "bad",
+      "reduce",
+      "gpu",
+      "usage",
+      "disable",
+      "animations",
+      "animated",
+      "wallpaper"
+    ],
+    "exact_terms": [
+      "Ryoku Settings > Appearance > Animations",
+      "Appearance > Decoration"
+    ],
+    "answer": "For better performance, try disabling animations in `Ryoku Settings > Appearance > Animations`, turn off animated/video wallpapers, and reduce blur and shadows under `Appearance > Decoration`.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#performance-feels-off",
+    "source_hints": [
+      "docs/power.md",
+      "ryoku/hub/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "install.dedicated-drive",
+    "title": "Install Ryoku on a Dedicated Drive",
+    "examples": [
+      "how do i install ryoku on a dedicated drive",
+      "how do i erase whole disk in ryoku installer",
+      "i dont want dual boot how do i install ryoku",
+      "how do i leave alongside windows install mode",
+      "Installer is asking about layouts, but this SSD is only for Ryoku - what option fits?",
+      "No dual boot here; how do I get past the blocked partition screen for a spare drive?",
+      "I'm installing on a blank dedicated disk and the layout flow won't continue",
+      "Which installer path is intended when the entire target drive can be used?"
+    ],
+    "keywords": [
+      "install",
+      "dedicated",
+      "drive",
+      "erase",
+      "whole",
+      "disk",
+      "installer",
+      "dont",
+      "want",
+      "dual",
+      "boot",
+      "leave"
+    ],
+    "exact_terms": [
+      "Erase whole disk"
+    ],
+    "answer": "If you are installing to a dedicated drive rather than alongside Windows, press `Esc` from the blocked layout flow and choose `Erase whole disk`.",
+    "risk": "destructive",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout",
+    "source_hints": [
+      "installation/README.md",
+      "installation/backend/"
+    ],
+    "clarifies_with": [
+      "install.dual-boot-space",
+      "install.disk-layout"
+    ]
+  },
+  {
+    "id": "install.disk-layout",
+    "title": "Installer Stuck at Disk Layout",
+    "examples": [
+      "ryoku installer stuck on disk layout",
+      "installer wont continue after disk layout",
+      "pressing tab on disk layout does nothing",
+      "why cant i install ryoku alongside windows",
+      "ryoku dual boot installer blocked",
+      "disk layout has a red warning",
+      "The Next button is disabled on Disk layout and there's a red message",
+      "Why won't the installer continue even though I selected space beside Windows?",
+      "Dual-boot setup is stuck at partitioning; what does the red warning usually mean?",
+      "Installer can't find usable free space or an EFI partition - what should I verify?",
+      "I'm in the installer and the disk-layout step has been spinning for several minutes. What should I do next?",
+      "The installer won't advance past partition setup, although the drive is visible. How can I diagnose that stage?",
+      "Fresh install has been sitting on the partition layout step for 20 minutes.",
+      "The installer has sat on the disk layout step for ten minutes with no error. What should I verify?",
+      "The installer has sat on the partitioning stage for 20 minutes with no error. What should I inspect?"
+    ],
+    "keywords": [
+      "installer",
+      "stuck",
+      "disk",
+      "layout",
+      "wont",
+      "continue",
+      "after",
+      "pressing",
+      "tab",
+      "nothing",
+      "why",
+      "cant"
+    ],
+    "exact_terms": [
+      "disk layout",
+      "disk-layout"
+    ],
+    "answer": "If the installer will not advance past Disk layout, read the red warning shown on that screen. For Windows dual-boot, the usual causes are no unallocated free space or no EFI partition to reuse. Ryoku does not resize Windows for you.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout",
+    "source_hints": [
+      "installation/README.md",
+      "installation/backend/"
+    ],
+    "clarifies_with": [
+      "install.dedicated-drive",
+      "install.dual-boot-space"
+    ]
+  },
+  {
+    "id": "install.dual-boot-space",
+    "title": "Make Space for Windows Dual Boot",
+    "examples": [
+      "how do i make space for ryoku dual boot",
+      "does ryoku resize windows",
+      "do i need unallocated space for ryoku",
+      "how do i install ryoku next to windows",
+      "windows uses whole disk how do i install ryoku",
+      "I want Ryoku next to Windows, but the installer shows no unallocated area",
+      "Do I need to make free space from Windows before starting the Ryoku USB?",
+      "The dual boot installer won't resize my NTFS partition for me - is that expected?",
+      "How should I prepare disk space on an existing Windows laptop for Ryoku?"
+    ],
+    "keywords": [
+      "space",
+      "for",
+      "windows",
+      "dual",
+      "boot",
+      "resize",
+      "need",
+      "unallocated",
+      "install",
+      "next",
+      "uses",
+      "whole"
+    ],
+    "exact_terms": [
+      "dual boot"
+    ],
+    "answer": "For a Windows dual-boot install, shrink the Windows partition first so there is unallocated space, then reboot into the Ryoku installer. Ryoku does not resize the Windows partition automatically.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-installer-wont-advance-past-disk-layout",
+    "source_hints": [
+      "installation/README.md",
+      "installation/backend/"
+    ],
+    "clarifies_with": [
+      "install.dedicated-drive",
+      "install.disk-layout"
+    ]
+  },
+  {
+    "id": "display.single-resolution",
+    "title": "Only One Display Resolution Is Available",
+    "examples": [
+      "ryoku only shows one resolution",
+      "why does my laptop only have one resolution",
+      "how do i lower display resolution in ryoku",
+      "how do i use display scaling in ryoku",
+      "edp only has native resolution",
+      "Why does my laptop panel show only one resolution in Display settings?",
+      "The internal eDP screen only offers native mode; is that normal on Ryoku?",
+      "I want a lower effective resolution, but there are no other modes listed",
+      "Can scaling make UI larger when my built-in display has a single resolution?",
+      "My monitor mode picker has no alternatives besides the current size. How do I troubleshoot that?",
+      "My monitor worked at 1440p before, but Ryoku now offers only one mode. What should I check to restore the other resolutions?",
+      "My monitor dropdown has no other modes, just 1920x1080.",
+      "My monitor dropdown lists just one mode; what should I inspect?",
+      "My 1440p monitor worked before, but Ryoku now offers only 1024x768. What information should I check?"
+    ],
+    "keywords": [
+      "display",
+      "resolution",
+      "available",
+      "shows",
+      "why",
+      "laptop",
+      "have",
+      "lower",
+      "scaling",
+      "edp",
+      "has",
+      "native"
+    ],
+    "exact_terms": [],
+    "answer": "Laptop eDP panels may expose only their native resolution. Use the scale options instead; Ryoku labels them with the logical resolution they produce.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply",
+    "source_hints": [
+      "docs/installation-hardware.md",
+      "ryoku/hub/backend/"
+    ],
+    "clarifies_with": [
+      "display.rejected-change",
+      "display.generated-config"
+    ]
+  },
+  {
+    "id": "recovery.last-resort",
+    "title": "Recover a Severely Broken Ryoku Install",
+    "examples": [
+      "how do i recover a completely broken ryoku install",
+      "what is ryoku recovery",
+      "ryoku recovery command",
+      "ryoku config is corrupted",
+      "local ryoku build is broken",
+      "last resort ryoku recovery",
+      "how do i reset ryoku to main",
+      "My install is too broken to update or load the desktop; is there an emergency redeploy?",
+      "What is the final recovery option if local configs are completely messed up?",
+      "Neither normal update nor desktop repair works anymore - what can reset Ryoku's base?",
+      "Does the recovery command overwrite my configs? I need to know before considering it"
+    ],
+    "keywords": [
+      "recover",
+      "severely",
+      "broken",
+      "install",
+      "completely",
+      "recovery",
+      "command",
+      "config",
+      "corrupted",
+      "local",
+      "build",
+      "last"
+    ],
+    "exact_terms": [
+      "ryoku recovery"
+    ],
+    "answer": "Use `ryoku recovery` as the last-resort recovery path when the desktop or local configuration is too broken to update normally. It resets to `main` and redeploys, overwriting configs.",
+    "risk": "destructive",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-last-resort-recovery",
+    "source_hints": [
+      "docs/updates.md",
+      "ryoku/cli/"
+    ],
+    "clarifies_with": [
+      "updates.rollback",
+      "recovery.tty-rollback",
+      "recovery.login-screen"
+    ]
+  },
+  {
+    "id": "logs.shell-refresh",
+    "title": "Refresh the Ryoku Shell Log",
+    "examples": [
+      "how do i refresh ryoku shell logs",
+      "how do i view recent ryoku shell errors",
+      "ryoku shell log tail command",
+      "how do i debug ryoku keybinds",
+      "how do i see hyprland binds",
+      "I'm attaching logs for support, but the shell log still shows yesterday's session. How do I make it capture fresh output?",
+      "How do I produce a fresh shell log right after reproducing the issue?",
+      "My keybind stopped working; what output should I collect after reloading?",
+      "Need the latest 50 Ryoku shell lines, not an old giant log",
+      "What's the best way to refresh diagnostics for a panel or binding bug?",
+      "The bar crashed, but its log still shows yesterday's output. How do I get a fresh shell log?",
+      "The shell log only contains yesterday's startup. Can I regenerate current entries for debugging?"
+    ],
+    "keywords": [
+      "refresh",
+      "shell",
+      "log",
+      "logs",
+      "view",
+      "recent",
+      "errors",
+      "tail",
+      "command",
+      "debug",
+      "keybinds",
+      "see"
+    ],
+    "exact_terms": [
+      "ryoku reload",
+      "tail -n 50 ~/.local/state/ryoku-shell.log",
+      "hyprctl binds"
+    ],
+    "answer": "For shell issues, run `ryoku reload`, then inspect the recent log with `tail -n 50 ~/.local/state/ryoku-shell.log`. You can also run `hyprctl binds` when troubleshooting bindings.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#where-logs-live",
+    "source_hints": [
+      "docs/cli.md",
+      "ryoku/cli/"
+    ],
+    "clarifies_with": [
+      "logs.locations"
+    ]
+  },
+  {
+    "id": "display.generated-config",
+    "title": "Repair Generated Monitor or GPU Config",
+    "examples": [
+      "monitors.lua is corrupted",
+      "gpu.lua is corrupted",
+      "display broke after hotplug",
+      "gpu reset broke ryoku display",
+      "can ryoku doctor fix monitors.lua",
+      "can ryoku doctor fix gpu.lua",
+      "Hotplugging a dock left my generated monitor config corrupted",
+      "After a GPU reset, Ryoku keeps loading bad display state - can doctor rebuild it?",
+      "monitors.lua looks broken and I can't get a usable desktop",
+      "Can generated GPU/display files be repaired from a TTY if the session won't start?",
+      "I changed monitors and now the auto-created display files keep selecting the wrong output. How can I regenerate or repair them?"
+    ],
+    "keywords": [
+      "repair",
+      "generated",
+      "monitor",
+      "gpu",
+      "config",
+      "monitors",
+      "lua",
+      "corrupted",
+      "display",
+      "broke",
+      "after",
+      "hotplug"
+    ],
+    "exact_terms": [
+      "monitors.lua",
+      "gpu.lua",
+      "ryoku doctor"
+    ],
+    "answer": "If generated `monitors.lua` or `gpu.lua` state became corrupted after a hotplug or GPU reset, run `ryoku doctor`. If needed, switch to a TTY, run it there, then log back in.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-shell-or-bar-is-not-drawing",
+    "source_hints": [
+      "docs/installation-hardware.md",
+      "ryoku/hub/backend/"
+    ],
+    "clarifies_with": [
+      "display.single-resolution",
+      "display.rejected-change"
+    ]
+  },
+  {
+    "id": "recovery.tty-rollback",
+    "title": "Roll Back Ryoku From a TTY",
+    "examples": [
+      "how do i rollback ryoku when desktop wont start",
+      "can i rollback ryoku from tty",
+      "desktop is broken after update how do i rollback",
+      "how do i rollback from limine",
+      "can i restore ryoku snapshot from boot menu",
+      "Desktop won't launch after the update, but tty2 works. Can I revert from there?",
+      "How do I access an earlier Ryoku snapshot without a graphical session?",
+      "I'm at the console after a bad boot and need the supported rollback path",
+      "Can snapshots be chosen from the boot menu if I can't log in?"
+    ],
+    "keywords": [
+      "roll",
+      "back",
+      "tty",
+      "rollback",
+      "when",
+      "desktop",
+      "wont",
+      "start",
+      "can",
+      "broken",
+      "after",
+      "update"
+    ],
+    "exact_terms": [
+      "ryoku rollback",
+      "Ctrl+Alt+F2"
+    ],
+    "answer": "If you cannot reach the desktop, switch to a TTY with `Ctrl+Alt+F2`, log in, and run `ryoku rollback`. Ryoku snapshots can also be selected from the Limine boot menu.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback",
+    "source_hints": [
+      "docs/updates.md",
+      "ryoku/cli/"
+    ],
+    "clarifies_with": [
+      "updates.rollback",
+      "recovery.last-resort"
+    ]
+  },
+  {
+    "id": "updates.rollback",
+    "title": "Roll Back a Bad Ryoku Update",
+    "examples": [
+      "how do i rollback ryoku",
+      "how do i undo a ryoku update",
+      "ryoku update broke my system",
+      "how do i restore a snapshot",
+      "how do i list ryoku snapshots",
+      "what is ryoku rollback",
+      "ryoku rollback command",
+      "how do i choose a rollback snapshot",
+      "Yesterday's update broke audio; how can I view snapshots and return to one?",
+      "What's the supported way to undo a bad Ryoku upgrade?",
+      "Can I list snapshot IDs before choosing which pre-update state to restore?",
+      "I need to revert to a specific snapshot, not necessarily the newest one",
+      "Everything worked before this morning's upgrade, but now the desktop crashes on launch. What's the supported way to go back?"
+    ],
+    "keywords": [
+      "roll",
+      "back",
+      "bad",
+      "update",
+      "rollback",
+      "undo",
+      "broke",
+      "system",
+      "restore",
+      "snapshot",
+      "list",
+      "snapshots"
+    ],
+    "exact_terms": [
+      "ryoku snapshots",
+      "ryoku rollback",
+      "ryoku rollback <id>"
+    ],
+    "answer": "Run `ryoku snapshots` to see available snapshots, then use `ryoku rollback <id>` to roll back to the snapshot you want. Running `ryoku rollback` without an ID also lists snapshots.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#recover-a-bad-update-ryoku-rollback",
+    "source_hints": [
+      "docs/updates.md",
+      "ryoku/cli/"
+    ],
+    "clarifies_with": [
+      "recovery.tty-rollback",
+      "recovery.last-resort"
+    ]
+  },
+  {
+    "id": "health.doctor",
+    "title": "Run Ryoku Doctor",
+    "examples": [
+      "how do i fix ryoku",
+      "ryoku is broken what should i run",
+      "what should i run when ryoku breaks",
+      "how do i self heal ryoku",
+      "how do i repair ryoku",
+      "what is ryoku doctor",
+      "how do i use ryoku doctor",
+      "should i run ryoku doctor",
+      "ryoku doctor command",
+      "A few Ryoku services are acting strangely after I changed settings. Which Doctor command can apply the recommended repairs?",
+      "Ryoku has config drift after an update; which tool reconciles supported state?",
+      "Should I run doctor when Settings and generated configs disagree?",
+      "What does the normal doctor command inspect and repair?",
+      "My install is acting weird - can I preview doctor first, then let it fix known issues?"
+    ],
+    "keywords": [
+      "run",
+      "doctor",
+      "broken",
+      "should",
+      "when",
+      "breaks",
+      "self",
+      "heal",
+      "repair",
+      "command"
+    ],
+    "exact_terms": [
+      "ryoku doctor",
+      "ryoku doctor --check"
+    ],
+    "answer": "Run `ryoku doctor`. It checks Ryoku's stateful configuration and tries to reconcile supported drift automatically. If you want to see what it would do without changing anything, run `ryoku doctor --check` first.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor",
+    "source_hints": [
+      "docs/cli.md",
+      "ryoku/cli/internal/doctor/"
+    ],
+    "clarifies_with": [
+      "health.doctor-preview"
+    ]
+  },
+  {
+    "id": "health.doctor-report-privacy",
+    "title": "Ryoku Doctor Report Privacy",
+    "examples": [
+      "does ryoku doctor report contain passwords",
+      "does ryoku doctor report contain keys",
+      "is ryoku doctor report safe to share",
+      "does doctor report leak secrets",
+      "can i send doctor-report.txt to someone",
+      "Does the doctor report include passwords, tokens, or private keys?",
+      "Is it safe to post doctor-report.txt publicly in a GitHub issue?",
+      "Before uploading diagnostics, what sensitive data can the report contain?",
+      "Where is the report saved, and does Ryoku redact credentials?",
+      "Support asked me to share a Doctor report, but it may contain usernames or hardware details. What gets included, and is it safe to post publicly?",
+      "Before uploading a diagnostic bundle, what personal or system data might it contain?",
+      "Before I paste a doctor report in Discord, does it expose anything sensitive?",
+      "Before I upload a Doctor report, could it expose my username, paths, or other personal data?",
+      "Before posting a doctor bundle publicly, I need to know whether it includes usernames, paths, or hardware IDs."
+    ],
+    "keywords": [
+      "doctor",
+      "report",
+      "privacy",
+      "contain",
+      "passwords",
+      "keys",
+      "safe",
+      "share",
+      "leak",
+      "secrets",
+      "can",
+      "send"
+    ],
+    "exact_terms": [
+      "ryoku doctor --report",
+      "~/.local/state/ryoku/doctor-report.txt"
+    ],
+    "answer": "`ryoku doctor --report` writes `~/.local/state/ryoku/doctor-report.txt`. According to the Ryoku troubleshooting docs, the report contains no passwords or keys.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#self-heal-first-ryoku-doctor",
+    "source_hints": [
+      "docs/cli.md",
+      "ryoku/cli/internal/doctor/"
+    ],
+    "clarifies_with": [
+      "health.doctor-report"
+    ]
+  },
+  {
+    "id": "shell.bar-style",
+    "title": "Switch the Ryoku Bar Style",
+    "examples": [
+      "how do i change the ryoku bar style",
+      "switch from qsbar to sumi",
+      "i want the monochrome left rail",
+      "put the full colour top bar back",
+      "where is the barStyle setting",
+      "Can I swap the panel to another built-in appearance?",
+      "How do I change from the colorful top panel to the monochrome side rail?",
+      "Is qsbar vs sumi controlled in shell.json?",
+      "I edited the bar style setting - should the shell update without a restart?",
+      "Which user config value selects the Ryoku panel layout?"
+    ],
+    "keywords": [
+      "bar",
+      "style",
+      "qsbar",
+      "sumi",
+      "rail",
+      "top bar",
+      "shell.json"
+    ],
+    "exact_terms": [
+      "barStyle",
+      "\"barStyle\": \"sumi\"",
+      "\"barStyle\": \"qsbar\"",
+      "qsbar",
+      "sumi"
+    ],
+    "answer": "Set the top-level `barStyle` value in `~/.config/ryoku/shell.json` to `\"qsbar\"` for the full-colour top bar or `\"sumi\"` for the monochrome left rail. Ryoku watches that file, so saving it retunes the running shell without a manual reload.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/barstyles",
+    "source_hints": [
+      "docs/barstyles.md",
+      "ryoku/shell/quickshell/shell/services/BarProducts.qml"
+    ],
+    "clarifies_with": [
+      "customization.rices",
+      "customization.plugins"
+    ]
+  },
+  {
+    "id": "shell.launcher",
+    "title": "Open the Ryoku Launcher",
+    "examples": [
+      "how do i open the app launcher",
+      "what is the ryoku command palette",
+      "search for applications with the keyboard",
+      "open launcher without clicking the bar",
+      "what does super space do",
+      "How do I bring up the Ryoku app launcher?",
+      "What's the shortcut for the app launcher and command palette?",
+      "How can I open Ryoku's launcher from a terminal?",
+      "Is there one search UI for apps, files, clipboard, and open windows?",
+      "Super key alone does nothing here - what combo brings up command search?",
+      "What's the keyboard shortcut or command for bringing up the app picker?",
+      "What's the shortcut for the Ryoku app launcher?",
+      "What shortcut brings up the app launcher?",
+      "What opens the app launcher in Ryoku?"
+    ],
+    "keywords": [
+      "launcher",
+      "apps",
+      "command palette",
+      "search",
+      "super space"
+    ],
+    "exact_terms": [
+      "Super + Space",
+      "ryoku-shell launcher"
+    ],
+    "answer": "Press `Super + Space` to open Ryoku's launcher and command palette. It can launch apps, calculate, search files and the web, manage clipboard items, switch windows, run system actions, and control media. The equivalent shell command is `ryoku-shell launcher`.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/launcher",
+    "source_hints": [
+      "docs/launcher.md",
+      "ryoku/shell/quickshell/launcher/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "shell.screenshot",
+    "title": "Capture and Annotate with Ryoshot",
+    "examples": [
+      "how do i take a screenshot in ryoku",
+      "open the ryoshot capture tool",
+      "capture one window instead of the screen",
+      "annotate a screenshot on ryoku",
+      "what does super shift s open",
+      "What's the Ryoku shortcut for selecting and annotating a screenshot?",
+      "How do I capture one window instead of the whole screen with Ryoshot?",
+      "Can the screenshot tool pin an image after I crop it?",
+      "Need to grab a monitor, draw an arrow, then copy the result - how?",
+      "How do I take an annotated screenshot with Ryoshot?",
+      "How do I use Ryoshot to grab part of the screen and draw notes on it?",
+      "I need to crop a UI glitch and draw an arrow on it for Discord. Which Ryoku tool handles that?",
+      "Which Ryoshot workflow lets me grab a region and mark it up before sharing?"
+    ],
+    "keywords": [
+      "screenshot",
+      "capture",
+      "ryoshot",
+      "annotate",
+      "window",
+      "region"
+    ],
+    "exact_terms": [
+      "Super + Shift + S",
+      "ryoshot"
+    ],
+    "answer": "Press `Super + Shift + S` to open Ryoshot. Drag a region, click a window, or press `Space` to target a whole monitor; after capture you can recrop, annotate, copy, save, or pin the image.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
+    "source_hints": [
+      "docs/ui-ux.md",
+      "ryoku/shell/quickshell/ryoshot/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "updates.user-edits",
+    "title": "Keep Personal Changes Across Updates",
+    "examples": [
+      "will my custom changes survive an update",
+      "where should i put user overrides",
+      "ryoku update keeps replacing my config",
+      "how do personal configs layer over shipped files",
+      "what is the user_edits folder",
+      "Where should I put custom config so an update doesn't overwrite it?",
+      "My tweaks keep disappearing when the shipped desktop refreshes",
+      "Is there a supported overlay folder for persistent personal changes?",
+      "How are my overrides layered separately from Ryoku's packaged defaults?",
+      "How do I stop my custom tweaks from being overwritten when the system is upgraded?",
+      "I tweaked some Ryoku-managed files; will the next update overwrite my changes?",
+      "I edited a tracked config locally; will the next Ryoku update overwrite it, and what is the supported approach?"
+    ],
+    "keywords": [
+      "user edits",
+      "overrides",
+      "updates",
+      "custom",
+      "survive",
+      "overlay"
+    ],
+    "exact_terms": [
+      "~/.config/ryoku/user_edits",
+      "user_edits"
+    ],
+    "answer": "Put persistent personal overrides under `~/.config/ryoku/user_edits`. Ryoku keeps shipped configuration and user edits in separate trees, then layers the overlay onto the live config, so updating the shipped base does not overwrite your personal files.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/updates",
+    "source_hints": [
+      "ryoku/cli/internal/doctor/reconcile_useredits.go",
+      "docs/updates.md"
+    ],
+    "clarifies_with": [
+      "updates.materialize"
+    ]
+  },
+  {
+    "id": "updates.materialize",
+    "title": "Rebuild the Live Ryoku Configuration",
+    "examples": [
+      "what does ryoku materialize do",
+      "rebuild my live config from the shipped base",
+      "apply the repository configuration to my home folder",
+      "refresh installed ryoku config without a full update",
+      "how is the user overlay applied",
+      "I edited the source configuration, but the running desktop still uses the old values after login. How do I rebuild what Ryoku is actually using?",
+      "How can I rebuild the active config from base plus my overrides without updating packages?",
+      "My live files don't match user_edits; is there a command to reconcile them?",
+      "When should I use materialize instead of a full Ryoku update?",
+      "I changed the overlay and need Ryoku to regenerate the effective configuration"
+    ],
+    "keywords": [
+      "materialize",
+      "config",
+      "base",
+      "overlay",
+      "deploy"
+    ],
+    "exact_terms": [
+      "ryoku materialize"
+    ],
+    "answer": "`ryoku materialize` rebuilds the live Ryoku configuration from the shipped base and then applies the `user_edits` overlay. Use it when the installed configuration needs to be reconciled without performing a full system update.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/updates",
+    "source_hints": [
+      "docs/updates.md",
+      "ryoku/cli/"
+    ],
+    "clarifies_with": [
+      "updates.user-edits"
+    ]
+  },
+  {
+    "id": "customization.rices",
+    "title": "Import a Shared Ryoku Rice",
+    "examples": [
+      "how do i import a rice someone shared",
+      "install an exported desktop look",
+      "where are local rices managed",
+      "add a shared rice folder to ryoku",
+      "can ryoku settings import rice.json",
+      "A friend sent me an exported rice folder - how do I add it locally?",
+      "Where in Settings can I import a shared desktop preset?",
+      "Will Ryoku handle it if an imported rice has the same slug as mine?",
+      "After importing a rice, which user directory stores it?",
+      "A friend sent me their Ryoku setup bundle, and I'd like my desktop to match it. What's the proper way to bring that shared setup in?"
+    ],
+    "keywords": [
+      "rice",
+      "import",
+      "shared",
+      "look",
+      "rice.json",
+      "settings"
+    ],
+    "exact_terms": [
+      "rice.json",
+      "~/.config/ryoku/rices"
+    ],
+    "answer": "Open Ryoku Settings, go to the Rices page and its `My` tab, then choose `Import (a shared rice folder)`. Ryoku installs the exported folder as a local rice, de-duplicates its slug, and stores it under `~/.config/ryoku/rices`.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/store",
+    "source_hints": [
+      "ryoku/hub/quickshell/schema/RicesPage.js",
+      "docs/store.md"
+    ],
+    "clarifies_with": [
+      "shell.bar-style",
+      "customization.plugins"
+    ]
+  },
+  {
+    "id": "customization.plugins",
+    "title": "Build a Ryoku Shell Plugin",
+    "examples": [
+      "how do i write a ryoku plugin",
+      "extend the shell without patching it",
+      "where is the plugin kit documented",
+      "create a third party shell widget",
+      "what api should a ryoku extension use",
+      "Where do I start if I want to extend the desktop shell with my own add-on?",
+      "I want to add a shell widget without modifying Ryoku's core QML",
+      "Where's the supported API for third-party panel components?",
+      "Does Ryoku have a PluginKit module with lifecycle and host primitives?",
+      "What's the right starting point for building a compatible shell plugin?",
+      "Want to add a custom widget to the shell - where's the plugin dev guide?",
+      "I want to add a custom widget to the shell without patching core files. How are plugins built?",
+      "What interfaces and directory layout should a third-party shell extension follow?"
+    ],
+    "keywords": [
+      "plugin",
+      "extension",
+      "widget",
+      "plugin kit",
+      "third party",
+      "shell"
+    ],
+    "exact_terms": [
+      "Ryoku.PluginKit",
+      "docs/plugins.md"
+    ],
+    "answer": "Use Ryoku's plugin runtime instead of patching the main shell. Start with the plugin guide and the `Ryoku.PluginKit` QML module; it defines the supported visual primitives, hosts, and lifecycle for third-party shell components.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/plugins",
+    "source_hints": [
+      "ryoku/shell/quickshell/plugins/discover.sh",
+      "docs/plugins.md",
+      "ryoku/shell/quickshell/plugins/"
+    ],
+    "clarifies_with": [
+      "shell.bar-style",
+      "customization.rices"
+    ]
+  },
+  {
+    "id": "overview.what-is-ryoku",
+    "title": "What Ryoku Is",
+    "examples": [
+      "what exactly is ryoku",
+      "is ryoku a linux distribution or a shell",
+      "explain the parts of the ryoku desktop",
+      "what does ryoku include",
+      "how is ryoku different from plain arch",
+      "New here - Is Ryoku a distro, a Hyprland config, or both?",
+      "What makes Ryoku different from a normal Arch install with dotfiles?",
+      "Can someone give me the quick overview of what parts the project maintains?",
+      "Are the installer, desktop shell, CLI, and recovery tools released together?",
+      "I'm new here - what kind of Linux project is Ryoku and what is it meant for?",
+      "What kind of Linux setup is Ryoku?",
+      "Is Ryoku a distro, a desktop setup, or something else?"
+    ],
+    "keywords": [
+      "what is ryoku",
+      "distribution",
+      "desktop",
+      "arch",
+      "hyprland",
+      "shell"
+    ],
+    "exact_terms": [],
+    "answer": "Ryoku is a hand-built Arch Linux distribution with a cohesive Hyprland desktop, a guided installer, and one source-controlled system definition. Its shell, settings app, CLI, installer, packages, and recovery tools are developed and delivered together.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/ryoku",
+    "source_hints": [
+      "docs/ryoku.md",
+      "docs/structure.md"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "settings.open-hub",
+    "title": "Open Ryoku Settings",
+    "examples": [
+      "how do i open ryoku settings",
+      "what shortcut opens the hub",
+      "where can i configure appearance and displays",
+      "launch the ryoku control center",
+      "what does super comma do",
+      "What's the keyboard shortcut for the main Ryoku control center?",
+      "I can't find display and animation options - what app are they in?",
+      "How do I launch the Settings Hub without searching the app menu?",
+      "Where are connections, keybinds, appearance, and GPU controls grouped?",
+      "The gear icon vanished after a shell restart. Is there another route to the Ryoku configuration hub?"
+    ],
+    "keywords": [
+      "settings",
+      "hub",
+      "control center",
+      "appearance",
+      "display",
+      "configuration panel",
+      "control panel",
+      "main settings"
+    ],
+    "exact_terms": [
+      "Super + ,",
+      "Ryoku Settings"
+    ],
+    "answer": "Press `Super + ,` to open Ryoku Settings (the Hub). It is the control center for appearance, animations, displays, connections, GPU selection, keybinds, and other desktop settings.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
+    "source_hints": [
+      "ryoku/hub/backend/main.go",
+      "docs/ui-ux.md",
+      "ryoku/hub/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "shell.wallpaper-theme",
+    "title": "Open Wallpaper and Theme Controls",
+    "examples": [
+      "how do i change the wallpaper",
+      "open the ryoku theme picker",
+      "what shortcut shows wallpaper controls",
+      "switch the desktop colour theme",
+      "where is the wallpaper carousel",
+      "Which shortcut opens the wallpaper carousel?",
+      "How do I get to the theme picker without digging through Settings?",
+      "Changing wallpaper also recolored my apps - is that expected behavior?",
+      "Where can I switch backgrounds and the shared desktop palette together?"
+    ],
+    "keywords": [
+      "wallpaper",
+      "theme",
+      "colour",
+      "picker",
+      "carousel"
+    ],
+    "exact_terms": [
+      "Super + W"
+    ],
+    "answer": "Press `Super + W` to open Ryoku's wallpaper carousel and theme picker. Wallpaper changes drive the shared palette that the shell and themed applications consume.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/theming",
+    "source_hints": [
+      "docs/theming.md",
+      "docs/ui-ux.md"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "shell.clipboard",
+    "title": "Open Clipboard History",
+    "examples": [
+      "where is clipboard history",
+      "show things i copied earlier",
+      "what does super v open",
+      "delete an item from ryoku clipboard history",
+      "open clipboard from the keyboard",
+      "What's the shortcut to bring up copied-item history?",
+      "I copied something earlier and need to find it in Ryoku's sidebar",
+      "Where can I review and manage old clipboard entries?",
+      "Does Ryoku have a clipboard history route, and how do I open it?",
+      "How can I show my clipboard history?",
+      "Where can I view my clipboard history?",
+      "Where is the clipboard history panel?"
+    ],
+    "keywords": [
+      "clipboard",
+      "history",
+      "copied",
+      "cliphist",
+      "super v"
+    ],
+    "exact_terms": [
+      "Super + V"
+    ],
+    "answer": "Press `Super + V` to open clipboard history. It opens the clipboard route in Ryoku's sidebar, where you can inspect and manage previously copied items.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
+    "source_hints": [
+      "docs/ui-ux.md",
+      "ryoku/shell/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "software.preinstalled",
+    "title": "See What Ryoku Ships",
+    "examples": [
+      "what software comes with ryoku",
+      "which packages are preinstalled",
+      "does ryoku include a screenshot tool",
+      "what applications ship by default",
+      "show the base ryoku package set",
+      "Is there a current list of packages included with a default Ryoku install?",
+      "Which desktop tools are Ryoku-built versus regular system packages?",
+      "Before installing, I want to see what software comes bundled",
+      "Are the shell, Hub, CLI, and system map shipped as pinned packages?",
+      "What software comes preinstalled?",
+      "Which apps come included with Ryoku?",
+      "Is there a list of applications included with a fresh Ryoku install?"
+    ],
+    "keywords": [
+      "preinstalled",
+      "packages",
+      "software",
+      "ships",
+      "applications"
+    ],
+    "exact_terms": [
+      "ryoku-desktop",
+      "docs/preinstalled.md"
+    ],
+    "answer": "Ryoku ships its desktop as version-pinned packages, including the shell, Settings Hub, CLI, Rashin system map, and their supporting desktop tools. The preinstalled guide lists both Ryoku-owned packages and the wider system package set.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/preinstalled",
+    "source_hints": [
+      "docs/preinstalled.md",
+      "release/packages/"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "overview.repository-structure",
+    "title": "Understand the Ryoku Repository",
+    "examples": [
+      "where does ryoku source code live",
+      "explain the repository layout",
+      "which folder owns the installer",
+      "where are shell and system files organized",
+      "show the main ryoku source areas",
+      "I'm browsing the repo - what do the ryoku, system, and release folders each own?",
+      "Where should I look for installer code versus desktop code?",
+      "Is there a guide mapping the top-level directories in the stable repository?",
+      "Trying to contribute: which tree contains packaging, machine definitions, and docs?",
+      "Cloned the Ryoku repo and I'm lost - what are the main directories for?",
+      "I'm browsing the source; which directories contain the system, shell, and packaging pieces?",
+      "Can someone explain what the main folders in the Ryoku repo are responsible for?"
+    ],
+    "keywords": [
+      "repository",
+      "structure",
+      "source",
+      "folders",
+      "layout"
+    ],
+    "exact_terms": [
+      "docs/structure.md"
+    ],
+    "answer": "The stable repository is organized by responsibility: `ryoku/` owns the desktop, `system/` the machine definition, `installation/` the installer, `release/` packaging, and `docs/` the guides. Use the repository structure guide for the detailed map.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/structure",
+    "source_hints": [
+      "docs/structure.md"
+    ],
+    "clarifies_with": []
+  }
+]
