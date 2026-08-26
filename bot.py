@@ -102,10 +102,18 @@ def _support_embed(card: SupportCard) -> discord.Embed:
 
 def _clarification_embed(decision: RetrievalDecision) -> discord.Embed:
     if len(decision.alternatives) == 1:
-        description = (
-            "That path can change or reset system state. Tell me what is broken "
-            "and what you can still access before I suggest it."
-        )
+        card = decision.alternatives[0]
+        if card.id == "recovery.last-resort":
+            description = (
+                "If you mean the last-resort reset, the command is "
+                "`ryoku recovery`. Tell me what is broken and what you can "
+                "still access before I suggest using it."
+            )
+        else:
+            description = (
+                "That path can change or reset system state. Tell me what is broken "
+                "and what you can still access before I suggest it."
+            )
     else:
         choices = "\n".join(
             f"- **{card.title}**" for card in decision.alternatives

@@ -85,6 +85,11 @@ class SupportCatalogTests(unittest.TestCase):
 
         self.assertEqual(value, "ryoku doctor --check /tmp/gpu-2")
 
+    def test_normalization_collapses_split_reset(self):
+        value = normalize_text("how do i re set ryoku")
+
+        self.assertEqual(value, "how do i reset ryoku")
+
 
 
 
@@ -218,7 +223,7 @@ class SupportRetrieverTests(unittest.TestCase):
         card_value = support_card(
             "recovery.reset",
             ("recover broken install", "reset ryoku"),
-            exact_terms=("ryoku recovery",),
+            exact_terms=("ryoku recovery", "reset ryoku"),
             risk="destructive",
         )
         encoder = MappingEncoder(
@@ -231,6 +236,29 @@ class SupportRetrieverTests(unittest.TestCase):
 
         decision = SupportRetriever([card_value], encoder).retrieve(
             "ryoku recovery"
+        )
+
+        self.assertEqual(decision.kind, "clarify")
+        self.assertEqual(decision.alternatives, (card_value,))
+
+    def test_split_reset_phrase_matches_destructive_recovery_clarification(self):
+        card_value = support_card(
+            "recovery.reset",
+            ("recover broken install", "reset ryoku"),
+            exact_terms=("ryoku recovery", "reset ryoku"),
+            risk="destructive",
+        )
+        encoder = MappingEncoder(
+            {
+                "recover broken install": (1, 0, 0),
+                "reset ryoku": (1, 0, 0),
+                "ryoku recovery": (1, 0, 0),
+                "how do i reset ryoku": (1, 0, 0),
+            }
+        )
+
+        decision = SupportRetriever([card_value], encoder).retrieve(
+            "how do i re set ryoku"
         )
 
         self.assertEqual(decision.kind, "clarify")

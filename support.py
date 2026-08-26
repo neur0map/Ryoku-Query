@@ -48,6 +48,7 @@ class SupportCard:
 
 def normalize_text(text: str) -> str:
     normalized = unicodedata.normalize("NFKC", text).lower()
+    normalized = re.sub(r"\bre\s+set\b", "reset", normalized)
     return re.sub(r"\s+", " ", normalized).strip()
 
 

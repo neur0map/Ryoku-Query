@@ -45,6 +45,9 @@ class Message:
         self.reference = reference
         self.channel = Channel()
 
+    async def reply(self, **kwargs):
+        await self.channel.send(**kwargs)
+
 
 class Retriever:
     def __init__(self, decision):
@@ -199,6 +202,23 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         description = message.channel.calls[0]["embed"].description
         self.assertIn("Create report", description)
         self.assertIn("Report privacy", description)
+
+    async def test_last_resort_recovery_clarification_names_command(self):
+        recovery = support_card(
+            id="recovery.last-resort",
+            title="Recover a Severely Broken Ryoku Install",
+            risk="destructive",
+        )
+        retriever = Retriever(
+            RetrievalDecision("clarify", alternatives=(recovery,))
+        )
+        message = Message("question", reference=Reference(User(42, bot=True)))
+
+        await handle_message(message, 42, retriever, None, Path("missing.png"))
+
+        self.assertEqual(len(message.channel.calls), 1)
+        description = message.channel.calls[0]["embed"].description
+        self.assertIn("`ryoku recovery`", description)
 
     async def test_source_query_uses_prowl_once_and_cites_result(self):
         primary = support_card(
