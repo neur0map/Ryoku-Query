@@ -419,6 +419,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         "--support", type=Path, default=Path("data/support.json")
     )
     parser.add_argument("--ryoku-repo", type=Path)
+    parser.add_argument("--prowl-smart", action="store_true")
     parser.add_argument("--model")
     parser.add_argument("--threshold", type=float, default=0.70)
     parser.add_argument("--replays", type=int, default=1)
@@ -439,7 +440,11 @@ def main(argv: Iterable[str] | None = None) -> int:
         mismatches = 0
     else:
         retriever = SupportRetriever(load_support_cards(args.support), model)
-        prowl = ProwlClient(args.ryoku_repo) if args.ryoku_repo else None
+        prowl = (
+            ProwlClient(args.ryoku_repo, smart_search=args.prowl_smart)
+            if args.ryoku_repo
+            else None
+        )
         results, mismatches = asyncio.run(
             evaluate_hybrid(
                 HybridEvaluator(retriever, prowl),

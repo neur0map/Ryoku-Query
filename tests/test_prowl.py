@@ -54,6 +54,20 @@ class ProwlClientTests(unittest.TestCase):
         self.assertNotIn("--smart", argv)
         self.assertEqual(cwd, self.repo)
 
+    def test_appends_smart_flag_when_enabled(self):
+        runner = RecordingRunner()
+        client = ProwlClient(self.repo, smart_search=True, runner=runner)
+
+        self.search(client, "where is the CLI implemented?")
+
+        argv = runner.calls[0][0]
+        self.assertEqual(argv[0:3], (
+            "prowl-agent",
+            "search",
+            "where is the CLI implemented?",
+        ))
+        self.assertIn("--smart", argv)
+
     def test_bounds_result_limit(self):
         runner = RecordingRunner()
         client = ProwlClient(self.repo, result_limit=200, runner=runner)

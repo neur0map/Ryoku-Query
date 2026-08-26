@@ -123,12 +123,14 @@ class ProwlClient:
         timeout: float = 4.0,
         result_limit: int = 20,
         executable: str = "prowl-agent",
+        smart_search: bool = False,
         runner: Runner | None = None,
     ):
         self.repo_path = repo_path
         self.timeout = max(0.1, min(float(timeout), 30.0))
         self.result_limit = max(1, min(int(result_limit), 20))
         self.executable = executable
+        self.smart_search = smart_search
         self.runner = runner or _run
 
     async def _optional_json(self, argv: tuple[str, ...]):
@@ -155,15 +157,22 @@ class ProwlClient:
         if not self.repo_path.is_dir():
             return ProwlResult("unavailable", error="Ryoku repository is missing")
         search_query = query
-        argv = (
+        argv = [
             self.executable,
             "search",
             search_query,
-            "--format",
-            "json",
-            "--limit",
-            str(self.result_limit),
+        ]
+        if self.smart_search:
+            argv.append("--smart")
+        argv.extend(
+            (
+                "--format",
+                "json",
+                "--limit",
+                str(self.result_limit),
+            )
         )
+        argv = tuple(argv)
         try:
             returncode, stdout, stderr = await self.runner(
                 argv, self.repo_path, self.timeout, MAX_OUTPUT_BYTES
