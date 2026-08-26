@@ -49,7 +49,11 @@ class ProwlClientTests(unittest.TestCase):
         self.search(client, query)
 
         argv, cwd, _, _ = runner.calls[0]
-        self.assertTrue(argv[0].endswith("prowl-agent") or argv[0].endswith("prowl-agent.exe"))
+        executable = argv[0].lower()
+        self.assertTrue(
+            executable.endswith("prowl-agent")
+            or executable.endswith("prowl-agent.exe")
+        )
         self.assertEqual(argv[1:3], ("search", query))
         self.assertNotIn("--smart", argv)
         self.assertEqual(cwd, self.repo)
@@ -61,7 +65,11 @@ class ProwlClientTests(unittest.TestCase):
         self.search(client, "where is the CLI implemented?")
 
         argv = runner.calls[0][0]
-        self.assertTrue(argv[0].endswith("prowl-agent") or argv[0].endswith("prowl-agent.exe"))
+        executable = argv[0].lower()
+        self.assertTrue(
+            executable.endswith("prowl-agent")
+            or executable.endswith("prowl-agent.exe")
+        )
         self.assertEqual(argv[1:3], (
             "search",
             "where is the CLI implemented?",
