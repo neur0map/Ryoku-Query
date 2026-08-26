@@ -216,7 +216,10 @@ async def handle_message(
             name="Ryoku Help",
             icon_url="attachment://logo.png",
         )
-    await message.channel.send(**send)
+    await message.reply(
+        **send,
+        mention_author=True,
+    )
     return True
 
 

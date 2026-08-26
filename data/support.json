@@ -1040,10 +1040,12 @@
       "corrupted",
       "local",
       "build",
-      "last"
+      "last",
+      "reset"
     ],
     "exact_terms": [
-      "ryoku recovery"
+      "ryoku recovery",
+      "reset ryoku"
     ],
     "answer": "Use `ryoku recovery` as the last-resort recovery path when the desktop or local configuration is too broken to update normally. It resets to `main` and redeploys, overwriting configs.",
     "risk": "destructive",
