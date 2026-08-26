@@ -86,6 +86,8 @@ class CaseResult:
     intent_id: str | None
     sources: tuple[str, ...]
     latency_ms: float
+    source_status: str | None = None
+    source_error: str | None = None
 
 
 @dataclass(frozen=True)
@@ -319,6 +321,8 @@ class HybridEvaluator:
         actual = "reject"
         intent_id = None
         sources: tuple[str, ...] = ()
+        source_status: str | None = None
+        source_error: str | None = None
         dangerous = requires_safety_confirmation(case.query)
         source_query = is_source_query(case.query)
         if dangerous:
@@ -330,6 +334,8 @@ class HybridEvaluator:
                 else ()
             )
             result = await self.prowl.search(case.query, source_hints)
+            source_status = result.status
+            source_error = result.error
             if result.status == "ok":
                 actual = "source"
                 sources = tuple(hit.citation for hit in result.hits)
@@ -344,6 +350,8 @@ class HybridEvaluator:
             intent_id=intent_id,
             sources=sources,
             latency_ms=(time.perf_counter() - started) * 1000,
+            source_status=source_status,
+            source_error=source_error,
         )
 
 
@@ -379,6 +387,8 @@ def _report_dict(
             "actual_intent": result.intent_id,
             "sources": list(result.sources),
             "latency_ms": result.latency_ms,
+            "source_status": result.source_status,
+            "source_error": result.source_error,
             "passed": case_passes(result),
         }
         for result in results
@@ -420,6 +430,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     )
     parser.add_argument("--ryoku-repo", type=Path)
     parser.add_argument("--prowl-smart", action="store_true")
+    parser.add_argument("--prowl-timeout", type=float, default=4.0)
     parser.add_argument("--model")
     parser.add_argument("--threshold", type=float, default=0.70)
     parser.add_argument("--replays", type=int, default=1)
@@ -441,7 +452,11 @@ def main(argv: Iterable[str] | None = None) -> int:
     else:
         retriever = SupportRetriever(load_support_cards(args.support), model)
         prowl = (
-            ProwlClient(args.ryoku_repo, smart_search=args.prowl_smart)
+            ProwlClient(
+                args.ryoku_repo,
+                timeout=args.prowl_timeout,
+                smart_search=args.prowl_smart,
+            )
             if args.ryoku_repo
             else None
         )

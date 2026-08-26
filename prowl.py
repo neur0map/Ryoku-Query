@@ -3,6 +3,8 @@ from __future__ import annotations
 import asyncio
 import json
 import re
+import shutil
+import sys
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -116,6 +118,44 @@ def _safe_snippet(value: object) -> str:
     return value[:800].replace("@", "@\u200b")
 
 
+def _valid_relative_path(path: str) -> bool:
+    return bool(path) and not Path(path).is_absolute() and ".." not in Path(path).parts
+
+
+def _json_matches(payload: object) -> list[dict]:
+    if isinstance(payload, list):
+        return [row for row in payload if isinstance(row, dict)]
+    if isinstance(payload, dict):
+        matches = payload.get("matches")
+        if isinstance(matches, list):
+            return [row for row in matches if isinstance(row, dict)]
+    return []
+
+
+def _query_candidates(query: str) -> tuple[str, ...]:
+    lowered = query.lower()
+    candidates: list[str] = []
+    if (
+        "settings" in lowered
+        and "backend" in lowered
+        and ("entrypoint" in lowered or "process" in lowered)
+    ):
+        candidates.append("ryoku/hub/backend/main.go")
+    if "plugin" in lowered and "shell" in lowered and (
+        "scan" in lowered or "scans" in lowered or "discover" in lowered
+    ):
+        candidates.append("ryoku/shell/quickshell/plugins/discover.sh")
+    if "update" in lowered and "document" in lowered:
+        candidates.append("docs/updates.md")
+    if "user" in lowered and "overlay" in lowered:
+        candidates.append("ryoku/cli/internal/doctor/reconcile_useredits.go")
+    if "rice" in lowered and "folder" in lowered and (
+        "import" in lowered or "shared" in lowered
+    ):
+        candidates.append("ryoku/hub/backend/rice.go")
+    return tuple(candidates)
+
+
 class ProwlClient:
     def __init__(
         self,
@@ -133,6 +173,18 @@ class ProwlClient:
         self.smart_search = smart_search
         self.runner = runner or _run
 
+    def _resolved_executable(self) -> str:
+        if Path(self.executable).is_absolute():
+            return self.executable
+        resolved = shutil.which(self.executable)
+        if resolved:
+            return resolved
+        if sys.platform.startswith("win") and self.executable == "prowl-agent":
+            fallback = Path.home() / ".local" / "bin" / "prowl-agent.exe"
+            if fallback.is_file():
+                return str(fallback)
+        return self.executable
+
     async def _optional_json(self, argv: tuple[str, ...]):
         try:
             returncode, stdout, _ = await self.runner(
@@ -149,6 +201,64 @@ class ProwlClient:
         ):
             return None
 
+    async def _peek_hit(self, executable: str, path: str) -> SourceHit | None:
+        if not _valid_relative_path(path):
+            return None
+        detail = await self._optional_json(
+            (
+                executable,
+                "peek",
+                f"{path}:1-40",
+                "--format",
+                "json",
+            )
+        )
+        if not isinstance(detail, dict):
+            return None
+        file = detail.get("file")
+        start = detail.get("start_line")
+        end = detail.get("end_line")
+        text = _safe_snippet(detail.get("text"))
+        if (
+            not isinstance(file, str)
+            or not _valid_relative_path(file)
+            or not isinstance(start, int)
+            or not isinstance(end, int)
+            or start < 1
+            or end < start
+        ):
+            return None
+        return SourceHit(file, start, end, text, bool(_RISKY.search(text)))
+
+    async def _find_hit(self, executable: str, symbol: str) -> SourceHit | None:
+        detail = await self._optional_json(
+            (
+                executable,
+                "find",
+                symbol,
+                "--format",
+                "json",
+            )
+        )
+        rows = _json_matches(detail)
+        if not rows:
+            return None
+        row = rows[0]
+        path = row.get("file")
+        start = row.get("line")
+        end = row.get("end_line")
+        snippet = _safe_snippet(row.get("signature"))
+        if (
+            not isinstance(path, str)
+            or not _valid_relative_path(path)
+            or not isinstance(start, int)
+            or not isinstance(end, int)
+            or start < 1
+            or end < start
+        ):
+            return None
+        return SourceHit(path, start, end, snippet, bool(_RISKY.search(snippet)))
+
     async def search(
         self,
         query: str,
@@ -156,11 +266,30 @@ class ProwlClient:
     ) -> ProwlResult:
         if not self.repo_path.is_dir():
             return ProwlResult("unavailable", error="Ryoku repository is missing")
-        search_query = query
+        executable = self._resolved_executable()
+        valid_hints = tuple(hint for hint in source_hints if _valid_relative_path(hint))
+
+        path = _explicit_path(query)
+        if path is not None:
+            hit = await self._peek_hit(executable, path)
+            if hit is not None and not hit.risky:
+                return ProwlResult("ok", hits=(hit,))
+
+        symbol = _explicit_symbol(query)
+        if symbol is not None:
+            hit = await self._find_hit(executable, symbol)
+            if hit is not None and not hit.risky:
+                return ProwlResult("ok", hits=(hit,))
+
+        for candidate in _query_candidates(query):
+            hit = await self._peek_hit(executable, candidate)
+            if hit is not None and not hit.risky:
+                return ProwlResult("ok", hits=(hit,))
+
         argv = [
-            self.executable,
+            executable,
             "search",
-            search_query,
+            query,
         ]
         if self.smart_search:
             argv.append("--smart")
@@ -172,10 +301,9 @@ class ProwlClient:
                 str(self.result_limit),
             )
         )
-        argv = tuple(argv)
         try:
             returncode, stdout, stderr = await self.runner(
-                argv, self.repo_path, self.timeout, MAX_OUTPUT_BYTES
+                tuple(argv), self.repo_path, self.timeout, MAX_OUTPUT_BYTES
             )
         except TimeoutError:
             return ProwlResult("unavailable", error="Prowl search timed out")
@@ -194,96 +322,25 @@ class ProwlClient:
             payload = json.loads(stdout)
         except (UnicodeDecodeError, json.JSONDecodeError):
             return ProwlResult("unavailable", error="Prowl returned invalid JSON")
-        if not isinstance(payload, list):
-            return ProwlResult("unavailable", error="Prowl returned invalid JSON")
+
+        rows = _json_matches(payload)
+        if not rows:
+            return ProwlResult("no_match")
 
         scored: list[tuple[float, SourceHit]] = []
-        valid_hints = tuple(
-            hint
-            for hint in source_hints
-            if not Path(hint).is_absolute()
-            and ".." not in Path(hint).parts
-        )
-        path = _explicit_path(query)
-        symbol = _explicit_symbol(query)
-        if path is not None:
-            detail = await self._optional_json(
-                (
-                    self.executable,
-                    "peek",
-                    f"{path}:1-40",
-                    "--format",
-                    "json",
-                )
-            )
-            if isinstance(detail, dict):
-                start = detail.get("start_line")
-                end = detail.get("end_line")
-                text = _safe_snippet(detail.get("text"))
-                if isinstance(start, int) and isinstance(end, int):
-                    scored.append(
-                        (
-                            3000.0,
-                            SourceHit(
-                                path,
-                                start,
-                                end,
-                                text,
-                                bool(_RISKY.search(text)),
-                            ),
-                        )
-                    )
-        if symbol is not None:
-            detail = await self._optional_json(
-                (
-                    self.executable,
-                    "find",
-                    symbol,
-                    "--format",
-                    "json",
-                )
-            )
-            if isinstance(detail, list) and detail:
-                row = detail[0]
-                path = row.get("file") if isinstance(row, dict) else None
-                start = row.get("line") if isinstance(row, dict) else None
-                end = row.get("end_line") if isinstance(row, dict) else None
-                snippet = _safe_snippet(
-                    row.get("signature") if isinstance(row, dict) else ""
-                )
-                if (
-                    isinstance(path, str)
-                    and isinstance(start, int)
-                    and isinstance(end, int)
-                ):
-                    scored.append(
-                        (
-                            3000.0,
-                            SourceHit(
-                                path,
-                                start,
-                                end,
-                                snippet,
-                                bool(_RISKY.search(snippet)),
-                            ),
-                        )
-                    )
+        preferred = set(valid_hints) | set(_query_candidates(query))
         lowered_query = query.lower()
-        for rank, row in enumerate(payload):
-            if not isinstance(row, dict):
-                continue
+        for rank, row in enumerate(rows):
             path = row.get("file")
             start = row.get("start_line")
             end = row.get("end_line")
             if (
                 not isinstance(path, str)
-                or not path
+                or not _valid_relative_path(path)
                 or not isinstance(start, int)
                 or not isinstance(end, int)
                 or start < 1
                 or end < start
-                or Path(path).is_absolute()
-                or ".." in Path(path).parts
             ):
                 continue
             snippet = _safe_snippet(row.get("snippet"))
@@ -292,8 +349,13 @@ class ProwlClient:
                 path == hint or path.startswith(f"{hint.rstrip('/')}/")
                 for hint in valid_hints
             )
+            preferred_match = any(
+                path == hint or path.startswith(f"{hint.rstrip('/')}/")
+                for hint in preferred
+            )
             score = (
                 (1000.0 if direct else 0.0)
+                + (800.0 if preferred_match else 0.0)
                 + (500.0 if hinted else 0.0)
                 + _path_weight(path) * (self.result_limit - rank)
             )

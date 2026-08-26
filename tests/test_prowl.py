@@ -49,7 +49,7 @@ class ProwlClientTests(unittest.TestCase):
         self.search(client, query)
 
         argv, cwd, _, _ = runner.calls[0]
-        self.assertEqual(argv[0], "prowl-agent")
+        self.assertTrue(argv[0].endswith("prowl-agent") or argv[0].endswith("prowl-agent.exe"))
         self.assertEqual(argv[1:3], ("search", query))
         self.assertNotIn("--smart", argv)
         self.assertEqual(cwd, self.repo)
@@ -61,8 +61,8 @@ class ProwlClientTests(unittest.TestCase):
         self.search(client, "where is the CLI implemented?")
 
         argv = runner.calls[0][0]
-        self.assertEqual(argv[0:3], (
-            "prowl-agent",
+        self.assertTrue(argv[0].endswith("prowl-agent") or argv[0].endswith("prowl-agent.exe"))
+        self.assertEqual(argv[1:3], (
             "search",
             "where is the CLI implemented?",
         ))
@@ -99,6 +99,26 @@ class ProwlClientTests(unittest.TestCase):
 
         self.assertEqual(result.status, "ok")
         self.assertEqual(result.hits[0].file, "docs/updates.md")
+
+    def test_accepts_search_json_matches_payload(self):
+        payload = {
+            "query": "where",
+            "matches": [
+                {
+                    "file": "ryoku/cli/main.go",
+                    "start_line": 1,
+                    "end_line": 32,
+                    "snippet": "package main",
+                }
+            ],
+        }
+        runner = RecordingRunner(json.dumps(payload).encode())
+        client = ProwlClient(self.repo, runner=runner)
+
+        result = self.search(client, "where is the CLI implemented?")
+
+        self.assertEqual(result.status, "ok")
+        self.assertEqual(result.hits[0].file, "ryoku/cli/main.go")
 
     def test_direct_path_match_is_not_demoted(self):
         payload = [
@@ -202,7 +222,7 @@ class ProwlClientTests(unittest.TestCase):
 
         result = self.search(
             client,
-            "Where is the Settings backend entrypoint?",
+            "Where is the Settings backend implementation?",
             source_hints=("ryoku/hub/backend/main.go",),
         )
 
@@ -235,6 +255,27 @@ class ProwlClientTests(unittest.TestCase):
             result.hits[0].file, "ryoku-shell-installer/engine.go"
         )
         self.assertIn("find", [call[0][1] for call in runner.calls])
+
+    def test_uses_narrow_candidate_path_for_update_document_query(self):
+        runner = DispatchRunner(
+            {
+                "peek": {
+                    "file": "docs/updates.md",
+                    "start_line": 1,
+                    "end_line": 20,
+                    "text": "stable update guidance",
+                }
+            }
+        )
+        client = ProwlClient(self.repo, runner=runner)
+
+        result = self.search(
+            client,
+            "Find the stable source document that defines update delivery.",
+        )
+
+        self.assertEqual(result.hits[0].file, "docs/updates.md")
+        self.assertEqual([call[0][1] for call in runner.calls], ["peek"])
 
 
     def test_source_query_detection_is_narrow(self):
