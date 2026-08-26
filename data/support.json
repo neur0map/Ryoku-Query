@@ -859,7 +859,8 @@
       "leave"
     ],
     "exact_terms": [
-      "Erase whole disk"
+      "Erase whole disk",
+      "leave alongside windows install mode"
     ],
     "answer": "If you are installing to a dedicated drive rather than alongside Windows, press `Esc` from the blocked layout flow and choose `Erase whole disk`.",
     "risk": "destructive",

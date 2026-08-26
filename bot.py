@@ -84,41 +84,41 @@ def _base_embed(title: str, description: str) -> discord.Embed:
 
 def _support_embed(card: SupportCard) -> discord.Embed:
     embed = _base_embed(card.title, card.answer)
-    if card.docs_url:
-        embed.add_field(
-            name="Documentation",
-            value=f"[Open Ryoku Docs]({card.docs_url})",
-            inline=False,
-        )
-    if card.risk != "informational":
-        embed.add_field(
-            name="Before you continue",
-            value="Review the command and its effect before applying it.",
-            inline=False,
-        )
     embed.set_footer(text="Ryoku support")
     return embed
 
 
-def _clarification_embed(decision: RetrievalDecision) -> discord.Embed:
-    if len(decision.alternatives) == 1:
-        card = decision.alternatives[0]
-        if card.id == "recovery.last-resort":
-            description = (
-                "If you mean the last-resort reset, the command is "
-                "`ryoku recovery`. Tell me what is broken and what you can "
-                "still access before I suggest using it."
+def _support_view(card: SupportCard) -> discord.ui.View:
+    view = discord.ui.View(timeout=None)
+    safety = {
+        "informational": "🟢 Read-only / informational",
+        "state-changing": "🟡 Changes system state",
+        "destructive": "🔴 Potentially destructive",
+    }.get(card.risk)
+    if safety is not None:
+        view.add_item(
+            discord.ui.Button(
+                label=safety,
+                style=discord.ButtonStyle.secondary,
+                disabled=True,
             )
-        else:
-            description = (
-                "That path can change or reset system state. Tell me what is broken "
-                "and what you can still access before I suggest it."
-            )
-    else:
-        choices = "\n".join(
-            f"- **{card.title}**" for card in decision.alternatives
         )
-        description = f"Which of these do you mean?\n{choices}"
+    if card.docs_url:
+        view.add_item(
+            discord.ui.Button(
+                label="Open Ryoku documentation →",
+                style=discord.ButtonStyle.link,
+                url=card.docs_url,
+            )
+        )
+    return view
+
+
+def _clarification_embed(decision: RetrievalDecision) -> discord.Embed:
+    choices = "\n".join(
+        f"- **{card.title}**" for card in decision.alternatives
+    )
+    description = f"Which of these do you mean?\n{choices}"
     return _base_embed("One detail first", description)
 
 
@@ -199,6 +199,7 @@ async def handle_message(
         )
         source_result = await prowl.search(query, source_hints)
 
+    view = None
     if dangerous:
         embed = _safety_embed()
     elif source_result is not None and source_result.status == "ok":
@@ -209,8 +210,14 @@ async def handle_message(
         embed = _no_match_embed()
     elif decision.kind == "answer" and decision.card is not None:
         embed = _support_embed(decision.card)
+        view = _support_view(decision.card)
     elif decision.kind == "clarify":
-        embed = _clarification_embed(decision)
+        if len(decision.alternatives) == 1:
+            card = decision.alternatives[0]
+            embed = _support_embed(card)
+            view = _support_view(card)
+        else:
+            embed = _clarification_embed(decision)
     else:
         embed = _no_match_embed()
 
@@ -218,6 +225,8 @@ async def handle_message(
         "embed": embed,
         "allowed_mentions": discord.AllowedMentions.none(),
     }
+    if view is not None:
+        send["view"] = view
     if logo_path.is_file():
         send["file"] = discord.File(str(logo_path), filename="logo.png")
         embed.set_author(

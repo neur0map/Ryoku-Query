@@ -264,6 +264,33 @@ class SupportRetrieverTests(unittest.TestCase):
         self.assertEqual(decision.kind, "clarify")
         self.assertEqual(decision.alternatives, (card_value,))
 
+    def test_reviewed_destructive_installer_exact_phrase_clarifies(self):
+        card_value = support_card(
+            "install.dedicated-drive",
+            (
+                "install on dedicated drive",
+                "leave alongside windows install mode",
+            ),
+            exact_terms=(
+                "Erase whole disk",
+                "leave alongside windows install mode",
+            ),
+            risk="destructive",
+        )
+        encoder = MappingEncoder(
+            {
+                "install on dedicated drive": (1, 0, 0),
+                "leave alongside windows install mode": (1, 0, 0),
+            }
+        )
+
+        decision = SupportRetriever([card_value], encoder).retrieve(
+            "how do i leave alongside windows install mode"
+        )
+
+        self.assertEqual(decision.kind, "clarify")
+        self.assertEqual(decision.alternatives, (card_value,))
+
     def test_irrelevant_destructive_candidate_is_rejected(self):
         card_value = support_card(
             "install.erase",

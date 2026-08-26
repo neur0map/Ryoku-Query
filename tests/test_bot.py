@@ -3,6 +3,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+import discord
+
 from bot import extract_query, handle_message, load_config
 from prowl import ProwlResult, SourceHit
 from support import RankedIntent, RetrievalDecision, SupportCard
@@ -181,7 +183,13 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         call = message.channel.calls[0]
         self.assertEqual(call["embed"].title, card.title)
         self.assertEqual(call["embed"].footer.text, "Ryoku support")
-        self.assertEqual(call["embed"].fields[0].name, "Documentation")
+        self.assertEqual(call["embed"].fields, [])
+        self.assertIn("view", call)
+        buttons = [item for item in call["view"].children if isinstance(item, discord.ui.Button)]
+        self.assertEqual(buttons[0].label, "🟢 Read-only / informational")
+        self.assertTrue(buttons[0].disabled)
+        self.assertEqual(buttons[1].label, "Open Ryoku documentation →")
+        self.assertEqual(buttons[1].url, card.docs_url)
         self.assertIn("file", call)
         self.assertFalse(call["allowed_mentions"].everyone)
         self.assertFalse(call["allowed_mentions"].users)
@@ -202,11 +210,13 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         description = message.channel.calls[0]["embed"].description
         self.assertIn("Create report", description)
         self.assertIn("Report privacy", description)
+        self.assertNotIn("view", message.channel.calls[0])
 
-    async def test_last_resort_recovery_clarification_names_command(self):
+    async def test_single_destructive_clarification_reuses_card_answer(self):
         recovery = support_card(
             id="recovery.last-resort",
             title="Recover a Severely Broken Ryoku Install",
+            answer="Use `ryoku recovery` as the last-resort recovery path.",
             risk="destructive",
         )
         retriever = Retriever(
@@ -217,8 +227,33 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         await handle_message(message, 42, retriever, None, Path("missing.png"))
 
         self.assertEqual(len(message.channel.calls), 1)
-        description = message.channel.calls[0]["embed"].description
-        self.assertIn("`ryoku recovery`", description)
+        call = message.channel.calls[0]
+        self.assertEqual(call["embed"].title, recovery.title)
+        self.assertEqual(call["embed"].description, recovery.answer)
+        buttons = [item for item in call["view"].children if isinstance(item, discord.ui.Button)]
+        self.assertEqual(buttons[0].label, "🔴 Potentially destructive")
+        self.assertTrue(buttons[0].disabled)
+
+    async def test_destructive_installer_clarification_reuses_card_answer(self):
+        installer = support_card(
+            id="install.dedicated-drive",
+            title="Install Ryoku on a Dedicated Drive",
+            answer=(
+                "If you are installing to a dedicated drive rather than "
+                "alongside Windows, press `Esc` from the blocked layout "
+                "flow and choose `Erase whole disk`."
+            ),
+            risk="destructive",
+        )
+        retriever = Retriever(
+            RetrievalDecision("clarify", alternatives=(installer,))
+        )
+        message = Message("question", reference=Reference(User(42, bot=True)))
+
+        await handle_message(message, 42, retriever, None, Path("missing.png"))
+
+        self.assertEqual(len(message.channel.calls), 1)
+        self.assertEqual(message.channel.calls[0]["embed"].description, installer.answer)
 
     async def test_source_query_uses_prowl_once_and_cites_result(self):
         primary = support_card(
