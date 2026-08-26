@@ -24,10 +24,7 @@ for source-backed answers through Prowl.
 
 ## What it does
 
-- answers reviewed Ryoku support questions in Discord
-- attaches safety context for state-changing and destructive actions
-- routes source-style queries into a local stable Ryoku checkout via Prowl
-- includes regression tests and retrieval benchmarks
+- Answers reviewed Ryoku support questions in Discord
 
 ## Quick start
 
