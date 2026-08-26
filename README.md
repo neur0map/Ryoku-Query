@@ -29,12 +29,23 @@ uv run --python 3.12 \
   python -B bot.py
 ```
 
+Mention the bot or reply to one of its messages when testing.
+
 ## Test
 
 ```bash
 uv run --python 3.12 \
   --with-requirements requirements.txt \
   python -B -m unittest discover -s tests -v
+```
+
+```bash
+uv run --python 3.12 \
+  --with-requirements requirements.txt \
+  python -B benchmark.py --mode hybrid \
+  --benchmark data/regressions.json \
+  --ryoku-repo /path/to/ryoku \
+  --check
 ```
 
 ## Benchmark

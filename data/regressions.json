@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "prod-reported-login-help",
+      "query": "need help with login",
+      "difficulty": "easy",
+      "expected": "answer",
+      "intent_id": "login.help"
+    },
+    {
+      "id": "prod-reported-snapshot-list",
+      "query": "how do i see my snapshots?",
+      "difficulty": "easy",
+      "expected": "answer",
+      "intent_id": "snapshots.list"
+    },
+    {
+      "id": "prod-reported-fish-config",
+      "query": "where can i change fish config files?",
+      "difficulty": "easy",
+      "expected": "answer",
+      "intent_id": "shell.fish-config"
+    }
+  ]
+}

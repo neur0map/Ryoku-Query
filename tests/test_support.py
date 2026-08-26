@@ -557,6 +557,33 @@ class RealCatalogTests(unittest.TestCase):
         self.assertEqual(shell.risk, "state-changing")
         self.assertNotIn("roll back", shell.answer.lower())
 
+    def test_reported_support_topics_are_reviewed(self):
+        cards = {
+            card.id: card
+            for card in load_support_cards(Path("data/support.json"))
+        }
+
+        self.assertEqual(cards["snapshots.list"].risk, "informational")
+        self.assertIn("ryoku snapshots", cards["snapshots.list"].exact_terms)
+        self.assertIn(
+            "~/.config/fish/user.fish",
+            cards["shell.fish-config"].answer,
+        )
+        self.assertIn(
+            "recovery.login-screen",
+            cards["login.help"].clarifies_with,
+        )
+        self.assertTrue(
+            all(
+                cards[card_id].docs_url
+                for card_id in (
+                    "login.help",
+                    "snapshots.list",
+                    "shell.fish-config",
+                )
+            )
+        )
+
     def test_benchmark_queries_are_not_catalog_examples_or_exact_terms(self):
         cards = load_support_cards(Path("data/support.json"))
         benchmark = json.loads(

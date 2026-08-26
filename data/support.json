@@ -33,7 +33,9 @@
       "docs/ui-ux.md",
       "ryoku/hub/"
     ],
-    "clarifies_with": []
+    "clarifies_with": [
+      "login.help"
+    ]
   },
   {
     "id": "packages.gpg-keys",
@@ -164,7 +166,8 @@
     "clarifies_with": [
       "logs.locations",
       "recovery.login-screen",
-      "shell.missing"
+      "shell.missing",
+      "login.help"
     ]
   },
   {
@@ -687,7 +690,8 @@
     "clarifies_with": [
       "shell.missing",
       "recovery.last-resort",
-      "logs.sddm"
+      "logs.sddm",
+      "login.help"
     ]
   },
   {
@@ -1189,7 +1193,8 @@
     ],
     "clarifies_with": [
       "updates.rollback",
-      "recovery.last-resort"
+      "recovery.last-resort",
+      "snapshots.list"
     ]
   },
   {
@@ -1200,7 +1205,6 @@
       "how do i undo a ryoku update",
       "ryoku update broke my system",
       "how do i restore a snapshot",
-      "how do i list ryoku snapshots",
       "what is ryoku rollback",
       "ryoku rollback command",
       "how do i choose a rollback snapshot",
@@ -1225,7 +1229,6 @@
       "snapshots"
     ],
     "exact_terms": [
-      "ryoku snapshots",
       "ryoku rollback",
       "ryoku rollback <id>"
     ],
@@ -1238,7 +1241,8 @@
     ],
     "clarifies_with": [
       "recovery.tty-rollback",
-      "recovery.last-resort"
+      "recovery.last-resort",
+      "snapshots.list"
     ]
   },
   {
@@ -1826,6 +1830,110 @@
     "docs_url": "https://docs.ryoku.dev/docs/structure",
     "source_hints": [
       "docs/structure.md"
+    ],
+    "clarifies_with": []
+  },
+  {
+    "id": "login.help",
+    "title": "Login Help",
+    "examples": [
+      "need help with login",
+      "help with ryoku login",
+      "i have a login question",
+      "something is wrong with login",
+      "can you help me with sddm",
+      "login help please",
+      "not sure what login setting i need"
+    ],
+    "keywords": [
+      "login",
+      "help",
+      "sddm",
+      "sign in",
+      "greeter"
+    ],
+    "exact_terms": [
+      "login help"
+    ],
+    "answer": "Do you want to change the login theme, inspect SDDM logs, or fix a login failure? Tell me which one and whether you can reach the desktop or a TTY.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#the-login-screen-is-broken",
+    "source_hints": [
+      "docs/ui-ux.md",
+      "docs/updates.md"
+    ],
+    "clarifies_with": [
+      "settings.sddm-theme",
+      "recovery.login-screen",
+      "logs.sddm"
+    ]
+  },
+  {
+    "id": "snapshots.list",
+    "title": "List Ryoku Snapshots",
+    "examples": [
+      "how do i see my snapshots?",
+      "list my ryoku snapshots",
+      "show available snapshots",
+      "what snapshot ids exist",
+      "where can i view rollback points",
+      "which snapshots are available",
+      "display the snapshot list",
+      "i just want to inspect snapshots"
+    ],
+    "keywords": [
+      "snapshots",
+      "list",
+      "available",
+      "ids",
+      "view",
+      "snapper"
+    ],
+    "exact_terms": [
+      "ryoku snapshots"
+    ],
+    "answer": "Run `ryoku snapshots` to list available Snapper snapshots and their IDs. This command is read-only.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/cli",
+    "source_hints": [
+      "docs/cli.md",
+      "ryoku/cli/main.go"
+    ],
+    "clarifies_with": [
+      "updates.rollback",
+      "recovery.tty-rollback"
+    ]
+  },
+  {
+    "id": "shell.fish-config",
+    "title": "Edit Fish Configuration",
+    "examples": [
+      "where can i change fish config files?",
+      "where is my fish config",
+      "how do i customize fish in ryoku",
+      "which fish file is safe to edit",
+      "where should i put fish aliases",
+      "add a fish function without losing it on update",
+      "edit my shell startup config",
+      "does ryoku have a user fish config"
+    ],
+    "keywords": [
+      "fish",
+      "config",
+      "user.fish",
+      "aliases",
+      "functions",
+      "shell"
+    ],
+    "exact_terms": [
+      "~/.config/fish/user.fish",
+      "user.fish"
+    ],
+    "answer": "Put personal Fish changes in `~/.config/fish/user.fish`. Ryoku loads it last and does not replace it during updates. Leave `~/.config/fish/config.fish` managed by Ryoku.",
+    "risk": "informational",
+    "docs_url": "https://github.com/neur0map/ryoku-arch/blob/main/ryoku/apps/fish/config.fish#L79-L82",
+    "source_hints": [
+      "ryoku/apps/fish/config.fish"
     ],
     "clarifies_with": []
   }
