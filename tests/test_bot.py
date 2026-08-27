@@ -25,7 +25,8 @@ class Reference:
 
 
 class Channel:
-    def __init__(self):
+    def __init__(self, channel_id=0):
+        self.id = channel_id
         self.calls = []
 
     async def send(self, **kwargs):
@@ -40,12 +41,13 @@ class Message:
         author=None,
         mentions=(),
         reference=None,
+        channel_id=0,
     ):
         self.content = content
         self.author = author or User(7)
         self.mentions = list(mentions)
         self.reference = reference
-        self.channel = Channel()
+        self.channel = Channel(channel_id)
 
     async def reply(self, **kwargs):
         await self.channel.send(**kwargs)
@@ -122,6 +124,19 @@ class InvocationTests(unittest.TestCase):
         message = Message("hello", reference=Reference(User(9)))
         self.assertIsNone(extract_query(message, bot_user_id=42))
 
+    def test_support_channel_accepts_a_normal_question(self):
+        message = Message("how do I run doctor?", channel_id=777)
+        self.assertEqual(
+            extract_query(message, bot_user_id=42, support_channel_id=777),
+            "how do I run doctor?",
+        )
+
+    def test_other_channel_requires_mention_or_reply(self):
+        message = Message("how do I run doctor?", channel_id=888)
+        self.assertIsNone(
+            extract_query(message, bot_user_id=42, support_channel_id=777)
+        )
+
 
 
 class ConfigTests(unittest.TestCase):
@@ -132,6 +147,11 @@ class ConfigTests(unittest.TestCase):
             "SUPPORT_PATH": "data/support.json",
             "PROWL_TIMEOUT_SECONDS": "3.5",
             "PROWL_RESULT_LIMIT": "12",
+            "SUPPORT_CHANNEL_ID": "123",
+            "OLLAMA_HOST": "http://127.0.0.1:11434",
+            "GEMMA_MODEL": "gemma4:e4b",
+            "LFM_MODEL": "lfm2.5:latest",
+            "OLLAMA_TIMEOUT_SECONDS": "90",
         }
         with patch("bot.load_dotenv"), patch.dict(
             os.environ, values, clear=True
@@ -142,6 +162,11 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(config.ryoku_repo_path, Path("/srv/ryoku-stable"))
         self.assertEqual(config.prowl_timeout, 3.5)
         self.assertEqual(config.prowl_result_limit, 12)
+        self.assertEqual(config.support_channel_id, 123)
+        self.assertEqual(config.ollama_host, "http://127.0.0.1:11434")
+        self.assertEqual(config.gemma_model, "gemma4:e4b")
+        self.assertEqual(config.lfm_model, "lfm2.5:latest")
+        self.assertEqual(config.ollama_timeout, 90.0)
 
     def test_requires_token(self):
         with patch("bot.load_dotenv"), patch.dict(

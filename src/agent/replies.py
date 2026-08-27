@@ -15,8 +15,8 @@ def base_embed(title: str, description: str) -> discord.Embed:
     )
 
 
-def support_embed(card: SupportCard) -> discord.Embed:
-    embed = base_embed(card.title, card.answer)
+def support_embed(card: SupportCard, answer: str | None = None) -> discord.Embed:
+    embed = base_embed(card.title, answer or card.answer)
     embed.set_footer(text="Ryoku support")
     return embed
 
@@ -64,10 +64,10 @@ def safety_embed() -> discord.Embed:
     )
 
 
-def source_embed(result: ProwlResult) -> discord.Embed:
+def source_embed(result: ProwlResult, answer: str | None = None) -> discord.Embed:
     embed = base_embed(
         "Ryoku stable source",
-        "I found these locations in the indexed stable Ryoku repository.",
+        answer or "I found these locations in the indexed stable Ryoku repository.",
     )
     for hit in result.hits:
         label = "Potentially destructive source" if hit.risky else "Source"

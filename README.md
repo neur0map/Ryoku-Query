@@ -62,7 +62,18 @@ Set:
 
 - `TOKEN` to your Discord bot token
 - `RYOKU_REPO_PATH` to your cloned Ryoku checkout
-- optionally `MODEL_NAME`, `PROWL_TIMEOUT_SECONDS`, and `PROWL_RESULT_LIMIT`
+- `SUPPORT_CHANNEL_ID` to the one Discord channel where ordinary messages should be answered. Leave it as `0` to require a mention/reply everywhere.
+- `OLLAMA_HOST`, `GEMMA_MODEL=gemma4:e4b`, and `LFM_MODEL=lfm2.5:latest` for local answers
+- optionally `MODEL_NAME`, `PROWL_TIMEOUT_SECONDS`, `PROWL_RESULT_LIMIT`, and `OLLAMA_TIMEOUT_SECONDS`
+
+### Local model behavior
+
+Ryoku Help retrieves the reviewed support card and/or Prowl citations **before** invoking a model. The model only turns that evidence into a concise Discord reply; it is not permitted to invent a command or a source.
+
+- **Gemma (`gemma4:e4b`)** handles normal, reviewed support answers with thinking disabled.
+- **LFM (`lfm2.5:latest`)** is reserved for cited diagnostic questions. Its private thinking is never retained or sent to Discord; only its final answer is used.
+- The bot serializes local model calls and sends `keep_alive: 0`. This is deliberate: on this 14 GiB CPU-first host, keeping both models resident can cause model eviction or OOM. Additional Discord requests wait their turn and fall back to the reviewed answer if Ollama is unavailable.
+
 
 ## Run
 
@@ -73,7 +84,7 @@ uv run --python 3.12 \
   python -B bot.py
 ```
 
-Mention the bot or reply to one of its messages when testing.
+In `SUPPORT_CHANNEL_ID`, users can ask normal Ryoku/Arch support questions without mentioning the bot. In every other channel, they must mention the bot or reply to it. Mentions and replies work in all channels.
 
 ## Test
 
