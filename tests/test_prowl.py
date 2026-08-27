@@ -230,6 +230,23 @@ class ProwlClientTests(unittest.TestCase):
         self.assertEqual(result.hits[0].file, "ryoku/hub/backend/main.go")
         self.assertEqual([call[0][1] for call in runner.calls], ["search"])
 
+    def test_reads_reviewed_document_hint_before_broad_source_search(self):
+        target = self.repo / "docs/updates.md"
+        target.parent.mkdir(parents=True)
+        target.write_text("Materialize lays the packaged base into ~/.config.\n", encoding="utf-8")
+        runner = RecordingRunner()
+        client = ProwlClient(self.repo, runner=runner)
+
+        result = self.search(
+            client,
+            "Where is materialize implemented for contributors?",
+            source_hints=("docs/updates.md", "ryoku/cli/"),
+        )
+
+        self.assertEqual(result.status, "ok")
+        self.assertEqual(result.hits[0].file, "docs/updates.md")
+        self.assertEqual(runner.calls, [])
+
     def test_uses_prowl_find_for_explicit_symbol(self):
         runner = DispatchRunner(
             {
@@ -286,9 +303,19 @@ class ProwlClientTests(unittest.TestCase):
         self.assertFalse(
             is_source_query("Where is the diagnostic report file saved?")
         )
-        self.assertFalse(
+        self.assertTrue(
             is_source_query(
                 "I edited the source configuration, but the desktop is stale."
+            )
+        )
+        self.assertTrue(
+            is_source_query(
+                "I want to see the source for how materialize rebuilds the config."
+            )
+        )
+        self.assertTrue(
+            is_source_query(
+                "I have a dev checkout with custom QML. Where is the official deploy and test loop?"
             )
         )
 

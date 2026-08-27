@@ -56,6 +56,22 @@ class AnswererTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(llm.calls[0][1], "lfm")
         self.assertIn("docs/cli.md:1-20", llm.calls[0][0])
 
+    async def test_cited_contributor_question_uses_lfm_without_error_words(self):
+        llm = LLM(LLMResult("ok", text="Deploy from the checkout after testing."))
+        answerer = Answerer(llm)
+        sources = ProwlResult(
+            "ok", hits=(SourceHit("docs/development.md", 7, 16, "deploy then test", False),)
+        )
+
+        result = await answerer.render(
+            "Where is the supported contributor flow for deploying custom work?",
+            card(),
+            sources,
+        )
+
+        self.assertEqual(result.route, "lfm")
+        self.assertEqual(llm.calls[0][1], "lfm")
+
     async def test_destructive_card_does_not_call_model(self):
         llm = LLM(LLMResult("ok", text="unsafe"))
         answerer = Answerer(llm)

@@ -378,6 +378,19 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(message.channel.calls), 1)
         self.assertIn("couldn't find", message.channel.calls[0]["embed"].description)
 
+    async def test_vague_ryoku_no_match_does_not_publish_generic_source_hits(self):
+        retriever = Retriever(RetrievalDecision("no_match"))
+        prowl = Prowl(ProwlResult("ok", hits=(SourceHit("system/gpu.lua", 1, 8, "unrelated", False),)))
+        message = Message(
+            "<@42> I'm new to Ryoku. Is there a safe way to see if my machine is okay?",
+            mentions=(User(42, bot=True),),
+        )
+
+        await handle_message(message, 42, retriever, prowl, Path("missing.png"))
+
+        self.assertEqual(prowl.queries, [])
+        self.assertEqual(message.channel.calls[0]["embed"].title, "No confident Ryoku answer")
+
 
 if __name__ == "__main__":
     unittest.main()

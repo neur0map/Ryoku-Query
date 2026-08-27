@@ -109,7 +109,8 @@
     ],
     "exact_terms": [
       "ryoku status",
-      "ryoku-desktop"
+      "ryoku-desktop",
+      "safe health check"
     ],
     "answer": "Run `ryoku status` for a read-only health check. It reports the active config base, installed `ryoku-desktop` version, repository version, pending updates, and snapshot count without changing anything.",
     "risk": "informational",
@@ -1647,11 +1648,11 @@
       "shell"
     ],
     "exact_terms": [],
-    "answer": "Ryoku is a hand-built Arch Linux distribution with a cohesive Hyprland desktop, a guided installer, and one source-controlled system definition. Its shell, settings app, CLI, installer, packages, and recovery tools are developed and delivered together.",
+    "answer": "Ryoku is an opinionated Arch Linux environment: Hyprland handles compositing, input, and tiling, while the Ryoku shell is a Quickshell (QML) frontend driven by the `ryoku-shell` Go daemon. The project also maintains its Settings Hub, CLI, installer, packages, and recovery tools together.",
     "risk": "informational",
-    "docs_url": "https://docs.ryoku.dev/docs/ryoku",
+    "docs_url": "https://docs.ryoku.dev/docs/tour",
     "source_hints": [
-      "docs/ryoku.md",
+      "docs/tour.md",
       "docs/structure.md"
     ],
     "clarifies_with": []
@@ -1939,5 +1940,122 @@
       "ryoku/apps/fish/config.fish"
     ],
     "clarifies_with": []
+  },
+  {
+    "id": "contributors.materialize",
+    "title": "Materialize Config on a Packaged Ryoku Install",
+    "examples": [
+      "I'm contributing but testing on an installed Ryoku box, how do I lay my config changes down?",
+      "does materialize work from a clone or only on a normal installed system?",
+      "how do I test a shipped config change without doing a full update?",
+      "I changed a base config and need to see what a packaged user would receive",
+      "what does materialize overwrite and what does it leave alone?",
+      "where do user_edits fit when I test config delivery?"
+    ],
+    "keywords": [
+      "contributor",
+      "materialize",
+      "packaged",
+      "installed",
+      "base config",
+      "user_edits",
+      "delivery"
+    ],
+    "exact_terms": [
+      "ryoku materialize",
+      "RYOKU_CONFIG_BASE",
+      "/usr/share/ryoku/config"
+    ],
+    "answer": "For a packaged Ryoku install, `ryoku materialize` lays `/usr/share/ryoku/config` into `~/.config`, then overlays `~/.config/ryoku/user_edits` last. It is not the dev-checkout command: on a clone, use `ryoku deploy`. To test another base tree deliberately, set `RYOKU_CONFIG_BASE`; do not hand-copy into `~/.config` and treat that as delivery testing.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/updates",
+    "source_hints": [
+      "docs/updates.md",
+      "docs/cli.md",
+      "ryoku/cli/internal/updater/materialize.go"
+    ],
+    "clarifies_with": [
+      "contributors.deploy",
+      "updates.materialize",
+      "updates.user-edits"
+    ]
+  },
+  {
+    "id": "contributors.deploy",
+    "title": "Deploy Custom Work From a Ryoku Checkout",
+    "examples": [
+      "I cloned Ryoku and changed some QML, what is the proper way to run my work?",
+      "how do contributors deploy a feature branch without pretending it is a package update?",
+      "I made a custom shell change in the repo; how do I lay it onto my dev machine?",
+      "where does RYOKU_REPO need to point before I use ryoku deploy?",
+      "can I use materialize from a dev checkout?",
+      "I need to build and deploy my custom Ryoku work locally"
+    ],
+    "keywords": [
+      "contributor",
+      "deploy",
+      "checkout",
+      "feature branch",
+      "custom work",
+      "RYOKU_REPO",
+      "build"
+    ],
+    "exact_terms": [
+      "ryoku deploy",
+      "RYOKU_REPO"
+    ],
+    "answer": "On a dev checkout, point `RYOKU_REPO` at that checkout and run `ryoku deploy`. It builds the Go binaries and QML plugin, then runs `ryoku/shell/deploy.sh` to lay the checkout into `~/.config` and records the deployed commit. `ryoku materialize` is for packaged installs and fails on a normal checkout. Deploy changes live state, so commit or stash unrelated work first and test the affected behavior afterward.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/development",
+    "source_hints": [
+      "docs/development.md",
+      "docs/cli.md",
+      "ryoku/shell/deploy.sh",
+      "installation/backend/lib/deploy.sh"
+    ],
+    "clarifies_with": [
+      "contributors.materialize",
+      "contributors.verify-custom-work"
+    ]
+  },
+  {
+    "id": "contributors.verify-custom-work",
+    "title": "Verify a Ryoku Contribution Before Commit",
+    "examples": [
+      "what should I test after changing custom Ryoku work?",
+      "I changed a Lua file and a shell script; what are the contributor checks?",
+      "how do I test my config change on the running desktop before I commit?",
+      "what is the Ryoku installer dry run contributors use?",
+      "how do I verify a custom feature reaches users instead of just my checkout?",
+      "I want the proper test loop for a Ryoku contribution"
+    ],
+    "keywords": [
+      "contributor",
+      "test",
+      "verify",
+      "custom work",
+      "dry run",
+      "commit",
+      "delivery"
+    ],
+    "exact_terms": [
+      "RYOKU_DRYRUN=1",
+      "bin/ryoku-dev-verify-delivery",
+      "luac -p",
+      "bash -n"
+    ],
+    "answer": "Test the behavior on the running system after `ryoku deploy`; parsing alone is not enough. For changed Lua run `luac -p <file>` and for shell scripts run `bash -n <file>`. Installer contributors can run its non-destructive matrix with `RYOKU_DRYRUN=1` and the documented strategy/profile variables. Before committing, run `bin/ryoku-dev-verify-delivery` so a user-facing config is actually delivered; keep the repo hooks enabled and never use `--no-verify`.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/development",
+    "source_hints": [
+      "docs/development.md",
+      "docs/updates.md",
+      ".github/workflows/go-unit-tests.yml",
+      "bin/ryoku-dev-verify-delivery"
+    ],
+    "clarifies_with": [
+      "contributors.deploy",
+      "contributors.materialize"
+    ]
   }
 ]

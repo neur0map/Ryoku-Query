@@ -72,7 +72,8 @@ Set:
 Ryoku Help retrieves the reviewed support card and/or Prowl citations **before** invoking a model. The model only turns that evidence into a concise Discord reply; it is not permitted to invent a command or a source.
 
 - **Gemma (`gemma4:e4b`)** handles normal, reviewed support answers with thinking disabled.
-- **LFM (`lfm2.5:latest`)** is reserved for cited diagnostic questions. Its private thinking is never retained or sent to Discord; only its final answer is used.
+- **LFM (`lfm2.5:latest`)** handles replies backed by verified Prowl evidence, including diagnostic and contributor/source questions. Only its final response is sent to Discord.
+- Both routes receive the same evidence-only contract: no invented commands, URLs, paths, system state, or citations; ask one focused question when the evidence cannot identify the symptom; and lead with a read-only check before a state-changing recovery action unless the user explicitly asks to perform it.
 - The bot serializes local model calls and sends `keep_alive: 0`. This is deliberate: on this 14 GiB CPU-first host, keeping both models resident can cause model eviction or OOM. Additional Discord requests wait their turn and fall back to the reviewed answer if Ollama is unavailable.
 
 

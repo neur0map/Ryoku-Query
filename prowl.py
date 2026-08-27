@@ -16,7 +16,13 @@ _SOURCE_WORDS = re.compile(
 )
 _SOURCE_REQUEST = re.compile(
     r"\b(where|find|show|search|read|open|look|which)\b.{0,80}\b(source|code)\b"
-    r"|\b(source|code)\b.{0,80}\b(where|find|show|search|read|open|look|which)\b",
+    r"|\b(source|code)\b.{0,80}\b(where|find|show|search|read|open|look|which|how|why|work|rebuild|deploy|test)\b"
+    r"|\b(source|checkout|repo)\b.{0,80}\b(config|configuration|custom work)\b",
+    re.IGNORECASE,
+)
+_CONTRIBUTOR_SOURCE_REQUEST = re.compile(
+    r"\b(dev checkout|contribut\w*|custom qml|feature branch)\b.{0,120}\b(deploy|test|build|delivery)\b"
+    r"|\b(deploy|test|build|delivery)\b.{0,120}\b(dev checkout|contribut\w*|custom qml|feature branch)\b",
     re.IGNORECASE,
 )
 _SOURCE_PATH = re.compile(
@@ -60,6 +66,7 @@ def is_source_query(query: str) -> bool:
     return bool(
         _SOURCE_WORDS.search(query)
         or _SOURCE_REQUEST.search(query)
+        or _CONTRIBUTOR_SOURCE_REQUEST.search(query)
         or _SOURCE_PATH.search(query)
         or _SOURCE_SYMBOL.search(query)
     )
@@ -276,6 +283,14 @@ class ProwlClient:
             hit = self._local_file_hit(candidate)
             if hit is not None and not hit.risky:
                 return ProwlResult("ok", hits=(hit,))
+
+        hint_hits: list[SourceHit] = []
+        for hint in valid_hints:
+            hit = self._local_file_hit(hint)
+            if hit is not None and not hit.risky:
+                hint_hits.append(hit)
+        if hint_hits:
+            return ProwlResult("ok", hits=tuple(hint_hits[:3]))
 
         argv = [
             executable,

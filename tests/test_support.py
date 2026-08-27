@@ -628,6 +628,8 @@ class RealCatalogTests(unittest.TestCase):
             "recovery.login-screen",
             cards["login.help"].clarifies_with,
         )
+        self.assertEqual(cards["overview.what-is-ryoku"].docs_url, "https://docs.ryoku.dev/docs/tour")
+        self.assertNotIn("distribution", cards["overview.what-is-ryoku"].answer.lower())
         self.assertTrue(
             all(
                 cards[card_id].docs_url
@@ -637,6 +639,29 @@ class RealCatalogTests(unittest.TestCase):
                     "shell.fish-config",
                 )
             )
+        )
+
+    def test_vague_newcomer_health_question_routes_to_safe_status(self):
+        cards = load_support_cards(Path("data/support.json"))
+        decision = SupportRetriever(cards, MappingEncoder({})).retrieve(
+            "I'm new to Ryoku and just want a safe health check before I touch anything."
+        )
+
+        self.assertEqual(decision.kind, "answer")
+        self.assertEqual(decision.card.id, "health.status")
+
+    def test_contributor_delivery_cards_cover_materialize_deploy_and_verification(self):
+        cards = {
+            card.id: card
+            for card in load_support_cards(Path("data/support.json"))
+        }
+
+        self.assertEqual(cards["contributors.materialize"].risk, "informational")
+        self.assertIn("packaged", cards["contributors.materialize"].answer.lower())
+        self.assertEqual(cards["contributors.deploy"].risk, "state-changing")
+        self.assertIn("RYOKU_REPO", cards["contributors.deploy"].answer)
+        self.assertIn(
+            "RYOKU_DRYRUN=1", cards["contributors.verify-custom-work"].answer
         )
 
     def test_benchmark_queries_are_not_catalog_examples_or_exact_terms(self):

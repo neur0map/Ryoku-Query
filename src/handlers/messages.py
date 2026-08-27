@@ -16,7 +16,7 @@ from src.agent.replies import (
     support_view,
     unavailable_embed,
 )
-from support import SupportRetriever, normalize_text, requires_safety_confirmation
+from support import SupportRetriever, requires_safety_confirmation
 
 
 def extract_query(
@@ -48,7 +48,7 @@ def extract_query(
 
 
 def should_search(query: str) -> bool:
-    return "ryoku" in normalize_text(query)
+    return is_source_query(query)
 
 
 async def handle_message(
@@ -72,7 +72,6 @@ async def handle_message(
         and prowl is not None
         and (
             is_source_query(query)
-            or (decision.kind == "no_match" and should_search(query))
         )
     ):
         source_hints = (
