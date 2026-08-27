@@ -62,6 +62,7 @@ Set:
 
 - `TOKEN` to your Discord bot token
 - `RYOKU_REPO_PATH` to your cloned Ryoku checkout
+- `PROWL_AGENT_PATH` to the absolute Prowl executable, e.g. `/home/neur0map/workspace/prowl-agent/prowl-agent`. This prevents service `PATH` drift.
 - `SUPPORT_CHANNEL_ID` to the one Discord channel where ordinary messages should be answered. Leave it as `0` to require a mention/reply everywhere.
 - `OLLAMA_HOST`, `GEMMA_MODEL=gemma4:e4b`, and `LFM_MODEL=lfm2.5:latest` for local answers
 - optionally `MODEL_NAME`, `PROWL_TIMEOUT_SECONDS`, `PROWL_RESULT_LIMIT`, and `OLLAMA_TIMEOUT_SECONDS`

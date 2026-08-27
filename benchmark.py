@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import json
 import math
+import os
 import time
 from collections.abc import Iterable, Sequence
 from dataclasses import asdict, dataclass
@@ -429,6 +430,11 @@ def main(argv: Iterable[str] | None = None) -> int:
         "--support", type=Path, default=Path("data/support.json")
     )
     parser.add_argument("--ryoku-repo", type=Path)
+    parser.add_argument(
+        "--prowl-agent",
+        default=os.getenv("PROWL_AGENT_PATH", "prowl-agent"),
+        help="absolute prowl-agent executable (defaults to PROWL_AGENT_PATH)",
+    )
     parser.add_argument("--prowl-smart", action="store_true")
     parser.add_argument("--prowl-timeout", type=float, default=4.0)
     parser.add_argument("--model")
@@ -455,6 +461,7 @@ def main(argv: Iterable[str] | None = None) -> int:
             ProwlClient(
                 args.ryoku_repo,
                 timeout=args.prowl_timeout,
+                executable=args.prowl_agent,
                 smart_search=args.prowl_smart,
             )
             if args.ryoku_repo

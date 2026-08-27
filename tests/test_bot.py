@@ -147,6 +147,7 @@ class ConfigTests(unittest.TestCase):
             "SUPPORT_PATH": "data/support.json",
             "PROWL_TIMEOUT_SECONDS": "3.5",
             "PROWL_RESULT_LIMIT": "12",
+            "PROWL_AGENT_PATH": "/opt/tools/prowl-agent",
             "SUPPORT_CHANNEL_ID": "123",
             "OLLAMA_HOST": "http://127.0.0.1:11434",
             "GEMMA_MODEL": "gemma4:e4b",
@@ -162,6 +163,7 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(config.ryoku_repo_path, Path("/srv/ryoku-stable"))
         self.assertEqual(config.prowl_timeout, 3.5)
         self.assertEqual(config.prowl_result_limit, 12)
+        self.assertEqual(config.prowl_executable, "/opt/tools/prowl-agent")
         self.assertEqual(config.support_channel_id, 123)
         self.assertEqual(config.ollama_host, "http://127.0.0.1:11434")
         self.assertEqual(config.gemma_model, "gemma4:e4b")

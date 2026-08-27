@@ -37,4 +37,5 @@ def build_prowl(config: Config) -> ProwlClient | None:
         config.ryoku_repo_path,
         timeout=config.prowl_timeout,
         result_limit=config.prowl_result_limit,
+        executable=config.prowl_executable,
     )

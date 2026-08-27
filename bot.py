@@ -20,6 +20,7 @@ class Config:
     ryoku_repo_path: Path | None
     prowl_timeout: float
     prowl_result_limit: int
+    prowl_executable: str
     support_channel_id: int
     ollama_host: str
     gemma_model: str
@@ -57,6 +58,7 @@ def load_config() -> Config:
         ryoku_repo_path=Path(repo) if repo else None,
         prowl_timeout=timeout,
         prowl_result_limit=limit,
+        prowl_executable=os.getenv("PROWL_AGENT_PATH", "prowl-agent").strip(),
         support_channel_id=support_channel_id,
         ollama_host=ollama_host,
         gemma_model=os.getenv("GEMMA_MODEL", "gemma4:e4b").strip(),
