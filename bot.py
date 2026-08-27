@@ -108,7 +108,7 @@ def main() -> None:
     try:
         asyncio.run(run(load_config()))
     except KeyboardInterrupt:
-        print("\nRyoku Help stopped.")
+        print("\nNero stopped.")
 
 
 __all__ = [

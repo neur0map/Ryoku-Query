@@ -209,7 +209,7 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(message.channel.calls), 1)
         call = message.channel.calls[0]
         self.assertEqual(call["embed"].title, card.title)
-        self.assertEqual(call["embed"].footer.text, "Ryoku support")
+        self.assertEqual(call["embed"].footer.text, "Nero • Ryoku support")
         self.assertEqual(call["embed"].fields, [])
         self.assertIn("view", call)
         buttons = [item for item in call["view"].children if isinstance(item, discord.ui.Button)]

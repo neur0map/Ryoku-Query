@@ -2,12 +2,12 @@
 
 <img src="https://raw.githubusercontent.com/neur0map/ryoku-arch/main/ryoku/assets/brand/logo-mark.png" alt="Ryoku" width="160" />
 
-# Ryoku Discord Support
+# Nero
 
-**Reviewed Ryoku help inside Discord** &middot; *support answers, safety prompts, and source-backed replies.*
+**The Ryoku support bot for Discord** &middot; *reviewed answers, safety prompts, and source-backed replies.*
 
-Ryoku Discord Support is the private Discord bot for answering reviewed Ryoku
-support questions. It serves curated responses from `data/support.json`, adds
+Nero is the private Discord bot for answering reviewed Ryoku support questions.
+It serves curated responses from `data/support.json`, adds
 safety context for risky actions, and can search a local stable Ryoku checkout
 for source-backed answers through Prowl.
 
@@ -60,7 +60,7 @@ prowl-agent init --no-input --integrations none
 
 Set:
 
-- `TOKEN` to your Discord bot token
+- `TOKEN` to Nero's Discord bot token
 - `RYOKU_REPO_PATH` to your cloned Ryoku checkout
 - `PROWL_AGENT_PATH` to the absolute Prowl executable, e.g. `/home/neur0map/workspace/prowl-agent/prowl-agent`. This prevents service `PATH` drift.
 - `SUPPORT_CHANNEL_ID` to the one Discord channel where ordinary messages should be answered. Leave it as `0` to require a mention/reply everywhere.
@@ -69,7 +69,7 @@ Set:
 
 ### Local model behavior
 
-Ryoku Help retrieves the reviewed support card and/or Prowl citations **before** invoking a model. The model only turns that evidence into a concise Discord reply; it is not permitted to invent a command or a source.
+Nero retrieves the reviewed support card and/or Prowl citations **before** invoking a model. The model only turns that evidence into a concise Discord reply; it is not permitted to invent a command or a source.
 
 - **Gemma (`gemma4:e4b`)** handles normal, reviewed support answers with thinking disabled.
 - **LFM (`lfm2.5:latest`)** handles replies backed by verified Prowl evidence, including diagnostic and contributor/source questions. Only its final response is sent to Discord.
@@ -86,7 +86,7 @@ uv run --python 3.12 \
   python -B bot.py
 ```
 
-In `SUPPORT_CHANNEL_ID`, users can ask normal Ryoku/Arch support questions without mentioning the bot. In every other channel, they must mention the bot or reply to it. Mentions and replies work in all channels.
+In `SUPPORT_CHANNEL_ID`, users can ask Nero normal Ryoku/Arch support questions without mentioning it. In every other channel, call Nero with `@Nero` or reply to one of Nero's messages. Mentions and replies work in all channels.
 
 ## Test
 

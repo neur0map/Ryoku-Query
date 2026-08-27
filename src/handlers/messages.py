@@ -127,7 +127,7 @@ async def handle_message(
     if logo_path.is_file():
         send["file"] = discord.File(str(logo_path), filename="logo.png")
         embed.set_author(
-            name="Ryoku Help",
+            name="Nero",
             icon_url="attachment://logo.png",
         )
     await message.reply(

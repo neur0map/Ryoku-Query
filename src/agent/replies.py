@@ -6,6 +6,7 @@ from prowl import ProwlResult
 from support import RetrievalDecision, SupportCard
 
 BRAND_COLOR = 0xEA5322
+BOT_NAME = "Nero"
 
 def base_embed(title: str, description: str) -> discord.Embed:
     return discord.Embed(
@@ -17,7 +18,7 @@ def base_embed(title: str, description: str) -> discord.Embed:
 
 def support_embed(card: SupportCard, answer: str | None = None) -> discord.Embed:
     embed = base_embed(card.title, answer or card.answer)
-    embed.set_footer(text="Ryoku support")
+    embed.set_footer(text=f"{BOT_NAME} • Ryoku support")
     return embed
 
 
@@ -77,7 +78,7 @@ def source_embed(result: ProwlResult, answer: str | None = None) -> discord.Embe
             value=f"**`{hit.citation}`**\n{snippet}",
             inline=False,
         )
-    embed.set_footer(text="Ryoku source")
+    embed.set_footer(text=f"{BOT_NAME} • Ryoku source")
     return embed
 
 
