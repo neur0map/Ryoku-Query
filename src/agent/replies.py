@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import discord
 
+from feedback import FeedbackStore, FeedbackView
 from prowl import ProwlResult
 from support import RetrievalDecision, SupportCard
 
@@ -22,8 +23,10 @@ def support_embed(card: SupportCard, answer: str | None = None) -> discord.Embed
     return embed
 
 
-def support_view(card: SupportCard) -> discord.ui.View:
-    view = discord.ui.View(timeout=None)
+def support_view(
+    card: SupportCard, feedback: FeedbackStore | None = None
+) -> discord.ui.View:
+    view = FeedbackView(feedback) if feedback is not None else discord.ui.View(timeout=None)
     safety = {
         "informational": "🟢 Read-only / informational",
         "state-changing": "🟡 Changes system state",

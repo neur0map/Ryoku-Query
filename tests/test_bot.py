@@ -1,4 +1,5 @@
 import os
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -6,6 +7,7 @@ from unittest.mock import patch
 import discord
 
 from bot import extract_query, handle_message, load_config
+from feedback import FeedbackStore
 from prowl import ProwlResult, SourceHit
 from support import RankedIntent, RetrievalDecision, SupportCard
 
@@ -31,6 +33,7 @@ class Channel:
 
     async def send(self, **kwargs):
         self.calls.append(kwargs)
+        return getattr(self, "response", None)
 
 
 class Message:
@@ -50,7 +53,7 @@ class Message:
         self.channel = Channel(channel_id)
 
     async def reply(self, **kwargs):
-        await self.channel.send(**kwargs)
+        return await self.channel.send(**kwargs)
 
 
 class Retriever:
@@ -222,6 +225,43 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(call["allowed_mentions"].users)
         self.assertFalse(call["allowed_mentions"].roles)
         call["file"].close()
+
+    async def test_answer_has_feedback_buttons_and_is_linked_for_later_retrieval(self):
+        card = support_card()
+        retriever = Retriever(RetrievalDecision("answer", card=card))
+        message = Message(
+            "<@42> doctor please", mentions=(User(42, bot=True),)
+        )
+        message.id = 100
+        message.channel.response = type("Response", (), {"id": 101})()
+
+        with tempfile.TemporaryDirectory() as directory:
+            feedback = FeedbackStore(Path(directory) / "nero-feedback.sqlite3")
+            await handle_message(
+                message,
+                bot_user_id=42,
+                retriever=retriever,
+                prowl=None,
+                logo_path=Path("missing.png"),
+                feedback=feedback,
+            )
+
+            buttons = [
+                item for item in message.channel.calls[0]["view"].children
+                if isinstance(item, discord.ui.Button)
+            ]
+            feedback_buttons = [
+                button
+                for button in buttons
+                if button.custom_id in {"nero_feedback:correct", "nero_feedback:incorrect"}
+            ]
+            self.assertEqual(
+                [button.label for button in feedback_buttons], ["Correct", "Incorrect"]
+            )
+            self.assertEqual(
+                feedback.record_feedback(101, message.author.id, "correct"),
+                "recorded",
+            )
 
     async def test_ambiguity_sends_one_question(self):
         first = support_card(id="health.report", title="Create report")

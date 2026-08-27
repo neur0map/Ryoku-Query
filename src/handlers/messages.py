@@ -5,6 +5,7 @@ from pathlib import Path
 
 import discord
 
+from feedback import FeedbackStore, FeedbackView
 from prowl import ProwlClient, is_source_query
 from src.agent.answering import Answerer
 from src.agent.replies import (
@@ -60,6 +61,7 @@ async def handle_message(
     *,
     answerer: Answerer | None = None,
     support_channel_id: int | None = None,
+    feedback: FeedbackStore | None = None,
 ) -> bool:
     query = extract_query(message, bot_user_id, support_channel_id)
     if query is None:
@@ -107,12 +109,12 @@ async def handle_message(
             decision.card,
             rendered_answer.text if rendered_answer is not None else None,
         )
-        view = support_view(decision.card)
+        view = support_view(decision.card, feedback)
     elif decision.kind == "clarify":
         if len(decision.alternatives) == 1:
             card = decision.alternatives[0]
             embed = support_embed(card)
-            view = support_view(card)
+            view = support_view(card, feedback)
         else:
             embed = clarification_embed(decision)
     else:
@@ -130,8 +132,25 @@ async def handle_message(
             name="Nero",
             icon_url="attachment://logo.png",
         )
-    await message.reply(
+    if feedback is not None and view is None:
+        view = FeedbackView(feedback)
+        send["view"] = view
+    response = await message.reply(
         **send,
         mention_author=True,
     )
+    response_id = getattr(response, "id", None)
+    request_id = getattr(message, "id", None)
+    requester_id = getattr(getattr(message, "author", None), "id", None)
+    if (
+        feedback is not None
+        and isinstance(response_id, int)
+        and isinstance(request_id, int)
+        and isinstance(requester_id, int)
+    ):
+        feedback.record_answer(
+            answer_message_id=response_id,
+            request_message_id=request_id,
+            requester_id=requester_id,
+        )
     return True

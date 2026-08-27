@@ -217,7 +217,8 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 ryoku-arch/
-# prowl-agent: derived state
+# /prowl-agent: derived state
+runtime/
 .prowl/index.db*
 .prowl/cache/
 .prowl/logs/

@@ -8,6 +8,7 @@ from pathlib import Path
 import discord
 from dotenv import load_dotenv
 
+from feedback import FeedbackStore, FeedbackView
 from src.agent.runtime import build_answerer, build_prowl, build_retriever
 from src.handlers.messages import extract_query, handle_message
 
@@ -26,6 +27,7 @@ class Config:
     gemma_model: str
     lfm_model: str
     ollama_timeout: float
+    feedback_path: Path
 
 
 def load_config() -> Config:
@@ -64,6 +66,9 @@ def load_config() -> Config:
         gemma_model=os.getenv("GEMMA_MODEL", "gemma4:e4b").strip(),
         lfm_model=os.getenv("LFM_MODEL", "lfm2.5:latest").strip(),
         ollama_timeout=ollama_timeout,
+        feedback_path=Path(
+            os.getenv("FEEDBACK_DB_PATH", "runtime/nero-feedback.sqlite3")
+        ),
     )
 
 
@@ -71,9 +76,11 @@ def create_client(config: Config) -> discord.Client:
     retriever = build_retriever(config)
     prowl = build_prowl(config)
     answerer = build_answerer(config)
+    feedback = FeedbackStore(config.feedback_path)
     intents = discord.Intents.default()
     intents.message_content = True
     client = discord.Client(intents=intents)
+    client.add_view(FeedbackView(feedback))
 
     @client.event
     async def on_ready():
@@ -93,6 +100,7 @@ def create_client(config: Config) -> discord.Client:
             Path("data/logo.png"),
             answerer=answerer,
             support_channel_id=config.support_channel_id,
+            feedback=feedback,
         )
 
     return client

@@ -64,6 +64,7 @@ Set:
 - `RYOKU_REPO_PATH` to your cloned Ryoku checkout
 - `PROWL_AGENT_PATH` to the absolute Prowl executable, e.g. `/home/neur0map/workspace/prowl-agent/prowl-agent`. This prevents service `PATH` drift.
 - `SUPPORT_CHANNEL_ID` to the one Discord channel where ordinary messages should be answered. Leave it as `0` to require a mention/reply everywhere.
+- `FEEDBACK_DB_PATH` to a local SQLite file for Correct/Incorrect signals. It defaults to `runtime/nero-feedback.sqlite3` and must be backed up separately from Git.
 - `OLLAMA_HOST`, `GEMMA_MODEL=gemma4:e4b`, and `LFM_MODEL=lfm2.5:latest` for local answers
 - optionally `MODEL_NAME`, `PROWL_TIMEOUT_SECONDS`, `PROWL_RESULT_LIMIT`, and `OLLAMA_TIMEOUT_SECONDS`
 
@@ -87,6 +88,8 @@ uv run --python 3.12 \
 ```
 
 In `SUPPORT_CHANNEL_ID`, users can ask Nero normal Ryoku/Arch support questions without mentioning it. In every other channel, call Nero with `@Nero` or reply to one of Nero's messages. Mentions and replies work in all channels.
+
+Every Nero reply has **Correct** and **Incorrect** buttons. Only the person who asked can submit or revise a rating. Nero stores the rating and the Discord message IDs needed to join it to the future cleaned message archive; it does not add question or answer text to this feedback journal.
 
 ## Test
 
