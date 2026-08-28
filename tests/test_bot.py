@@ -26,10 +26,26 @@ class Reference:
         self.resolved = type("Resolved", (), {"author": author})()
 
 
+class TypingIndicator:
+    def __init__(self, channel):
+        self.channel = channel
+
+    async def __aenter__(self):
+        self.channel.typing_enters += 1
+
+    async def __aexit__(self, exc_type, exc, traceback):
+        self.channel.typing_exits += 1
+
+
 class Channel:
     def __init__(self, channel_id=0):
         self.id = channel_id
         self.calls = []
+        self.typing_enters = 0
+        self.typing_exits = 0
+
+    def typing(self):
+        return TypingIndicator(self)
 
     async def send(self, **kwargs):
         self.calls.append(kwargs)
@@ -225,6 +241,25 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(call["allowed_mentions"].users)
         self.assertFalse(call["allowed_mentions"].roles)
         call["file"].close()
+
+    async def test_answer_keeps_typing_visible_until_reply_is_sent(self):
+        card = support_card()
+        retriever = Retriever(RetrievalDecision("answer", card=card))
+        message = Message(
+            "<@42> doctor please", mentions=(User(42, bot=True),)
+        )
+
+        await handle_message(
+            message,
+            bot_user_id=42,
+            retriever=retriever,
+            prowl=None,
+            logo_path=Path("missing.png"),
+        )
+
+        self.assertEqual(message.channel.typing_enters, 1)
+        self.assertEqual(message.channel.typing_exits, 1)
+        self.assertEqual(len(message.channel.calls), 1)
 
     async def test_answer_has_feedback_buttons_and_is_linked_for_later_retrieval(self):
         card = support_card()

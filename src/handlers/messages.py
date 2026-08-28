@@ -66,16 +66,32 @@ async def handle_message(
     query = extract_query(message, bot_user_id, support_channel_id)
     if query is None:
         return False
+    async with message.channel.typing():
+        return await _reply_to_query(
+            message,
+            query,
+            retriever,
+            prowl,
+            logo_path,
+            answerer=answerer,
+            feedback=feedback,
+        )
+
+
+async def _reply_to_query(
+    message,
+    query: str,
+    retriever: SupportRetriever,
+    prowl: ProwlClient | None,
+    logo_path: Path,
+    *,
+    answerer: Answerer | None = None,
+    feedback: FeedbackStore | None = None,
+) -> bool:
     decision = retriever.retrieve(query)
     dangerous = requires_safety_confirmation(query)
     source_result = None
-    if (
-        not dangerous
-        and prowl is not None
-        and (
-            is_source_query(query)
-        )
-    ):
+    if not dangerous and prowl is not None and is_source_query(query):
         source_hints = (
             decision.card.source_hints
             if decision.kind == "answer" and decision.card
