@@ -1,3 +1,4 @@
+import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
@@ -60,19 +61,69 @@ class FeedbackStoreTests(unittest.TestCase):
                 requester_id=7,
             )
 
-            outcome = store.record_feedback(101, 8, "incorrect")
-
-            self.assertEqual(outcome, "not_requester")
+            for verdict in ("correct", "partially_correct", "incorrect"):
+                with self.subTest(verdict=verdict):
+                    self.assertEqual(store.record_feedback(101, 8, verdict), "not_requester")
             self.assertEqual(store.recent_feedback(), [])
 
-    def test_view_offers_correct_and_incorrect_buttons(self):
+    def test_records_partially_correct_feedback_for_the_requester(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store = FeedbackStore(Path(directory) / "nero-feedback.sqlite3")
+            store.record_answer(
+                answer_message_id=101,
+                request_message_id=100,
+                requester_id=7,
+            )
+
+            outcome = store.record_feedback(101, 7, "partially_correct")
+
+            self.assertEqual(outcome, "recorded")
+            self.assertEqual(store.recent_feedback()[0]["verdict"], "partially_correct")
+            self.assertEqual(store.record_feedback(101, 8, "partially_correct"), "not_requester")
+
+    def test_migrates_existing_feedback_database_for_partially_correct(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "nero-feedback.sqlite3"
+            with sqlite3.connect(path) as connection:
+                connection.executescript(
+                    """
+                    CREATE TABLE answers (
+                        answer_message_id INTEGER PRIMARY KEY,
+                        request_message_id INTEGER NOT NULL,
+                        requester_id INTEGER NOT NULL
+                    );
+                    CREATE TABLE feedback (
+                        answer_message_id INTEGER NOT NULL,
+                        actor_id INTEGER NOT NULL,
+                        verdict TEXT NOT NULL CHECK (verdict IN ('correct', 'incorrect')),
+                        PRIMARY KEY (answer_message_id, actor_id),
+                        FOREIGN KEY (answer_message_id) REFERENCES answers(answer_message_id)
+                    );
+                    """
+                )
+                connection.execute("INSERT INTO answers VALUES (101, 100, 7)")
+                connection.execute("INSERT INTO feedback VALUES (101, 7, 'correct')")
+
+            store = FeedbackStore(path)
+
+            self.assertEqual(store.record_feedback(101, 7, "partially_correct"), "updated")
+            self.assertEqual(store.recent_feedback()[0]["verdict"], "partially_correct")
+
+    def test_view_offers_correct_partial_and_incorrect_buttons(self):
         with tempfile.TemporaryDirectory() as directory:
             view = FeedbackView(FeedbackStore(Path(directory) / "nero-feedback.sqlite3"))
 
-        self.assertEqual([item.label for item in view.children], ["Correct", "Incorrect"])
+        self.assertEqual(
+            [item.label for item in view.children],
+            ["Correct", "Partially correct", "Incorrect"],
+        )
         self.assertEqual(
             [item.custom_id for item in view.children],
-            ["nero_feedback:correct", "nero_feedback:incorrect"],
+            [
+                "nero_feedback:correct",
+                "nero_feedback:partially_correct",
+                "nero_feedback:incorrect",
+            ],
         )
 
 

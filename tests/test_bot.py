@@ -288,10 +288,16 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
             feedback_buttons = [
                 button
                 for button in buttons
-                if button.custom_id in {"nero_feedback:correct", "nero_feedback:incorrect"}
+                if button.custom_id
+                in {
+                    "nero_feedback:correct",
+                    "nero_feedback:partially_correct",
+                    "nero_feedback:incorrect",
+                }
             ]
             self.assertEqual(
-                [button.label for button in feedback_buttons], ["Correct", "Incorrect"]
+                [button.label for button in feedback_buttons],
+                ["Correct", "Partially correct", "Incorrect"],
             )
             self.assertEqual(
                 feedback.record_feedback(101, message.author.id, "correct"),

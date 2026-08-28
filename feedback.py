@@ -6,15 +6,23 @@ from pathlib import Path
 import discord
 
 
+VERDICTS = ("correct", "partially_correct", "incorrect")
+BUTTON_LABELS = {
+    "correct": "Correct",
+    "partially_correct": "Partially correct",
+    "incorrect": "Incorrect",
+}
+
+
 class FeedbackButton(discord.ui.Button):
     def __init__(self, verdict: str, store: "FeedbackStore"):
         super().__init__(
-            label=verdict.capitalize(),
-            style=(
-                discord.ButtonStyle.success
-                if verdict == "correct"
-                else discord.ButtonStyle.danger
-            ),
+            label=BUTTON_LABELS[verdict],
+            style={
+                "correct": discord.ButtonStyle.success,
+                "partially_correct": discord.ButtonStyle.secondary,
+                "incorrect": discord.ButtonStyle.danger,
+            }[verdict],
             custom_id=f"nero_feedback:{verdict}",
         )
         self.store = store
@@ -45,6 +53,7 @@ class FeedbackView(discord.ui.View):
     def __init__(self, store: "FeedbackStore"):
         super().__init__(timeout=None)
         self.add_item(FeedbackButton("correct", store))
+        self.add_item(FeedbackButton("partially_correct", store))
         self.add_item(FeedbackButton("incorrect", store))
 
 
@@ -63,12 +72,36 @@ class FeedbackStore:
                 CREATE TABLE IF NOT EXISTS feedback (
                     answer_message_id INTEGER NOT NULL,
                     actor_id INTEGER NOT NULL,
-                    verdict TEXT NOT NULL CHECK (verdict IN ('correct', 'incorrect')),
+                    verdict TEXT NOT NULL CHECK (verdict IN ('correct', 'partially_correct', 'incorrect')),
                     PRIMARY KEY (answer_message_id, actor_id),
                     FOREIGN KEY (answer_message_id) REFERENCES answers(answer_message_id)
                 );
                 """
             )
+            self._migrate_feedback_schema(connection)
+
+    @staticmethod
+    def _migrate_feedback_schema(connection: sqlite3.Connection) -> None:
+        definition = connection.execute(
+            "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'feedback'"
+        ).fetchone()[0]
+        if "partially_correct" in definition:
+            return
+        connection.executescript(
+            """
+            ALTER TABLE feedback RENAME TO feedback_legacy;
+            CREATE TABLE feedback (
+                answer_message_id INTEGER NOT NULL,
+                actor_id INTEGER NOT NULL,
+                verdict TEXT NOT NULL CHECK (verdict IN ('correct', 'partially_correct', 'incorrect')),
+                PRIMARY KEY (answer_message_id, actor_id),
+                FOREIGN KEY (answer_message_id) REFERENCES answers(answer_message_id)
+            );
+            INSERT INTO feedback (answer_message_id, actor_id, verdict)
+            SELECT answer_message_id, actor_id, verdict FROM feedback_legacy;
+            DROP TABLE feedback_legacy;
+            """
+        )
 
     def record_answer(
         self,
@@ -93,8 +126,8 @@ class FeedbackStore:
         actor_id: int,
         verdict: str,
     ) -> str:
-        if verdict not in {"correct", "incorrect"}:
-            raise ValueError("verdict must be 'correct' or 'incorrect'")
+        if verdict not in VERDICTS:
+            raise ValueError(f"verdict must be one of {', '.join(VERDICTS)}")
         with self._connect() as connection:
             answer = connection.execute(
                 "SELECT requester_id FROM answers WHERE answer_message_id = ?",
