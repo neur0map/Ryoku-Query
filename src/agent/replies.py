@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import discord
 
+from feedback import FeedbackStore, FeedbackView
 from prowl import ProwlResult
-from support import RetrievalDecision, SupportCard
+from support import SupportCard
 
 BRAND_COLOR = 0xEA5322
+BOT_NAME = "Nero"
 
 def base_embed(title: str, description: str) -> discord.Embed:
     return discord.Embed(
@@ -15,14 +17,16 @@ def base_embed(title: str, description: str) -> discord.Embed:
     )
 
 
-def support_embed(card: SupportCard) -> discord.Embed:
-    embed = base_embed(card.title, card.answer)
-    embed.set_footer(text="Ryoku support")
+def support_embed(card: SupportCard, answer: str | None = None) -> discord.Embed:
+    embed = base_embed(card.title, answer or card.answer)
+    embed.set_footer(text=f"{BOT_NAME} • Ryoku support")
     return embed
 
 
-def support_view(card: SupportCard) -> discord.ui.View:
-    view = discord.ui.View(timeout=None)
+def support_view(
+    card: SupportCard, feedback: FeedbackStore | None = None
+) -> discord.ui.View:
+    view = FeedbackView(feedback) if feedback is not None else discord.ui.View(timeout=None)
     safety = {
         "informational": "🟢 Read-only / informational",
         "state-changing": "🟡 Changes system state",
@@ -47,14 +51,6 @@ def support_view(card: SupportCard) -> discord.ui.View:
     return view
 
 
-def clarification_embed(decision: RetrievalDecision) -> discord.Embed:
-    choices = "\n".join(
-        f"- **{card.title}**" for card in decision.alternatives
-    )
-    description = f"Which of these do you mean?\n{choices}"
-    return base_embed("One detail first", description)
-
-
 def safety_embed() -> discord.Embed:
     return base_embed(
         "I need more context",
@@ -64,10 +60,10 @@ def safety_embed() -> discord.Embed:
     )
 
 
-def source_embed(result: ProwlResult) -> discord.Embed:
+def source_embed(result: ProwlResult, answer: str | None = None) -> discord.Embed:
     embed = base_embed(
         "Ryoku stable source",
-        "I found these locations in the indexed stable Ryoku repository.",
+        answer or "I found these locations in the indexed stable Ryoku repository.",
     )
     for hit in result.hits:
         label = "Potentially destructive source" if hit.risky else "Source"
@@ -77,7 +73,7 @@ def source_embed(result: ProwlResult) -> discord.Embed:
             value=f"**`{hit.citation}`**\n{snippet}",
             inline=False,
         )
-    embed.set_footer(text="Ryoku source")
+    embed.set_footer(text=f"{BOT_NAME} • Ryoku source")
     return embed
 
 

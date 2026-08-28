@@ -2,12 +2,12 @@
 
 <img src="https://raw.githubusercontent.com/neur0map/ryoku-arch/main/ryoku/assets/brand/logo-mark.png" alt="Ryoku" width="160" />
 
-# Ryoku Discord Support
+# Nero
 
-**Reviewed Ryoku help inside Discord** &middot; *support answers, safety prompts, and source-backed replies.*
+**The Ryoku support bot for Discord** &middot; *reviewed answers, safety prompts, and source-backed replies.*
 
-Ryoku Discord Support is the private Discord bot for answering reviewed Ryoku
-support questions. It serves curated responses from `data/support.json`, adds
+Nero is the private Discord bot for answering reviewed Ryoku support questions.
+It serves curated responses from `data/support.json`, adds
 safety context for risky actions, and can search a local stable Ryoku checkout
 for source-backed answers through Prowl.
 
@@ -60,9 +60,23 @@ prowl-agent init --no-input --integrations none
 
 Set:
 
-- `TOKEN` to your Discord bot token
+- `TOKEN` to Nero's Discord bot token
 - `RYOKU_REPO_PATH` to your cloned Ryoku checkout
-- optionally `MODEL_NAME`, `PROWL_TIMEOUT_SECONDS`, and `PROWL_RESULT_LIMIT`
+- `PROWL_AGENT_PATH` to the absolute Prowl executable, e.g. `/home/neur0map/workspace/prowl-agent/prowl-agent`. This prevents service `PATH` drift.
+- `SUPPORT_CHANNEL_ID` to the one Discord channel where ordinary messages should be answered. Leave it as `0` to require a mention/reply everywhere.
+- `FEEDBACK_DB_PATH` to a local SQLite file for Correct/Incorrect signals. It defaults to `runtime/nero-feedback.sqlite3` and must be backed up separately from Git.
+- `OLLAMA_HOST`, `GEMMA_MODEL=gemma4:e4b`, and `LFM_MODEL=lfm2.5:latest` for local answers
+- optionally `MODEL_NAME`, `PROWL_TIMEOUT_SECONDS`, `PROWL_RESULT_LIMIT`, and `OLLAMA_TIMEOUT_SECONDS`
+
+### Local model behavior
+
+Nero retrieves the reviewed support card and/or Prowl citations **before** invoking a model. The model only turns that evidence into a concise Discord reply; it is not permitted to invent a command or a source.
+
+- **Gemma (`gemma4:e4b`)** handles normal, reviewed support answers with thinking disabled.
+- **LFM (`lfm2.5:latest`)** handles replies backed by verified Prowl evidence, including diagnostic and contributor/source questions. Only its final response is sent to Discord.
+- Both routes receive the same evidence-only contract: no invented commands, URLs, paths, system state, or citations; ask one focused question when the evidence cannot identify the symptom; and lead with a read-only check before a state-changing recovery action unless the user explicitly asks to perform it.
+- The bot serializes local model calls and sends `keep_alive: 0`. This is deliberate: on this 14 GiB CPU-first host, keeping both models resident can cause model eviction or OOM. Additional Discord requests wait their turn and fall back to the reviewed answer if Ollama is unavailable.
+
 
 ## Run
 
@@ -73,7 +87,9 @@ uv run --python 3.12 \
   python -B bot.py
 ```
 
-Mention the bot or reply to one of its messages when testing.
+In `SUPPORT_CHANNEL_ID`, users can ask Nero normal Ryoku/Arch support questions without mentioning it. In every other channel, call Nero with `@Nero` or reply to one of Nero's messages. Mentions and replies work in all channels.
+
+Every Nero reply has **Correct** and **Incorrect** buttons. Only the person who asked can submit or revise a rating. Nero stores the rating and the Discord message IDs needed to join it to the future cleaned message archive; it does not add question or answer text to this feedback journal.
 
 ## Test
 

@@ -186,18 +186,11 @@ class ProwlClientTests(unittest.TestCase):
         self.assertEqual(result.status, "unavailable")
         self.assertEqual(result.error, "Prowl search timed out")
 
-    def test_uses_prowl_peek_for_explicit_repository_path(self):
-        runner = DispatchRunner(
-            {
-                "search": [],
-                "peek": {
-                    "file": "ryoku/hyprland/hyprland.lua",
-                    "start_line": 1,
-                    "end_line": 20,
-                    "text": "return require('modules')",
-                },
-            }
-        )
+    def test_reads_explicit_repository_path_without_unsupported_peek_command(self):
+        target = self.repo / "ryoku/hyprland/hyprland.lua"
+        target.parent.mkdir(parents=True)
+        target.write_text("return require('modules')\n", encoding="utf-8")
+        runner = RecordingRunner()
         client = ProwlClient(self.repo, runner=runner)
 
         result = self.search(
@@ -205,10 +198,10 @@ class ProwlClientTests(unittest.TestCase):
             "Show ryoku/hyprland/hyprland.lua from the stable source.",
         )
 
-        self.assertEqual(
-            result.hits[0].file, "ryoku/hyprland/hyprland.lua"
-        )
-        self.assertIn("peek", [call[0][1] for call in runner.calls])
+        self.assertEqual(result.status, "ok")
+        self.assertEqual(result.hits[0].file, "ryoku/hyprland/hyprland.lua")
+        self.assertEqual(result.hits[0].snippet, "return require('modules')")
+        self.assertEqual(runner.calls, [])
 
     def test_reviewed_hint_only_reranks_actual_search_results(self):
         payload = [
@@ -236,6 +229,23 @@ class ProwlClientTests(unittest.TestCase):
 
         self.assertEqual(result.hits[0].file, "ryoku/hub/backend/main.go")
         self.assertEqual([call[0][1] for call in runner.calls], ["search"])
+
+    def test_reads_reviewed_document_hint_before_broad_source_search(self):
+        target = self.repo / "docs/updates.md"
+        target.parent.mkdir(parents=True)
+        target.write_text("Materialize lays the packaged base into ~/.config.\n", encoding="utf-8")
+        runner = RecordingRunner()
+        client = ProwlClient(self.repo, runner=runner)
+
+        result = self.search(
+            client,
+            "Where is materialize implemented for contributors?",
+            source_hints=("docs/updates.md", "ryoku/cli/"),
+        )
+
+        self.assertEqual(result.status, "ok")
+        self.assertEqual(result.hits[0].file, "docs/updates.md")
+        self.assertEqual(runner.calls, [])
 
     def test_uses_prowl_find_for_explicit_symbol(self):
         runner = DispatchRunner(
@@ -265,16 +275,10 @@ class ProwlClientTests(unittest.TestCase):
         self.assertIn("find", [call[0][1] for call in runner.calls])
 
     def test_uses_narrow_candidate_path_for_update_document_query(self):
-        runner = DispatchRunner(
-            {
-                "peek": {
-                    "file": "docs/updates.md",
-                    "start_line": 1,
-                    "end_line": 20,
-                    "text": "stable update guidance",
-                }
-            }
-        )
+        target = self.repo / "docs/updates.md"
+        target.parent.mkdir(parents=True)
+        target.write_text("stable update guidance\n", encoding="utf-8")
+        runner = RecordingRunner()
         client = ProwlClient(self.repo, runner=runner)
 
         result = self.search(
@@ -283,7 +287,8 @@ class ProwlClientTests(unittest.TestCase):
         )
 
         self.assertEqual(result.hits[0].file, "docs/updates.md")
-        self.assertEqual([call[0][1] for call in runner.calls], ["peek"])
+        self.assertEqual(result.hits[0].snippet, "stable update guidance")
+        self.assertEqual(runner.calls, [])
 
 
     def test_source_query_detection_is_narrow(self):
@@ -298,9 +303,19 @@ class ProwlClientTests(unittest.TestCase):
         self.assertFalse(
             is_source_query("Where is the diagnostic report file saved?")
         )
-        self.assertFalse(
+        self.assertTrue(
             is_source_query(
                 "I edited the source configuration, but the desktop is stale."
+            )
+        )
+        self.assertTrue(
+            is_source_query(
+                "I want to see the source for how materialize rebuilds the config."
+            )
+        )
+        self.assertTrue(
+            is_source_query(
+                "I have a dev checkout with custom QML. Where is the official deploy and test loop?"
             )
         )
 

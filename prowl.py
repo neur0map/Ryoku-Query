@@ -16,7 +16,13 @@ _SOURCE_WORDS = re.compile(
 )
 _SOURCE_REQUEST = re.compile(
     r"\b(where|find|show|search|read|open|look|which)\b.{0,80}\b(source|code)\b"
-    r"|\b(source|code)\b.{0,80}\b(where|find|show|search|read|open|look|which)\b",
+    r"|\b(source|code)\b.{0,80}\b(where|find|show|search|read|open|look|which|how|why|work|rebuild|deploy|test)\b"
+    r"|\b(source|checkout|repo)\b.{0,80}\b(config|configuration|custom work)\b",
+    re.IGNORECASE,
+)
+_CONTRIBUTOR_SOURCE_REQUEST = re.compile(
+    r"\b(dev checkout|contribut\w*|custom qml|feature branch)\b.{0,120}\b(deploy|test|build|delivery)\b"
+    r"|\b(deploy|test|build|delivery)\b.{0,120}\b(dev checkout|contribut\w*|custom qml|feature branch)\b",
     re.IGNORECASE,
 )
 _SOURCE_PATH = re.compile(
@@ -60,6 +66,7 @@ def is_source_query(query: str) -> bool:
     return bool(
         _SOURCE_WORDS.search(query)
         or _SOURCE_REQUEST.search(query)
+        or _CONTRIBUTOR_SOURCE_REQUEST.search(query)
         or _SOURCE_PATH.search(query)
         or _SOURCE_SYMBOL.search(query)
     )
@@ -201,34 +208,25 @@ class ProwlClient:
         ):
             return None
 
-    async def _peek_hit(self, executable: str, path: str) -> SourceHit | None:
+    def _local_file_hit(self, path: str) -> SourceHit | None:
+        """Return bounded evidence for an explicit path in the trusted checkout."""
         if not _valid_relative_path(path):
             return None
-        detail = await self._optional_json(
-            (
-                executable,
-                "peek",
-                f"{path}:1-40",
-                "--format",
-                "json",
-            )
-        )
-        if not isinstance(detail, dict):
+        try:
+            root = self.repo_path.resolve(strict=True)
+            target = (root / path).resolve(strict=True)
+            target.relative_to(root)
+            if not target.is_file():
+                return None
+            raw = target.read_bytes()[:8192]
+            text = raw.decode("utf-8", errors="replace")
+        except (OSError, ValueError):
             return None
-        file = detail.get("file")
-        start = detail.get("start_line")
-        end = detail.get("end_line")
-        text = _safe_snippet(detail.get("text"))
-        if (
-            not isinstance(file, str)
-            or not _valid_relative_path(file)
-            or not isinstance(start, int)
-            or not isinstance(end, int)
-            or start < 1
-            or end < start
-        ):
+        snippet = _safe_snippet("\n".join(text.splitlines()[:40]))
+        if not snippet:
             return None
-        return SourceHit(file, start, end, text, bool(_RISKY.search(text)))
+        line_count = min(40, len(text.splitlines()))
+        return SourceHit(path, 1, max(1, line_count), snippet, bool(_RISKY.search(snippet)))
 
     async def _find_hit(self, executable: str, symbol: str) -> SourceHit | None:
         detail = await self._optional_json(
@@ -271,7 +269,7 @@ class ProwlClient:
 
         path = _explicit_path(query)
         if path is not None:
-            hit = await self._peek_hit(executable, path)
+            hit = self._local_file_hit(path)
             if hit is not None and not hit.risky:
                 return ProwlResult("ok", hits=(hit,))
 
@@ -282,9 +280,17 @@ class ProwlClient:
                 return ProwlResult("ok", hits=(hit,))
 
         for candidate in _query_candidates(query):
-            hit = await self._peek_hit(executable, candidate)
+            hit = self._local_file_hit(candidate)
             if hit is not None and not hit.risky:
                 return ProwlResult("ok", hits=(hit,))
+
+        hint_hits: list[SourceHit] = []
+        for hint in valid_hints:
+            hit = self._local_file_hit(hint)
+            if hit is not None and not hit.risky:
+                hint_hits.append(hit)
+        if hint_hits:
+            return ProwlResult("ok", hits=tuple(hint_hits[:3]))
 
         argv = [
             executable,

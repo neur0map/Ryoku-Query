@@ -1,4 +1,5 @@
 import os
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -6,6 +7,7 @@ from unittest.mock import patch
 import discord
 
 from bot import extract_query, handle_message, load_config
+from feedback import FeedbackStore
 from prowl import ProwlResult, SourceHit
 from support import RankedIntent, RetrievalDecision, SupportCard
 
@@ -24,12 +26,30 @@ class Reference:
         self.resolved = type("Resolved", (), {"author": author})()
 
 
+class TypingIndicator:
+    def __init__(self, channel):
+        self.channel = channel
+
+    async def __aenter__(self):
+        self.channel.typing_enters += 1
+
+    async def __aexit__(self, exc_type, exc, traceback):
+        self.channel.typing_exits += 1
+
+
 class Channel:
-    def __init__(self):
+    def __init__(self, channel_id=0):
+        self.id = channel_id
         self.calls = []
+        self.typing_enters = 0
+        self.typing_exits = 0
+
+    def typing(self):
+        return TypingIndicator(self)
 
     async def send(self, **kwargs):
         self.calls.append(kwargs)
+        return getattr(self, "response", None)
 
 
 class Message:
@@ -40,15 +60,16 @@ class Message:
         author=None,
         mentions=(),
         reference=None,
+        channel_id=0,
     ):
         self.content = content
         self.author = author or User(7)
         self.mentions = list(mentions)
         self.reference = reference
-        self.channel = Channel()
+        self.channel = Channel(channel_id)
 
     async def reply(self, **kwargs):
-        await self.channel.send(**kwargs)
+        return await self.channel.send(**kwargs)
 
 
 class Retriever:
@@ -122,6 +143,19 @@ class InvocationTests(unittest.TestCase):
         message = Message("hello", reference=Reference(User(9)))
         self.assertIsNone(extract_query(message, bot_user_id=42))
 
+    def test_support_channel_accepts_a_normal_question(self):
+        message = Message("how do I run doctor?", channel_id=777)
+        self.assertEqual(
+            extract_query(message, bot_user_id=42, support_channel_id=777),
+            "how do I run doctor?",
+        )
+
+    def test_other_channel_requires_mention_or_reply(self):
+        message = Message("how do I run doctor?", channel_id=888)
+        self.assertIsNone(
+            extract_query(message, bot_user_id=42, support_channel_id=777)
+        )
+
 
 
 class ConfigTests(unittest.TestCase):
@@ -132,6 +166,12 @@ class ConfigTests(unittest.TestCase):
             "SUPPORT_PATH": "data/support.json",
             "PROWL_TIMEOUT_SECONDS": "3.5",
             "PROWL_RESULT_LIMIT": "12",
+            "PROWL_AGENT_PATH": "/opt/tools/prowl-agent",
+            "SUPPORT_CHANNEL_ID": "123",
+            "OLLAMA_HOST": "http://127.0.0.1:11434",
+            "GEMMA_MODEL": "gemma4:e4b",
+            "LFM_MODEL": "lfm2.5:latest",
+            "OLLAMA_TIMEOUT_SECONDS": "90",
         }
         with patch("bot.load_dotenv"), patch.dict(
             os.environ, values, clear=True
@@ -142,6 +182,12 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(config.ryoku_repo_path, Path("/srv/ryoku-stable"))
         self.assertEqual(config.prowl_timeout, 3.5)
         self.assertEqual(config.prowl_result_limit, 12)
+        self.assertEqual(config.prowl_executable, "/opt/tools/prowl-agent")
+        self.assertEqual(config.support_channel_id, 123)
+        self.assertEqual(config.ollama_host, "http://127.0.0.1:11434")
+        self.assertEqual(config.gemma_model, "gemma4:e4b")
+        self.assertEqual(config.lfm_model, "lfm2.5:latest")
+        self.assertEqual(config.ollama_timeout, 90.0)
 
     def test_requires_token(self):
         with patch("bot.load_dotenv"), patch.dict(
@@ -182,7 +228,7 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(message.channel.calls), 1)
         call = message.channel.calls[0]
         self.assertEqual(call["embed"].title, card.title)
-        self.assertEqual(call["embed"].footer.text, "Ryoku support")
+        self.assertEqual(call["embed"].footer.text, "Nero • Ryoku support")
         self.assertEqual(call["embed"].fields, [])
         self.assertIn("view", call)
         buttons = [item for item in call["view"].children if isinstance(item, discord.ui.Button)]
@@ -196,7 +242,69 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(call["allowed_mentions"].roles)
         call["file"].close()
 
-    async def test_ambiguity_sends_one_question(self):
+    async def test_answer_keeps_typing_visible_until_reply_is_sent(self):
+        card = support_card()
+        retriever = Retriever(RetrievalDecision("answer", card=card))
+        message = Message(
+            "<@42> doctor please", mentions=(User(42, bot=True),)
+        )
+
+        await handle_message(
+            message,
+            bot_user_id=42,
+            retriever=retriever,
+            prowl=None,
+            logo_path=Path("missing.png"),
+        )
+
+        self.assertEqual(message.channel.typing_enters, 1)
+        self.assertEqual(message.channel.typing_exits, 1)
+        self.assertEqual(len(message.channel.calls), 1)
+
+    async def test_answer_has_feedback_buttons_and_is_linked_for_later_retrieval(self):
+        card = support_card()
+        retriever = Retriever(RetrievalDecision("answer", card=card))
+        message = Message(
+            "<@42> doctor please", mentions=(User(42, bot=True),)
+        )
+        message.id = 100
+        message.channel.response = type("Response", (), {"id": 101})()
+
+        with tempfile.TemporaryDirectory() as directory:
+            feedback = FeedbackStore(Path(directory) / "nero-feedback.sqlite3")
+            await handle_message(
+                message,
+                bot_user_id=42,
+                retriever=retriever,
+                prowl=None,
+                logo_path=Path("missing.png"),
+                feedback=feedback,
+            )
+
+            buttons = [
+                item for item in message.channel.calls[0]["view"].children
+                if isinstance(item, discord.ui.Button)
+            ]
+            feedback_buttons = [
+                button
+                for button in buttons
+                if button.custom_id
+                in {
+                    "nero_feedback:correct",
+                    "nero_feedback:partially_correct",
+                    "nero_feedback:incorrect",
+                }
+            ]
+            self.assertEqual(
+                [button.label for button in feedback_buttons],
+                ["Correct", "Partially correct", "Incorrect"],
+            )
+            self.assertEqual(
+                feedback.record_feedback(101, message.author.id, "correct"),
+                "recorded",
+            )
+
+    async def test_ambiguity_returns_the_best_safe_answer_without_a_question(self):
         first = support_card(id="health.report", title="Create report")
         second = support_card(id="health.privacy", title="Report privacy")
         retriever = Retriever(
@@ -207,10 +315,10 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         await handle_message(message, 42, retriever, None, Path("missing.png"))
 
         self.assertEqual(len(message.channel.calls), 1)
-        description = message.channel.calls[0]["embed"].description
-        self.assertIn("Create report", description)
-        self.assertIn("Report privacy", description)
-        self.assertNotIn("view", message.channel.calls[0])
+        embed = message.channel.calls[0]["embed"]
+        self.assertEqual(embed.title, first.title)
+        self.assertEqual(embed.description, first.answer)
+        self.assertNotIn("?", embed.description)
 
     async def test_single_destructive_clarification_reuses_card_answer(self):
         recovery = support_card(
@@ -350,6 +458,19 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(prowl.queries, [])
         self.assertEqual(len(message.channel.calls), 1)
         self.assertIn("couldn't find", message.channel.calls[0]["embed"].description)
+
+    async def test_vague_ryoku_no_match_does_not_publish_generic_source_hits(self):
+        retriever = Retriever(RetrievalDecision("no_match"))
+        prowl = Prowl(ProwlResult("ok", hits=(SourceHit("system/gpu.lua", 1, 8, "unrelated", False),)))
+        message = Message(
+            "<@42> I'm new to Ryoku. Is there a safe way to see if my machine is okay?",
+            mentions=(User(42, bot=True),),
+        )
+
+        await handle_message(message, 42, retriever, prowl, Path("missing.png"))
+
+        self.assertEqual(prowl.queries, [])
+        self.assertEqual(message.channel.calls[0]["embed"].title, "No confident Ryoku answer")
 
 
 if __name__ == "__main__":

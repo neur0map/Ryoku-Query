@@ -5,9 +5,10 @@ from pathlib import Path
 
 import discord
 
+from feedback import FeedbackStore, FeedbackView
 from prowl import ProwlClient, is_source_query
+from src.agent.answering import Answerer
 from src.agent.replies import (
-    clarification_embed,
     no_match_embed,
     safety_embed,
     source_embed,
@@ -15,12 +16,21 @@ from src.agent.replies import (
     support_view,
     unavailable_embed,
 )
-from support import SupportRetriever, normalize_text, requires_safety_confirmation
+from support import SupportRetriever, requires_safety_confirmation
 
 
-def extract_query(message, bot_user_id: int) -> str | None:
+def extract_query(
+    message,
+    bot_user_id: int,
+    support_channel_id: int | None = None,
+) -> str | None:
     if message.author.bot:
         return None
+    in_support_channel = (
+        support_channel_id is not None
+        and support_channel_id > 0
+        and getattr(getattr(message, "channel", None), "id", None) == support_channel_id
+    )
     mentioned = any(
         getattr(user, "id", None) == bot_user_id
         for user in getattr(message, "mentions", ())
@@ -31,14 +41,14 @@ def extract_query(message, bot_user_id: int) -> str | None:
         and getattr(getattr(resolved, "author", None), "id", None)
         == bot_user_id
     )
-    if not mentioned and not replied:
+    if not in_support_channel and not mentioned and not replied:
         return None
     content = re.sub(fr"<@!?{bot_user_id}>", "", message.content).strip()
     return content or None
 
 
 def should_search(query: str) -> bool:
-    return "ryoku" in normalize_text(query)
+    return is_source_query(query)
 
 
 async def handle_message(
@@ -47,21 +57,40 @@ async def handle_message(
     retriever: SupportRetriever,
     prowl: ProwlClient | None,
     logo_path: Path,
+    *,
+    answerer: Answerer | None = None,
+    support_channel_id: int | None = None,
+    feedback: FeedbackStore | None = None,
 ) -> bool:
-    query = extract_query(message, bot_user_id)
+    query = extract_query(message, bot_user_id, support_channel_id)
     if query is None:
         return False
+    async with message.channel.typing():
+        return await _reply_to_query(
+            message,
+            query,
+            retriever,
+            prowl,
+            logo_path,
+            answerer=answerer,
+            feedback=feedback,
+        )
+
+
+async def _reply_to_query(
+    message,
+    query: str,
+    retriever: SupportRetriever,
+    prowl: ProwlClient | None,
+    logo_path: Path,
+    *,
+    answerer: Answerer | None = None,
+    feedback: FeedbackStore | None = None,
+) -> bool:
     decision = retriever.retrieve(query)
     dangerous = requires_safety_confirmation(query)
     source_result = None
-    if (
-        not dangerous
-        and prowl is not None
-        and (
-            is_source_query(query)
-            or (decision.kind == "no_match" and should_search(query))
-        )
-    ):
+    if not dangerous and prowl is not None and is_source_query(query):
         source_hints = (
             decision.card.source_hints
             if decision.kind == "answer" and decision.card
@@ -69,25 +98,37 @@ async def handle_message(
         )
         source_result = await prowl.search(query, source_hints)
 
+    rendered_answer = None
+    if (
+        not dangerous
+        and answerer is not None
+        and decision.kind == "answer"
+        and decision.card is not None
+    ):
+        rendered_answer = await answerer.render(query, decision.card, source_result)
+
     view = None
     if dangerous:
         embed = safety_embed()
     elif source_result is not None and source_result.status == "ok":
-        embed = source_embed(source_result)
+        embed = source_embed(
+            source_result,
+            rendered_answer.text if rendered_answer is not None else None,
+        )
     elif source_result is not None and source_result.status == "unavailable":
         embed = unavailable_embed(source_result.error)
     elif source_result is not None:
         embed = no_match_embed()
     elif decision.kind == "answer" and decision.card is not None:
-        embed = support_embed(decision.card)
-        view = support_view(decision.card)
-    elif decision.kind == "clarify":
-        if len(decision.alternatives) == 1:
-            card = decision.alternatives[0]
-            embed = support_embed(card)
-            view = support_view(card)
-        else:
-            embed = clarification_embed(decision)
+        embed = support_embed(
+            decision.card,
+            rendered_answer.text if rendered_answer is not None else None,
+        )
+        view = support_view(decision.card, feedback)
+    elif decision.kind == "clarify" and decision.alternatives:
+        card = decision.alternatives[0]
+        embed = support_embed(card)
+        view = support_view(card, feedback)
     else:
         embed = no_match_embed()
 
@@ -100,11 +141,28 @@ async def handle_message(
     if logo_path.is_file():
         send["file"] = discord.File(str(logo_path), filename="logo.png")
         embed.set_author(
-            name="Ryoku Help",
+            name="Nero",
             icon_url="attachment://logo.png",
         )
-    await message.reply(
+    if feedback is not None and view is None:
+        view = FeedbackView(feedback)
+        send["view"] = view
+    response = await message.reply(
         **send,
         mention_author=True,
     )
+    response_id = getattr(response, "id", None)
+    request_id = getattr(message, "id", None)
+    requester_id = getattr(getattr(message, "author", None), "id", None)
+    if (
+        feedback is not None
+        and isinstance(response_id, int)
+        and isinstance(request_id, int)
+        and isinstance(requester_id, int)
+    ):
+        feedback.record_answer(
+            answer_message_id=response_id,
+            request_message_id=request_id,
+            requester_id=requester_id,
+        )
     return True
