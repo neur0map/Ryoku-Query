@@ -24,9 +24,10 @@ def _prompt(query: str, card: SupportCard, sources: ProwlResult | None) -> str:
         parts.append("Indexed source locations:")
         parts.extend(f"- {hit.citation}: {hit.snippet}" for hit in sources.hits)
     parts.append(
-        "Reply with only a concise Discord-ready final answer. Do not add facts beyond this evidence. "
-        "For a contributor question, name whether the command is for a packaged install or a dev checkout. "
-        "For state-changing recovery, lead with the safest read-only check unless the user explicitly asks to perform that action."
+        "Reply with only one concise Discord-ready final answer. Do not ask follow-up or clarifying questions. "
+        "Do not add facts beyond this evidence. For a contributor question, name whether the command is for a "
+        "packaged install or a dev checkout. For state-changing recovery, lead with the safest read-only check "
+        "unless the user explicitly asks to perform that action."
     )
     return "\n".join(parts)
 
@@ -45,6 +46,6 @@ class Answerer:
             return RenderedAnswer(card.answer)
         route = "lfm" if sources is not None and sources.status == "ok" else "gemma"
         result: LLMResult = await self.client.answer(_prompt(query, card, sources), route=route)
-        if result.status != "ok":
+        if result.status != "ok" or "?" in result.text:
             return RenderedAnswer(card.answer)
         return RenderedAnswer(result.text, route=route)

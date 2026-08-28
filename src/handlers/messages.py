@@ -9,7 +9,6 @@ from feedback import FeedbackStore, FeedbackView
 from prowl import ProwlClient, is_source_query
 from src.agent.answering import Answerer
 from src.agent.replies import (
-    clarification_embed,
     no_match_embed,
     safety_embed,
     source_embed,
@@ -126,13 +125,10 @@ async def _reply_to_query(
             rendered_answer.text if rendered_answer is not None else None,
         )
         view = support_view(decision.card, feedback)
-    elif decision.kind == "clarify":
-        if len(decision.alternatives) == 1:
-            card = decision.alternatives[0]
-            embed = support_embed(card)
-            view = support_view(card, feedback)
-        else:
-            embed = clarification_embed(decision)
+    elif decision.kind == "clarify" and decision.alternatives:
+        card = decision.alternatives[0]
+        embed = support_embed(card)
+        view = support_view(card, feedback)
     else:
         embed = no_match_embed()
 

@@ -304,7 +304,7 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
                 "recorded",
             )
 
-    async def test_ambiguity_sends_one_question(self):
+    async def test_ambiguity_returns_the_best_safe_answer_without_a_question(self):
         first = support_card(id="health.report", title="Create report")
         second = support_card(id="health.privacy", title="Report privacy")
         retriever = Retriever(
@@ -315,10 +315,10 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
         await handle_message(message, 42, retriever, None, Path("missing.png"))
 
         self.assertEqual(len(message.channel.calls), 1)
-        description = message.channel.calls[0]["embed"].description
-        self.assertIn("Create report", description)
-        self.assertIn("Report privacy", description)
-        self.assertNotIn("view", message.channel.calls[0])
+        embed = message.channel.calls[0]["embed"]
+        self.assertEqual(embed.title, first.title)
+        self.assertEqual(embed.description, first.answer)
+        self.assertNotIn("?", embed.description)
 
     async def test_single_destructive_clarification_reuses_card_answer(self):
         recovery = support_card(

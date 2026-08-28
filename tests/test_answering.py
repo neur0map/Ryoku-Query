@@ -81,6 +81,20 @@ class AnswererTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result.text, "Run `ryoku status` for a read-only health summary.")
         self.assertEqual(llm.calls, [])
 
+    async def test_model_follow_up_question_falls_back_to_reviewed_answer(self):
+        llm = LLM(
+            LLMResult(
+                "ok",
+                text="Use `ryoku status` to check it. What output do you get?",
+            )
+        )
+        answerer = Answerer(llm)
+
+        result = await answerer.render("health?", card())
+
+        self.assertEqual(result.text, "Run `ryoku status` for a read-only health summary.")
+        self.assertIsNone(result.route)
+
     async def test_unavailable_model_falls_back_to_reviewed_answer(self):
         llm = LLM(LLMResult("unavailable", error="offline"))
         answerer = Answerer(llm)

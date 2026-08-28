@@ -4,7 +4,7 @@ import discord
 
 from feedback import FeedbackStore, FeedbackView
 from prowl import ProwlResult
-from support import RetrievalDecision, SupportCard
+from support import SupportCard
 
 BRAND_COLOR = 0xEA5322
 BOT_NAME = "Nero"
@@ -49,14 +49,6 @@ def support_view(
             )
         )
     return view
-
-
-def clarification_embed(decision: RetrievalDecision) -> discord.Embed:
-    choices = "\n".join(
-        f"- **{card.title}**" for card in decision.alternatives
-    )
-    description = f"Which of these do you mean?\n{choices}"
-    return base_embed("One detail first", description)
 
 
 def safety_embed() -> discord.Embed:
