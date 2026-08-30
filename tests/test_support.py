@@ -641,6 +641,36 @@ class RealCatalogTests(unittest.TestCase):
             )
         )
 
+    def test_recent_channel_topics_have_reviewed_gui_or_code_guidance(self):
+        cards = {
+            card.id: card
+            for card in load_support_cards(Path("data/support.json"))
+        }
+
+        expected = {
+            "settings.clock-12h": "Ryoku Settings > Widgets > Clock",
+            "recording.start": "Ryoku Settings > Recording",
+            "rashin.setup": "Ryoku Settings > Advanced > Rashin",
+            "updates.official": "Ryoku Settings > System > Updates",
+            "displays.scale": "Ryoku Settings > Displays",
+            "windows.hide": "Super + H",
+            "apps.ryotunes": "YouTube Music",
+            "apps.default-browser": "Ryoku Settings > Keybinds > Apps",
+            "windows.scrolling-layout": "Ryoku Settings > Windows > Layout",
+            "bar.studio": "Ryoku Settings > Bar Studio",
+            "hardware.cachyos-kernel": "Ryoku Settings > Extras > CachyOS Kernel",
+            "hardware.gpu-passthrough": "Ryoku Settings > Displays > GPU",
+            "rashin.acp-check": "hermes acp --check",
+            "updates.channel": "ryoku track",
+        }
+        for card_id, fragment in expected.items():
+            self.assertIn(fragment, cards[card_id].answer)
+
+        self.assertIn("do not edit", cards["settings.clock-12h"].answer.lower())
+        self.assertIn("do not edit", cards["displays.scale"].answer.lower())
+        self.assertIn("user.lua", cards["keybinds.custom"].answer)
+        self.assertIn("user_edits", cards["config.user-overrides"].answer)
+
     def test_vague_newcomer_health_question_routes_to_safe_status(self):
         cards = load_support_cards(Path("data/support.json"))
         decision = SupportRetriever(cards, MappingEncoder({})).retrieve(

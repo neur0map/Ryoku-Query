@@ -2057,5 +2057,277 @@
       "contributors.deploy",
       "contributors.materialize"
     ]
+  },
+  {
+    "id": "settings.clock-12h",
+    "title": "Use a 12-Hour Clock",
+    "examples": [
+      "how can i use 12 hour time",
+      "change the clock from 24 hour to am pm",
+      "how do I show 2:30 pm instead of 14:30",
+      "where is the 24-hour clock setting"
+    ],
+    "keywords": ["clock", "12 hour", "24 hour", "am pm", "time format"],
+    "exact_terms": ["12 hour time", "24-hour clock", "clock24h"],
+    "answer": "GUI: open `Ryoku Settings > Widgets > Clock` and turn off `24-hour clock`; the face will use 12-hour time with AM/PM. Do not edit `widgets.json` for this normal setting—the Hub owns and saves it. Code/config work only: the underlying key is `clock24h` in `~/.config/ryoku/widgets.json`.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
+    "source_hints": ["ryoku/hub/quickshell/schema/WidgetsPage.js", "ryoku/hub/quickshell/pages/WidgetsPage.qml"],
+    "clarifies_with": []
+  },
+  {
+    "id": "recording.start",
+    "title": "Start a Screen Recording",
+    "examples": [
+      "how can i start recording",
+      "record my screen in ryoku",
+      "start a fullscreen recording",
+      "record a region with desktop audio"
+    ],
+    "keywords": ["record", "recording", "screen", "fullscreen", "region", "audio"],
+    "exact_terms": ["ryoku-cmd-screenrecord", "screen recording"],
+    "answer": "GUI: open `Ryoku Settings > Recording` to set recording quality, codec, FPS, encoder, and cursor; it writes `~/.config/ryoku/recording.json`. To start capture, run `ryoku-cmd-screenrecord --fullscreen` or `ryoku-cmd-screenrecord --region`; add `--with-desktop-audio` and/or `--with-microphone-audio` if needed. Use `--stop`, `--pause`, or `--status` to control it. Do not hand-edit the recording file for ordinary settings.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
+    "source_hints": ["ryoku/hyprland/scripts/ryoku-cmd-screenrecord", "ryoku/hub/quickshell/pages/RecordingPage.qml"],
+    "clarifies_with": []
+  },
+  {
+    "id": "rashin.setup",
+    "title": "Set Up Ryoku Rashin",
+    "examples": [
+      "how can i setup Rashin",
+      "how to install rashin",
+      "how to use rashin ai",
+      "how do I get Hermes through Ryoku"
+    ],
+    "keywords": ["rashin", "hermes", "ai", "setup", "install", "agent"],
+    "exact_terms": ["ryoku-rashin setup", "Ryoku Settings > Advanced > Rashin", "rashin ai"],
+    "answer": "GUI: open `Ryoku Settings > Advanced > Rashin`, switch Rashin on, then use its one-click setup. It installs/onboards Hermes only when needed, builds the Rashin vault, enables the daemon, and verifies `hermes acp --check`. CLI: run `ryoku-rashin setup` for the same guided setup, then use the local dashboard. Do not edit Rashin or Hermes configuration files by hand for initial setup.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/rashin",
+    "source_hints": ["ryoku/hub/quickshell/pages/RashinPage.qml", "ryoku/rashin/backend/setup.go", "docs/rashin.md"],
+    "clarifies_with": []
+  },
+  {
+    "id": "updates.official",
+    "title": "Update an Installed Ryoku System",
+    "examples": [
+      "is there an update tool for the new Ryoku beta versions",
+      "do I need to reinstall Ryoku from a USB ISO for each beta",
+      "how do I update Ryoku",
+      "update my installed Ryoku system"
+    ],
+    "keywords": ["update", "beta", "stable", "iso", "usb", "installed", "version"],
+    "exact_terms": ["ryoku update", "Ryoku Settings > System > Updates", "beta versions"],
+    "answer": "GUI: use `Ryoku Settings > System > Updates` to check and start the normal update flow. CLI: run `ryoku update`. On a packaged install it updates packages, materializes the new configuration, reloads the desktop, and runs Doctor; it does not require reinstalling from an ISO. A development checkout is different: `ryoku update` follows its configured git channel and redeploys it. Do not use an installer/erase-disk answer for a normal update question.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/updates",
+    "source_hints": ["docs/updates.md", "ryoku/hub/quickshell/pages/UpdatesPage.qml", "ryoku/cli/internal/updater/update.go"],
+    "clarifies_with": []
+  },
+  {
+    "id": "displays.scale",
+    "title": "Change Monitor Scale and Keep It",
+    "examples": [
+      "how change monitor scale",
+      "where do i edit monitor settings without overwrite",
+      "change display scaling in ryoku",
+      "save my monitor scale"
+    ],
+    "keywords": ["monitor", "display", "scale", "resolution", "refresh", "overwrite"],
+    "exact_terms": ["Ryoku Settings > Displays", "monitor scale", "ryoku-monitor"],
+    "answer": "GUI: open `Ryoku Settings > Displays`, choose the monitor, set its scale, then click Apply. The Hub stages changes first, applies them through `ryoku-monitor`, and persists the layout/profile so it returns on login or when that display is reconnected. Do not edit monitor config files for normal display changes. Code/config work only: use `hypr/user.lua` when the GUI cannot express the raw Hyprland rule you need.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/troubleshoot#only-one-resolution-or-a-display-change-will-not-apply",
+    "source_hints": ["ryoku/hub/quickshell/pages/DisplaysPage.qml", "ryoku/hub/README.md", "ryoku/hyprland/user.lua"],
+    "clarifies_with": []
+  },
+  {
+    "id": "keybinds.custom",
+    "title": "Keep Custom Keybinds Across Updates",
+    "examples": [
+      "is there a way to keep changes to default keybinds",
+      "change a Ryoku shortcut without it resetting",
+      "add a custom keybind",
+      "make my keybind survive updates"
+    ],
+    "keywords": ["keybind", "shortcut", "bind", "rebind", "update", "reset"],
+    "exact_terms": ["Ryoku Settings > Keybinds", "rebinds.lua", "hypr/user.lua"],
+    "answer": "GUI: use `Ryoku Settings > Keybinds` for app-role changes, custom shortcuts, and rebinds; save there so Ryoku writes its managed `settings.lua`/`rebinds.lua` override. Code/config work only: put a raw Hyprland bind that the GUI does not expose in `~/.config/hypr/user.lua`; it loads last and updates never touch it. For a whole-module fork, mirror the file under `~/.config/ryoku/user_edits/`, knowing that fork no longer receives upstream fixes automatically.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
+    "source_hints": ["ryoku/hub/quickshell/pages/KeybindsPage.qml", "ryoku/hyprland/modules/binds.lua", "ryoku/hyprland/user.lua", "docs/updates.md"],
+    "clarifies_with": []
+  },
+  {
+    "id": "config.user-overrides",
+    "title": "Keep Personal Configuration Changes",
+    "examples": [
+      "how do I apply my custom settings without getting overwritten",
+      "how can i access my config files",
+      "my cava config keeps resetting every reboot",
+      "where do I put Ryoku overrides"
+    ],
+    "keywords": ["config", "custom", "override", "overwritten", "reset", "cava", "user edits"],
+    "exact_terms": ["~/.config/ryoku/user_edits", "hypr/user.lua", "user overrides"],
+    "answer": "GUI-managed settings belong in Ryoku Settings; its state under `~/.config/ryoku` is update-safe. For additive file overrides, use `~/.config/ryoku/user_edits`, mirroring the target path under `~/.config`; materialize lays that overlay on top last. For raw Hyprland settings, use `~/.config/hypr/user.lua`, which updates never touch. Do not edit files that Ryoku ships directly under the live base, because materialize replaces those on update.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/updates",
+    "source_hints": ["docs/updates.md", "ryoku/hyprland/user.lua"],
+    "clarifies_with": []
+  },
+  {
+    "id": "windows.hide",
+    "title": "Hide and Restore the Focused Window",
+    "examples": [
+      "how do i minimize a window",
+      "hide a window in ryoku",
+      "minimize the focused window",
+      "bring back a hidden window"
+    ],
+    "keywords": ["minimize", "hide", "window", "scratchpad", "focused"],
+    "exact_terms": ["Super + H", "ryoku-workspace hide"],
+    "answer": "Ryoku uses a scratchpad-style hide rather than a conventional minimize: press `Super + H` to hide the focused window, then press `Super + H` again while that window is focused to bring it back. `Super + Alt + H` shows or hides the scratchpad workspace. This is an existing keybind, not a GUI setting or a file edit.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
+    "source_hints": ["ryoku/hyprland/modules/binds.lua"],
+    "clarifies_with": []
+  },
+  {
+    "id": "apps.ryotunes",
+    "title": "What Ryotunes Is",
+    "examples": [
+      "what is ryotunes",
+      "what does Ryotunes do",
+      "open Ryotunes",
+      "is Ryotunes a music player"
+    ],
+    "keywords": ["ryotunes", "music", "youtube music", "player"],
+    "exact_terms": ["Ryotunes"],
+    "answer": "Ryotunes is Ryoku's focused YouTube Music app: it opens `music.youtube.com` in its own Chromium app window and profile, with a separate MPRIS identity so Ryoku's now-playing widget can follow it. It is an application, not a Ryoku Hub setting and not a config file to edit for normal use.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/preinstalled",
+    "source_hints": ["ryoku/apps/ryotunes/bin/ryotunes", "ryoku/shell/quickshell/shell/modules/desktop/music/MusicWidget.qml"],
+    "clarifies_with": []
+  },
+  {
+    "id": "apps.default-browser",
+    "title": "Choose Ryoku's Default Browser",
+    "examples": [
+      "where can i change the default browser",
+      "set a different browser for Super B",
+      "change Ryoku browser app",
+      "make Firefox my Ryoku browser"
+    ],
+    "keywords": ["default", "browser", "firefox", "chromium", "app", "Super B"],
+    "exact_terms": ["Ryoku Settings > Keybinds > Apps", "ryoku-app browser"],
+    "answer": "GUI: open `Ryoku Settings > Keybinds > Apps`, select the `Browser` role, and choose an installed browser or enter its command. Ryoku stores that app-role choice and `Super + B` launches it through `ryoku-app browser`. This controls Ryoku's browser launcher role; it is not a reason to hand-edit MIME files. Code/config work only: the underlying app-role map is generated from the Hub's Hyprland settings.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
+    "source_hints": ["ryoku/hub/quickshell/pages/KeybindsPage.qml", "ryoku/hub/backend/apps.go", "ryoku/hyprland/modules/binds.lua"],
+    "clarifies_with": []
+  },
+  {
+    "id": "windows.scrolling-layout",
+    "title": "Use the Scrolling Window Layout",
+    "examples": [
+      "how do i control scrolling window mode",
+      "enable scrolling layout",
+      "change the tiling layout to scrolling",
+      "make scrolling follow focus"
+    ],
+    "keywords": ["scrolling", "window", "layout", "tiling", "column", "focus"],
+    "exact_terms": ["scrolling window mode", "Ryoku Settings > Windows > Layout", "appearance.layout"],
+    "answer": "GUI: open `Ryoku Settings > Windows > Layout`, set `Tiling layout` to `scrolling`, then adjust `Column width` or `Scroll to follow focus` if wanted. Save in the Hub; it writes the managed Hyprland settings. Do not hand-edit `hypr.json` for normal layout changes. Code/config work only: use `hypr/user.lua` only for a raw Hyprland override the GUI does not expose.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
+    "source_hints": ["ryoku/hub/quickshell/schema/WindowsPage.js", "ryoku/hub/quickshell/pages/WindowsPage.qml", "ryoku/hyprland/user.lua"],
+    "clarifies_with": []
+  },
+  {
+    "id": "bar.studio",
+    "title": "Customize the Ryoku Bar",
+    "examples": [
+      "is there a way to change the topbar style",
+      "how do i customise the bar more",
+      "is there a way to add more bar themes",
+      "how to set islands on the qs bar"
+    ],
+    "keywords": ["bar", "topbar", "theme", "style", "islands", "qsbar", "sumi"],
+    "exact_terms": ["Ryoku Settings > Bar Studio", "bar style", "qsbar islands"],
+    "answer": "GUI: open `Ryoku Settings > Bar Studio`. It lets you choose an installed bar style, then stage live changes to the frame/rail visibility, opacity, thickness, and widgets in each zone; save to keep them. Use its bar-style browse action to open RyoStore for additional styles. Do not edit `shell.json` for ordinary bar customization. Code/config work only: custom QML is for developing a bar style or plugin, not for normal Hub settings.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/barstyles",
+    "source_hints": ["ryoku/hub/quickshell/pages/BarStudioPage.qml", "ryoku/shell/quickshell/shell/modules/bar/barstyles/qsbar/Theme.qml"],
+    "clarifies_with": []
+  },
+  {
+    "id": "hardware.cachyos-kernel",
+    "title": "Add the CachyOS Kernel Without Replacing Ryoku",
+    "examples": [
+      "how can i swap to cachy os kernel",
+      "use the CachyOS kernel with Ryoku",
+      "install linux-cachyos on Ryoku",
+      "will CachyOS kernel replace my Arch system"
+    ],
+    "keywords": ["cachyos", "kernel", "linux-cachyos", "dkms", "nvidia", "reboot"],
+    "exact_terms": ["Ryoku Settings > Extras > CachyOS Kernel", "linux-cachyos", "cachyos kernel"],
+    "answer": "GUI: use `Ryoku Settings > Extras > CachyOS Kernel` for the supported opt-in install/remove flow. It adds only the CachyOS v3 kernel repository and `linux-cachyos`; Ryoku/Arch userland stays in place and the stock Arch kernel remains a boot fallback. Reboot to run the new kernel. Expect DKMS modules such as NVIDIA or VirtualBox to rebuild; if one fails, boot the stock kernel rather than improvising a full CachyOS conversion. CLI removal is `ryoku-pkg-remove linux-cachyos linux-cachyos-headers`; normal users should prefer the Hub.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/kernels",
+    "source_hints": ["docs/kernels.md", "system/extras/ryoku-pkg-cachyos"],
+    "clarifies_with": []
+  },
+  {
+    "id": "hardware.gpu-passthrough",
+    "title": "Reserve a Discrete GPU for a VM",
+    "examples": [
+      "how do i setup a gpu passthrough with ryoku",
+      "free my GPU for a virtual machine",
+      "Ryoku passthrough GPU mode",
+      "use the iGPU for desktop and dGPU for VM"
+    ],
+    "keywords": ["gpu", "passthrough", "vm", "virtual machine", "igpu", "dgpu", "KVM"],
+    "exact_terms": ["Ryoku Settings > Displays > GPU", "GPU passthrough", "ryoku-gpu mode passthrough"],
+    "answer": "GUI: open `Ryoku Settings > Displays > GPU` and select `Passthrough` to pin the iGPU for the Ryoku desktop and free the dGPU for a VM. The change takes effect after re-login; on a laptop where the dGPU drives the built-in display, first switch firmware/BIOS GPU mode to Hybrid/Optimus and reboot, or Ryoku refuses the unsafe change. This configures Ryoku's render-GPU mode; VM IOMMU, device binding, and guest setup remain separate virtualization work, not a Hub toggle.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
+    "source_hints": ["ryoku/hub/backend/gpumode.go", "ryoku/hub/quickshell/pages/DisplaysPage.qml"],
+    "clarifies_with": []
+  },
+  {
+    "id": "rashin.acp-check",
+    "title": "Diagnose a Rashin ACP Connection Closure",
+    "examples": [
+      "Rashin says acp connection closed",
+      "self hosted Hermes ACP connection closed",
+      "Rashin cannot talk to Hermes",
+      "hermes acp check for Rashin"
+    ],
+    "keywords": ["rashin", "acp", "connection", "closed", "hermes", "self hosted"],
+    "exact_terms": ["acp connection closed", "hermes acp --check"],
+    "answer": "`acp connection closed` means Rashin's `hermes acp` child ended; that message alone does not prove a model/provider problem. Run `hermes acp --check` in the same user environment first and use the reported detail before changing configuration. GUI: `Ryoku Settings > Advanced > Rashin` shows setup/status and its setup flow performs this ACP check. Do not kill processes or edit Hermes/Rashin files blindly; the source-supported next step is the ACP health check.",
+    "risk": "informational",
+    "docs_url": "https://docs.ryoku.dev/docs/rashin",
+    "source_hints": ["ryoku/rashin/backend/setup.go", "ryoku/rashin/backend/acp.go", "ryoku/hub/quickshell/pages/RashinPage.qml"],
+    "clarifies_with": []
+  },
+  {
+    "id": "updates.channel",
+    "title": "Use a Ryoku Update Channel",
+    "examples": [
+      "How to use unstable branch",
+      "switch Ryoku to unstable dev",
+      "track a beta channel",
+      "change Ryoku update branch"
+    ],
+    "keywords": ["unstable", "branch", "channel", "beta", "track", "main"],
+    "exact_terms": ["ryoku track", "unstable-dev", "update channel"],
+    "answer": "GUI: use `Ryoku Settings > System > Updates` to inspect the configured update channel and normal update state. CLI/code path: `ryoku track <channel>` clones or updates the checkout, records the channel, then rebuilds and redeploys Ryoku while preserving Hub settings and `user_edits`. `unstable-dev` is development work and does not reach normal users until it is promoted to `main`; use it only when you deliberately accept branch churn. This is not the same as reinstalling an ISO.",
+    "risk": "state-changing",
+    "docs_url": "https://docs.ryoku.dev/docs/updates",
+    "source_hints": ["ryoku/cli/internal/updater/track.go", "ryoku/hub/quickshell/pages/UpdatesPage.qml", "docs/updates.md"],
+    "clarifies_with": []
   }
 ]
