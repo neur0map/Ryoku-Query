@@ -653,7 +653,6 @@ class RealCatalogTests(unittest.TestCase):
             "rashin.setup": "Ryoku Settings > Advanced > Rashin",
             "updates.official": "Ryoku Settings > System > Updates",
             "displays.scale": "Ryoku Settings > Displays",
-            "windows.hide": "Super + H",
             "apps.ryotunes": "YouTube Music",
             "apps.default-browser": "Ryoku Settings > Keybinds > Apps",
             "windows.scrolling-layout": "Ryoku Settings > Windows > Layout",

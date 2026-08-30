@@ -2178,23 +2178,6 @@
     "clarifies_with": []
   },
   {
-    "id": "windows.hide",
-    "title": "Hide and Restore the Focused Window",
-    "examples": [
-      "how do i minimize a window",
-      "hide a window in ryoku",
-      "minimize the focused window",
-      "bring back a hidden window"
-    ],
-    "keywords": ["minimize", "hide", "window", "scratchpad", "focused"],
-    "exact_terms": ["Super + H", "ryoku-workspace hide"],
-    "answer": "Ryoku uses a scratchpad-style hide rather than a conventional minimize: press `Super + H` to hide the focused window, then press `Super + H` again while that window is focused to bring it back. `Super + Alt + H` shows or hides the scratchpad workspace. This is an existing keybind, not a GUI setting or a file edit.",
-    "risk": "state-changing",
-    "docs_url": "https://docs.ryoku.dev/docs/ui-ux",
-    "source_hints": ["ryoku/hyprland/modules/binds.lua"],
-    "clarifies_with": []
-  },
-  {
     "id": "apps.ryotunes",
     "title": "What Ryotunes Is",
     "examples": [
@@ -2324,7 +2307,7 @@
     ],
     "keywords": ["unstable", "branch", "channel", "beta", "track", "main"],
     "exact_terms": ["ryoku track", "unstable-dev", "update channel"],
-    "answer": "GUI: use `Ryoku Settings > System > Updates` to inspect the configured update channel and normal update state. CLI/code path: `ryoku track <channel>` clones or updates the checkout, records the channel, then rebuilds and redeploys Ryoku while preserving Hub settings and `user_edits`. `unstable-dev` is development work and does not reach normal users until it is promoted to `main`; use it only when you deliberately accept branch churn. This is not the same as reinstalling an ISO.",
+    "answer": "GUI: `Ryoku Settings > System > Updates` shows the current update state. Switching a channel is CLI/development work, not a normal Hub setting: `ryoku track main` or `ryoku track unstable-dev` creates/uses a tracked checkout and makes later `ryoku update` follow that channel. `unstable-dev` is intentionally development work and does not reach normal users until promoted to `main`; use it only if you deliberately accept branch churn. This does not require reinstalling an ISO.",
     "risk": "state-changing",
     "docs_url": "https://docs.ryoku.dev/docs/updates",
     "source_hints": ["ryoku/cli/internal/updater/track.go", "ryoku/hub/quickshell/pages/UpdatesPage.qml", "docs/updates.md"],
