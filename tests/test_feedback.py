@@ -30,13 +30,64 @@ class FeedbackStoreTests(unittest.TestCase):
                         "answer_message_id": 101,
                         "request_message_id": 100,
                         "requester_id": 7,
+                        "decision_kind": "unknown",
+                        "card_id": None,
+                        "model_route": "deterministic",
+                        "source_status": "not_requested",
                         "actor_id": 7,
                         "verdict": "correct",
                     }
                 ],
             )
 
-    def test_replaces_one_requesters_verdict_without_creating_duplicates(self):
+    def test_records_answer_route_metadata_without_message_content(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store = FeedbackStore(Path(directory) / "nero-feedback.sqlite3")
+            store.record_answer(
+                answer_message_id=101,
+                request_message_id=100,
+                requester_id=7,
+                decision_kind="answer",
+                card_id="shell.bar-style",
+                model_route="gemma",
+                source_status="not_requested",
+            )
+            store.record_feedback(101, 7, "partially_correct")
+
+            row = store.recent_feedback()[0]
+            self.assertEqual(row["decision_kind"], "answer")
+            self.assertEqual(row["card_id"], "shell.bar-style")
+            self.assertEqual(row["model_route"], "gemma")
+            self.assertEqual(row["source_status"], "not_requested")
+
+    def test_migrates_existing_answers_without_route_metadata(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "nero-feedback.sqlite3"
+            with sqlite3.connect(path) as connection:
+                connection.executescript(
+                    """
+                    CREATE TABLE answers (
+                        answer_message_id INTEGER PRIMARY KEY,
+                        request_message_id INTEGER NOT NULL,
+                        requester_id INTEGER NOT NULL
+                    );
+                    CREATE TABLE feedback (
+                        answer_message_id INTEGER NOT NULL,
+                        actor_id INTEGER NOT NULL,
+                        verdict TEXT NOT NULL CHECK (verdict IN ('correct', 'partially_correct', 'incorrect')),
+                        PRIMARY KEY (answer_message_id, actor_id)
+                    );
+                    INSERT INTO answers VALUES (101, 100, 7);
+                    INSERT INTO feedback VALUES (101, 7, 'incorrect');
+                    """
+                )
+            store = FeedbackStore(path)
+            row = store.recent_feedback()[0]
+            self.assertEqual(row["decision_kind"], "unknown")
+            self.assertIsNone(row["card_id"])
+            self.assertEqual(row["model_route"], "deterministic")
+            self.assertEqual(row["source_status"], "not_requested")
+
         with tempfile.TemporaryDirectory() as directory:
             store = FeedbackStore(Path(directory) / "nero-feedback.sqlite3")
             store.record_answer(

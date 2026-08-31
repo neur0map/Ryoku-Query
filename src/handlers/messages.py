@@ -154,6 +154,14 @@ async def _reply_to_query(
     response_id = getattr(response, "id", None)
     request_id = getattr(message, "id", None)
     requester_id = getattr(getattr(message, "author", None), "id", None)
+    selected_card = (
+        decision.card
+        if decision.kind == "answer"
+        else (decision.alternatives[0] if decision.kind == "clarify" and decision.alternatives else None)
+    )
+    decision_kind = "safety" if dangerous else decision.kind
+    model_route = rendered_answer.route if rendered_answer and rendered_answer.route else "deterministic"
+    source_status = source_result.status if source_result is not None else "not_requested"
     if (
         feedback is not None
         and isinstance(response_id, int)
@@ -164,5 +172,9 @@ async def _reply_to_query(
             answer_message_id=response_id,
             request_message_id=request_id,
             requester_id=requester_id,
+            decision_kind=decision_kind,
+            card_id=selected_card.id if selected_card is not None else None,
+            model_route=model_route,
+            source_status=source_status,
         )
     return True

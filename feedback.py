@@ -7,6 +7,9 @@ import discord
 
 
 VERDICTS = ("correct", "partially_correct", "incorrect")
+DECISION_KINDS = ("answer", "clarify", "no_match", "safety", "unknown")
+MODEL_ROUTES = ("gemma", "lfm", "deterministic")
+SOURCE_STATUSES = ("ok", "no_match", "unavailable", "not_requested")
 BUTTON_LABELS = {
     "correct": "Correct",
     "partially_correct": "Partially correct",
@@ -67,7 +70,11 @@ class FeedbackStore:
                 CREATE TABLE IF NOT EXISTS answers (
                     answer_message_id INTEGER PRIMARY KEY,
                     request_message_id INTEGER NOT NULL,
-                    requester_id INTEGER NOT NULL
+                    requester_id INTEGER NOT NULL,
+                    decision_kind TEXT NOT NULL DEFAULT 'unknown',
+                    card_id TEXT,
+                    model_route TEXT NOT NULL DEFAULT 'deterministic',
+                    source_status TEXT NOT NULL DEFAULT 'not_requested'
                 );
                 CREATE TABLE IF NOT EXISTS feedback (
                     answer_message_id INTEGER NOT NULL,
@@ -78,7 +85,23 @@ class FeedbackStore:
                 );
                 """
             )
+            self._migrate_answers_schema(connection)
             self._migrate_feedback_schema(connection)
+
+    @staticmethod
+    def _migrate_answers_schema(connection: sqlite3.Connection) -> None:
+        columns = {
+            row[1] for row in connection.execute("PRAGMA table_info(answers)")
+        }
+        additions = (
+            ("decision_kind", "TEXT NOT NULL DEFAULT 'unknown'"),
+            ("card_id", "TEXT"),
+            ("model_route", "TEXT NOT NULL DEFAULT 'deterministic'"),
+            ("source_status", "TEXT NOT NULL DEFAULT 'not_requested'"),
+        )
+        for name, definition in additions:
+            if name not in columns:
+                connection.execute(f"ALTER TABLE answers ADD COLUMN {name} {definition}")
 
     @staticmethod
     def _migrate_feedback_schema(connection: sqlite3.Connection) -> None:
@@ -109,15 +132,41 @@ class FeedbackStore:
         answer_message_id: int,
         request_message_id: int,
         requester_id: int,
+        decision_kind: str = "unknown",
+        card_id: str | None = None,
+        model_route: str = "deterministic",
+        source_status: str = "not_requested",
     ) -> None:
+        if decision_kind not in DECISION_KINDS:
+            raise ValueError("invalid decision_kind")
+        if model_route not in MODEL_ROUTES:
+            raise ValueError("invalid model_route")
+        if source_status not in SOURCE_STATUSES:
+            raise ValueError("invalid source_status")
+        if card_id is not None and (
+            not isinstance(card_id, str)
+            or not card_id
+            or len(card_id) > 120
+            or any(character not in "abcdefghijklmnopqrstuvwxyz0123456789._-" for character in card_id)
+        ):
+            raise ValueError("invalid card_id")
         with self._connect() as connection:
             connection.execute(
                 """
                 INSERT OR IGNORE INTO answers (
-                    answer_message_id, request_message_id, requester_id
-                ) VALUES (?, ?, ?)
+                    answer_message_id, request_message_id, requester_id, decision_kind,
+                    card_id, model_route, source_status
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
-                (answer_message_id, request_message_id, requester_id),
+                (
+                    answer_message_id,
+                    request_message_id,
+                    requester_id,
+                    decision_kind,
+                    card_id,
+                    model_route,
+                    source_status,
+                ),
             )
 
     def record_feedback(
@@ -165,6 +214,10 @@ class FeedbackStore:
                     answers.answer_message_id,
                     answers.request_message_id,
                     answers.requester_id,
+                    answers.decision_kind,
+                    answers.card_id,
+                    answers.model_route,
+                    answers.source_status,
                     feedback.actor_id,
                     feedback.verdict
                 FROM feedback
@@ -179,8 +232,12 @@ class FeedbackStore:
                 "answer_message_id": row[0],
                 "request_message_id": row[1],
                 "requester_id": row[2],
-                "actor_id": row[3],
-                "verdict": row[4],
+                "decision_kind": row[3],
+                "card_id": row[4],
+                "model_route": row[5],
+                "source_status": row[6],
+                "actor_id": row[7],
+                "verdict": row[8],
             }
             for row in rows
         ]

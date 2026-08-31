@@ -303,6 +303,11 @@ class HandlerTests(unittest.IsolatedAsyncioTestCase):
                 feedback.record_feedback(101, message.author.id, "correct"),
                 "recorded",
             )
+            record = feedback.recent_feedback()[0]
+            self.assertEqual(record["decision_kind"], "answer")
+            self.assertEqual(record["card_id"], card.id)
+            self.assertEqual(record["model_route"], "deterministic")
+            self.assertEqual(record["source_status"], "not_requested")
 
     async def test_ambiguity_returns_the_best_safe_answer_without_a_question(self):
         first = support_card(id="health.report", title="Create report")
