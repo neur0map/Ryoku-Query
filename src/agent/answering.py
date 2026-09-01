@@ -25,11 +25,26 @@ def _prompt(query: str, card: SupportCard, sources: ProwlResult | None) -> str:
         parts.extend(f"- {hit.citation}: {hit.snippet}" for hit in sources.hits)
     parts.append(
         "Reply with only one concise Discord-ready final answer. Do not ask follow-up or clarifying questions. "
-        "Do not add facts beyond this evidence. For a contributor question, name whether the command is for a "
+        "Do not add facts beyond this evidence. If the reviewed answer begins with GUI:, lead with that exact "
+        "Ryoku Settings path; mention a command only when the reviewed evidence explicitly says it is needed. "
+        "For a contributor question, name whether the command is for a "
         "packaged install or a dev checkout. For state-changing recovery, lead with the safest read-only check "
         "unless the user explicitly asks to perform that action."
     )
     return "\n".join(parts)
+
+
+def _requires_gui_guidance(card: SupportCard) -> bool:
+    return (
+        card.answer.startswith("GUI:")
+        or "Ryoku Settings" in card.answer
+        or "Press `Super" in card.answer
+    )
+
+
+def _includes_gui_guidance(text: str) -> bool:
+    normalized = text.lower()
+    return "ryoku settings" in normalized or "super +" in normalized or "super+" in normalized
 
 
 class Answerer:
@@ -47,5 +62,7 @@ class Answerer:
         route = "lfm" if sources is not None and sources.status == "ok" else "gemma"
         result: LLMResult = await self.client.answer(_prompt(query, card, sources), route=route)
         if result.status != "ok" or "?" in result.text:
+            return RenderedAnswer(card.answer)
+        if _requires_gui_guidance(card) and not _includes_gui_guidance(result.text):
             return RenderedAnswer(card.answer)
         return RenderedAnswer(result.text, route=route)

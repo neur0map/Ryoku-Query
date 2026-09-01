@@ -16,14 +16,14 @@ class LLM:
         return self.result
 
 
-def card(risk="informational"):
+def card(risk="informational", answer="Run `ryoku status` for a read-only health summary."):
     return SupportCard(
         id="health.status",
         title="Check status",
         examples=("check status", "is it healthy"),
         keywords=("status",),
         exact_terms=("ryoku status",),
-        answer="Run `ryoku status` for a read-only health summary.",
+        answer=answer,
         risk=risk,
         docs_url="https://docs.ryoku.dev/docs/troubleshoot",
         source_hints=("docs/cli.md",),
@@ -43,6 +43,26 @@ class AnswererTests(unittest.IsolatedAsyncioTestCase):
         prompt, route = llm.calls[0]
         self.assertEqual(route, "gemma")
         self.assertIn("Run `ryoku status`", prompt)
+
+    async def test_gui_reviewed_answer_falls_back_when_model_omits_gui_path(self):
+        llm = LLM(LLMResult("ok", text="Run the recorder command with fullscreen mode."))
+        answerer = Answerer(llm)
+        reviewed = "GUI: open `Ryoku Settings > Recording` first. CLI is only for capture controls."
+
+        result = await answerer.render("how do I record?", card(answer=reviewed))
+
+        self.assertEqual(result.text, reviewed)
+        self.assertIsNone(result.route)
+
+    async def test_gui_shortcut_is_retained_when_model_keeps_it(self):
+        llm = LLM(LLMResult("ok", text="Press Super + W to open the wallpaper controls."))
+        answerer = Answerer(llm)
+        reviewed = "Press `Super + W` to open Ryoku's wallpaper carousel and theme picker."
+
+        result = await answerer.render("change my wallpaper", card(answer=reviewed))
+
+        self.assertEqual(result.text, "Press Super + W to open the wallpaper controls.")
+        self.assertEqual(result.route, "gemma")
 
     async def test_cited_diagnostic_uses_lfm_and_never_includes_thinking(self):
         llm = LLM(LLMResult("ok", text="Check the cited service log first."))
