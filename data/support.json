@@ -1708,24 +1708,33 @@
       "Which shortcut opens the wallpaper carousel?",
       "How do I get to the theme picker without digging through Settings?",
       "Changing wallpaper also recolored my apps - is that expected behavior?",
-      "Where can I switch backgrounds and the shared desktop palette together?"
+      "Where can I switch backgrounds and the shared desktop palette together?",
+      "How do I open Ryogami?",
+      "Ryowalls is gone after updating - where do I set wallpapers now?"
     ],
     "keywords": [
       "wallpaper",
       "theme",
       "colour",
       "picker",
-      "carousel"
+      "carousel",
+      "ryogami",
+      "ryowalls",
+      "video"
     ],
     "exact_terms": [
-      "Super + W"
+      "Super + W",
+      "Ryogami",
+      "Ryowalls"
     ],
-    "answer": "Press `Super + W` to open Ryoku's wallpaper carousel and theme picker. Wallpaper changes drive the shared palette that the shell and themed applications consume.",
+    "answer": "GUI: press `Super + W` to open the Ryogami wallpaper picker—the current replacement for the retired Ryowalls app. Use it to choose a wallpaper and target screen. In the picker's Settings, set the wallpaper and optional video directories; changing a directory requires a restart. After updating an older install, run `ryoku doctor` only if stale Ryowalls leftovers remain; it removes the retired launcher, config, and cache.",
     "risk": "state-changing",
     "docs_url": "https://docs.ryoku.dev/docs/theming",
     "source_hints": [
-      "docs/theming.md",
-      "docs/ui-ux.md"
+      "ryoku/shell/quickshell/shell/modules/bar/barstyles/qsbar/controlcenter/routes/PickersRoute.qml",
+      "ryoku/shell/ryogami/wall-ui/qml/wallpaper/settings/PathsSettings.qml",
+      "ryoku/cli/internal/doctor/reconcile_ryowalls_removal.go",
+      "ryoku/shell/ryogami/"
     ],
     "clarifies_with": []
   },
